@@ -13,6 +13,7 @@ import py7zr
 # from py7zr import pack_7zarchvie, unpack_7zarchive
 from py7zr import unpack_7zarchive
 import shutil
+from django.conf import settings
 
 
 def enum(*args):
@@ -178,17 +179,23 @@ class SysUtils:
         patoolib.extract_archive(filename)
 
     def un_py7zr(filename):
-        extract_dir = os.getcwd() + "\\firmware"
+        extract_dir = settings.FW_PATH  #os.getcwd() + "\\firmware"
         if os.path.isdir(extract_dir):
             pass
         else:
             os.mkdir(extract_dir)
 
         is7z = py7zr.is_7zfile(filename)
-        py7zr.SevenZipFile
+        # py7zr.SevenZipFile
         if is7z:
             ret = py7zr.unpack_7zarchive(filename, extract_dir)
             print(ret)
+            # print(py7zr.SevenZipFile.list(filename))
+            py7zr.SevenZipFile.getnames()
+            # print(py7zr.FileInfo.filename)
+            # print(py7zr.ArchiveInfo.filename)
+            # list = py7zr.list()
+            # print(list)
         else:
             print('unknow file type')
         return extract_dir

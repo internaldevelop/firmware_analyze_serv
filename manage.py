@@ -53,6 +53,12 @@ def main():
         #                                # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象
         #                                return_type="string")
         # print("system-log:" + syslog)
+        print(os.getcwd() + "\\firmware")
+        settings.FW_PATH = os.getcwd() + "\\firmware\\"
+        if os.path.isdir(settings.FW_PATH):
+            pass
+        else:
+            os.mkdir(settings.FW_PATH)
 
 
 

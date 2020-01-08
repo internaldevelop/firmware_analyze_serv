@@ -4,6 +4,7 @@ from common.utils.http_request import req_get_param_int, req_get_param, req_post
     req_post_param_dict
 import common.config
 from common.utils.general import SysUtils
+from django.conf import settings
 
 import pymongo
 import re
@@ -38,7 +39,7 @@ class FirmwarePocs:
         print(item['aliases'])
 
         # save path file
-        filename = os.getcwd() + "\\firmware\\" + item['aliases']
+        filename = settings.FW_PATH + item['aliases'] #os.getcwd() + "\\firmware\\" + item['aliases']
         outf = open(filename, 'wb')  # 创建文件
         outf.write(data)
         outf.close()

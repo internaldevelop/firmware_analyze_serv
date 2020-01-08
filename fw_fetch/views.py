@@ -19,6 +19,7 @@ import urllib.request
 import os
 from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
+from django.conf import settings
 
 firmware_db = FirmwareDB()
 firmware_pocs = FirmwarePocs()
@@ -159,7 +160,7 @@ def fwdownloadex(request):
     print("run into fwdownload")
     homepage = req_get_param(request, 'url')
     print(homepage)
-    savepath = os.getcwd() + "\\firmware"
+    savepath = settings.FW_PATH #os.getcwd() + "\\firmware"
     if os.path.isdir(savepath):
         pass
     else:

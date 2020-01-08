@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # 全局变量
                 'blog.views.global_settings'
+                'blog.views.global_fw_filepath'
             ],
         },
     },

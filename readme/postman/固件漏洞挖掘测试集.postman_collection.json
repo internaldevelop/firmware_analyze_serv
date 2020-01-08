@@ -1,0 +1,556 @@
+{
+	"info": {
+		"_postman_id": "46b1b199-fc65-4fb4-8105-9dce91273a67",
+		"name": "固件漏洞挖掘测试集",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. System",
+			"item": [
+				{
+					"name": "1.1 运行状态自检",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actuator/info",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"actuator",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 system_code run_status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sys_code/run_status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sys_code",
+								"run_status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.11 system_code error code -all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sys_code/err_codes/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sys_code",
+								"err_codes",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 检查服务: ErrorCode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/echo/errcode",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"echo",
+								"errcode"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 检查服务: fwfetch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/echo/fwfetch",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"echo",
+								"fwfetch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.31 检查服务: fwfetch run_status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/run_status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"run_status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.32 检查服务: fwfetch errcode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/errcode",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"errcode"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 检查服务: fwanalyze",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/echo/fwanalyze",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"echo",
+								"fwanalyze"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 检查服务: mqbus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/echo/mqbus",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"echo",
+								"mqbus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.6 检查服务: syslog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/echo/syslog",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"echo",
+								"syslog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 检查服务: uniauth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/echo/uniauth",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"echo",
+								"uniauth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Django",
+			"item": [
+				{
+					"name": "1.1 指定URL下载固件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-fetch/download/?url=http://www.luyoudashi.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-fetch",
+								"download",
+								""
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.luyoudashi.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-fetch/downloadex/?url=http://rom.luyoudashi.com/rom/12997/W331A_V1.0.0.12_CN.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-fetch",
+								"downloadex",
+								""
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://rom.luyoudashi.com/rom/12997/W331A_V1.0.0.12_CN.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 查询固件列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-fetch/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-fetch",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 根据指定ID读取固件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-fetch/poc/fetch?firmware_id=900017",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-fetch",
+								"poc",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "firmware_id",
+									"value": "900017"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 固件文件头自动解码或解析",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/decode?filename=C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"decode"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别-ARM",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"arch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别-MIPS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"arch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别-x86",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\DI_7500G16.12.30A1.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"arch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\DI_7500G16.12.30A1.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别- Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/angrarch?filename=C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"angrarch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.6 抽取文件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/extract?filename=C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.6 抽取文件 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/extract?filename=C:\\GIT\\firmwareanalyze\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn&en_TD.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn"
+								},
+								{
+									"key": "en_TD.bin",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/convertcode?filename=C:\\GIT\\firmwareanalyze\\firmware\\56",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"convertcode"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\56"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fwfetch test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-fetch/test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-fetch",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fwfetch Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/firmwarefetch?url=http://www.luyoudashi.com/roms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firmwarefetch"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.luyoudashi.com/roms"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"id": "c4c31362-cea7-433c-96fe-23ab22d3808f",
+			"key": "base_url",
+			"value": "http://localhost:10901",
+			"type": "string"
+		}
+	]
+}

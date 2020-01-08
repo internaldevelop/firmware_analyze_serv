@@ -1,0 +1,10 @@
+https://github.com/mirror/firmware-mod-kit
+https://github.com/fkie-cad/FACT_core
+https://github.com/ReFirmLabs/binwalk
+https://amoco.readthedocs.io/en/latest/code.html
+https://www.freebuf.com/column/154871.html
+https://github.com/programa-stic/barf-project
+http://angr.io/
+https://github.com/angr/angr
+
+

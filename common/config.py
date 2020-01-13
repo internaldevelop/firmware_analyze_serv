@@ -6,7 +6,8 @@ from gridfs import GridFS
 # EDB_TYPE = 2
 #
 # mongo-db客户端
-g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.73:27017/")
+g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.60.5:27017/")
+# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.73:27017/")
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.199.244:27017/")
 
 # 系统管理数据库

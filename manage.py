@@ -14,10 +14,10 @@ def main():
 
         # EUREKA接口
         # 本地服务
-        eureka_server_list = "http://localhost:10100/eureka/"
+        # eureka_server_list = "http://localhost:10100/eureka/"
 
         # 远程服务
-        # eureka_server_list = "http://172.16.60.5:10100/eureka/"
+        eureka_server_list = "http://172.16.60.5:10100/eureka/"
 
         your_rest_server_host = "localhost"
         # your_rest_server_host = "172.16.113.28"

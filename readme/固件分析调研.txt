@@ -1,8 +1,26 @@
+
+1. 常用工具
+    binwalk, angr
+
+2. 工程依赖包/库的导出和安装
+(1) 导出当前python环境下的所有依赖包
+    pip freeze > [文件路径 | 文件名]
+    第二种方式（参见第三节），只导出当前目录下的依赖包，实际测试效果不好。
+(2) 按照指定文件内容，安装依赖包
+    pip install -r [文件路径 | 文件名]
+(3) 导出当前目录下项目的依赖包
+    pip install pipreqs
+    pipreqs ./ --encoding=utf-8 --force
+    或者 pipreqs ./ --force --savepath ./readme/reqs-pack.txt --encoding=utf-8
+
+附录1. 工具资源
+(1) BinCAT 污点分析，值分析
+    https://www.freebuf.com/column/154871.html
+
 https://github.com/mirror/firmware-mod-kit
 https://github.com/fkie-cad/FACT_core
 https://github.com/ReFirmLabs/binwalk
 https://amoco.readthedocs.io/en/latest/code.html
-https://www.freebuf.com/column/154871.html
 https://github.com/programa-stic/barf-project
 http://angr.io/
 https://github.com/angr/angr

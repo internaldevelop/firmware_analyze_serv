@@ -186,20 +186,15 @@ class SysUtils:
             os.mkdir(extract_dir)
 
         is7z = py7zr.is_7zfile(filename)
-        # py7zr.SevenZipFile
+
         if is7z:
             ret = py7zr.unpack_7zarchive(filename, extract_dir)
-            # print(ret)
-            # print(py7zr.SevenZipFile.list(filename))
-            # py7zr.SevenZipFile.getnames(py7zr)
-            # print(py7zr.SevenZipFile.files)
-            # print(py7zr.FileInfo.filename)
-            # print(py7zr.ArchiveInfo.filename)
-            # list = py7zr.list()
+            arc = py7zr.SevenZipFile(filename)
+            list = arc.getnames()
             # print(list)
         else:
             print('unknow file type')
-        return extract_dir
+        return extract_dir, list
 
     def un_7z(filename):
         # register file format at first.

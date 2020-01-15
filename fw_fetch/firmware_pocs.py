@@ -45,10 +45,11 @@ class FirmwarePocs:
         outf.close()
 
         # uncompress zip
-        filepath = SysUtils.un_py7zr(filename)
+        filepath, list = SysUtils.un_py7zr(filename)
 
         # item['firmware_id'] = firmware_id
         item['firmware_path'] = filepath
+        item['filelist'] = list
         return item
 
     def fetch_no_content(self, firmware_id):

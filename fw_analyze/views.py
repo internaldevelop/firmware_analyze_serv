@@ -61,6 +61,7 @@ def binwalk_scan_opcodes(request):
 def binwalk_file_extract(request):
     filename = req_get_param(request, 'filename')
     try:
+        list_temp = []
         # filename=US_W331AV1.0BR_V1.0.0.12_cn&en_TD.bin 文件名带特殊符号无法进行抽取文件
         for module in binwalk.scan(filename, signature=True, quiet=True, extract=True):
             for result in module.results:
@@ -70,19 +71,24 @@ def binwalk_file_extract(request):
                         print
                         "Carved data from offset 0x%X to %s" % (
                         result.offset, module.extractor.output[result.file.path].carved[result.offset])
+
+                        list_temp.append(module.extractor.output[result.file.path].carved[result.offset])
                     # These are files/directories created by extraction utilities (gunzip, tar, unsquashfs, etc)
                     if result.offset in module.extractor.output[result.file.path].extracted:
-                        print
-                        "Extracted %d files from offset 0x%X to '%s' using '%s'" % (
-                        len(module.extractor.output[result.file.path].extracted[result.offset].files),
-                        result.offset,
-                        module.extractor.output[result.file.path].extracted[result.offset].files[0],
-                        module.extractor.output[result.file.path].extracted[result.offset].command)
+                        if len(module.extractor.output[result.file.path].extracted[result.offset].files):
+                            print
+                            "Extracted %d files from offset 0x%X to '%s' using '%s'" % (
+                            len(module.extractor.output[result.file.path].extracted[result.offset].files),
+                            result.offset,
+                            module.extractor.output[result.file.path].extracted[result.offset].files[0],
+                            module.extractor.output[result.file.path].extracted[result.offset].command)
+
+                            list_temp.append(module.extractor.output[result.file.path].extracted[result.offset].files)
+
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
         return sys_app_err('ERROR_INTERNAL_ERROR')
-    return sys_app_ok_p({'extract': 'ok',})
-
+    return sys_app_ok_p({'extract': 'ok','filelist':list_temp})
 
 def binwalk_file_test(request):
     filename = req_get_param(request, 'filename')

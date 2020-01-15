@@ -189,10 +189,10 @@ class SysUtils:
         # py7zr.SevenZipFile
         if is7z:
             ret = py7zr.unpack_7zarchive(filename, extract_dir)
-            print(ret)
-            print(py7zr.SevenZipFile.list(filename))
-            py7zr.SevenZipFile.getnames(py7zr)
-            print(py7zr.SevenZipFile.files)
+            # print(ret)
+            # print(py7zr.SevenZipFile.list(filename))
+            # py7zr.SevenZipFile.getnames(py7zr)
+            # print(py7zr.SevenZipFile.files)
             # print(py7zr.FileInfo.filename)
             # print(py7zr.ArchiveInfo.filename)
             # list = py7zr.list()

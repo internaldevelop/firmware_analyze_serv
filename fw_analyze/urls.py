@@ -10,7 +10,7 @@ urlpatterns = [
     path('/test', views.binwalk_file_test, name='firmware_binwalk'),            # 抽取文件
 
     path('/convertcode', views.angr_convert_code, name='angr_convert_code'),    # 转换成中间代码
-    path('/convertasm', views.angr_convert2asm, name='angr_convert_code'),    # 转换成中间代码
+    path('/convertasm', views.angr_convert2asm, name='angr_convert_code'),      # 转换成汇编代码
     path('/recognize', views.angr_recognize, name='angr_recognize'),            # 函数识别
 
 ]

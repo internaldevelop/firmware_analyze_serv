@@ -163,24 +163,26 @@ def angr_convert2asm(request):
         })
         maxadd = p.loader.max_addr
         minadd = p.loader.min_addr
-        print(maxadd,minadd)
+        print(minadd, maxadd)
 
         # let's disasm with capstone to search targets
         insn_bytes = p.loader.memory.load(0, maxadd)
 
         for cs_insn in p.arch.capstone.disasm(insn_bytes, 0):
             insns.append(CapstoneInsn(cs_insn))
+            print("0x%x:\t%s\t\t%s" % (cs_insn.address, cs_insn.mnemonic, cs_insn.op_str))
             # print(str(CapstoneInsn(cs_insn)))
         block = CapstoneBlock(0, insns, 0, p.arch)
 
         for ins in block.insns:
-            asms.append(ins)
-            print(ins)
+            asms.append(str(ins))
+            # print(ins)
 
     except Exception as e:
         print("Critical failure:", e)
         return sys_app_err('ERROR_INTERNAL_ERROR')
     return sys_app_ok_p({'ASM': asms, })
+
 
 # 转换成中间代码
 def angr_convert_code(request):
@@ -196,6 +198,7 @@ def angr_convert_code(request):
         #     },
         # })
 
+        # 装载二进制程序
         proj = angr.Project(filename, load_options={
             'auto_load_libs': False,
             'main_opts': {
@@ -209,13 +212,19 @@ def angr_convert_code(request):
         print(proj.arch)
         state = proj.factory.entry_state()
 
-        #### Blocks
+        print(proj.entry)
+        #### Blocks # 转换入口点为基本块
         block = proj.factory.block(proj.entry)       # lift a block of code from the program's entry point
         pp = block.pp()                        # pretty-print a disassembly to stdout
         print(block.instructions)              # how many instructions are there?
         print(block.instruction_addrs)         # what are the addresses of the instructions?
         print(block.capstone)                  # capstone disassembly
         print(block.vex)                       # VEX IRSB (that's a python internal address, not a program address)
+
+        irsb = proj.factory.block(proj.entry).vex
+        irsb.pp()
+        irsb.next.pp()
+
 
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
@@ -225,20 +234,24 @@ def angr_convert_code(request):
 
 # 函数识别
 def angr_recognize(request):
-
+    functions = []
     try:
         filename = req_get_param(request, 'filename')
         arch = getarch(filename)
         proj = angr.Project(filename, load_options={
+            'auto_load_libs': False,
             'main_opts': {
                 'backend': 'blob',
                 'base_addr': 0,
                 'arch': arch,
             },
         })
-
+        cfg = proj.analyses.CFGFast()
+        for address, func in cfg.functions.items():
+            print(hex(address), func.name)
+            functions.append(func.name)
 
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
         return sys_app_err('ERROR_INTERNAL_ERROR')
-    return sys_app_ok_p({'functions': "",})
+    return sys_app_ok_p({'functions': functions,})

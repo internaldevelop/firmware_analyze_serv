@@ -7,6 +7,7 @@ from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
 from common.error_code import Error
 import binwalk
 import angr
+from angr.block import CapstoneInsn, CapstoneBlock
 
 
 def index(request):
@@ -93,6 +94,7 @@ def binwalk_file_extract(request):
 def binwalk_file_test(request):
     filename = req_get_param(request, 'filename')
     try:
+
         for module in binwalk.scan(filename, filesystem=True, quiet=True):
             for result in module.results:
                 if result.file.path in module.extractor.output:
@@ -109,6 +111,8 @@ def binwalk_file_test(request):
                         result.offset,
                         module.extractor.output[result.file.path].extracted[result.offset].files[0],
                         module.extractor.output[result.file.path].extracted[result.offset].command)
+
+
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
         return sys_app_err('ERROR_INTERNAL_ERROR')
@@ -138,8 +142,46 @@ def getarch(filename):
 
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
-        return ""
+        return structure
     return structure
+
+
+# 转换成中间代码
+def angr_convert2asm(request):
+    insns = []
+    asms = []
+    try:
+        filename = req_get_param(request, 'filename')
+        arch = getarch(filename)
+        p = angr.Project(filename, load_options={
+            'auto_load_libs': False,
+            'main_opts': {
+                'backend': 'blob',
+                'base_addr': 0,
+                'arch': arch,
+            },
+        })
+        maxadd = p.loader.max_addr
+        minadd = p.loader.min_addr
+        print(minadd, maxadd)
+
+        # let's disasm with capstone to search targets
+        insn_bytes = p.loader.memory.load(0, maxadd)
+
+        for cs_insn in p.arch.capstone.disasm(insn_bytes, 0):
+            insns.append(CapstoneInsn(cs_insn))
+            print("0x%x:\t%s\t\t%s" % (cs_insn.address, cs_insn.mnemonic, cs_insn.op_str))
+            # print(str(CapstoneInsn(cs_insn)))
+        block = CapstoneBlock(0, insns, 0, p.arch)
+
+        for ins in block.insns:
+            asms.append(str(ins))
+            # print(ins)
+
+    except Exception as e:
+        print("Critical failure:", e)
+        return sys_app_err('ERROR_INTERNAL_ERROR')
+    return sys_app_ok_p({'ASM': asms, })
 
 
 # 转换成中间代码
@@ -147,7 +189,18 @@ def angr_convert_code(request):
     try:
         filename = req_get_param(request, 'filename')
         arch = getarch(filename)
+                                      # load_options = {'auto_load_libs': False, 'main_opts': {'base_addr': 0}})
+        # proj = angr.Project(filename, load_options={
+        #     'main_opts': {
+        #         'backend': 'blob',
+        #         'base_addr': 0,
+        #         'arch': arch,
+        #     },
+        # })
+
+        # 装载二进制程序
         proj = angr.Project(filename, load_options={
+            'auto_load_libs': False,
             'main_opts': {
                 'backend': 'blob',
                 'base_addr': 0,
@@ -155,16 +208,23 @@ def angr_convert_code(request):
             },
         })
 
+
         print(proj.arch)
         state = proj.factory.entry_state()
 
-        #### Blocks
+        print(proj.entry)
+        #### Blocks # 转换入口点为基本块
         block = proj.factory.block(proj.entry)       # lift a block of code from the program's entry point
         pp = block.pp()                        # pretty-print a disassembly to stdout
         print(block.instructions)              # how many instructions are there?
         print(block.instruction_addrs)         # what are the addresses of the instructions?
         print(block.capstone)                  # capstone disassembly
         print(block.vex)                       # VEX IRSB (that's a python internal address, not a program address)
+
+        irsb = proj.factory.block(proj.entry).vex
+        irsb.pp()
+        irsb.next.pp()
+
 
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
@@ -174,20 +234,24 @@ def angr_convert_code(request):
 
 # 函数识别
 def angr_recognize(request):
-
+    functions = []
     try:
         filename = req_get_param(request, 'filename')
         arch = getarch(filename)
         proj = angr.Project(filename, load_options={
+            'auto_load_libs': False,
             'main_opts': {
                 'backend': 'blob',
                 'base_addr': 0,
                 'arch': arch,
             },
         })
-
+        cfg = proj.analyses.CFGFast()
+        for address, func in cfg.functions.items():
+            print(hex(address), func.name)
+            functions.append(func.name)
 
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
         return sys_app_err('ERROR_INTERNAL_ERROR')
-    return sys_app_ok_p({'functions': "",})
+    return sys_app_ok_p({'functions': functions,})

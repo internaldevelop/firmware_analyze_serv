@@ -23,6 +23,7 @@
     https://github.com/angr/angr
     docs: https://docs.angr.io/core-concepts/loading
         https://angr.io/api-doc/
+    angr学习：https://www.cnblogs.com/fancystar/p/7851736.html
 
 https://github.com/mirror/firmware-mod-kit
 

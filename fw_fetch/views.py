@@ -1,4 +1,4 @@
-# Create your views here.
+# Create your my_views here.
 import time
 from common.response import app_ok_p, app_err_p, app_ok, app_err, sys_app_ok_p, sys_app_err_p, sys_app_ok, sys_app_err
 from common.error_code import Error

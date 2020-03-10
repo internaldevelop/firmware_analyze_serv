@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "46b1b199-fc65-4fb4-8105-9dce91273a67",
+		"_postman_id": "0dbe0ab0-4338-4a0e-8d4f-708475713360",
 		"name": "固件漏洞挖掘测试集",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,47 +27,16 @@
 					"response": []
 				},
 				{
-					"name": "1.1 system_code run_status",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/sys_code/run_status",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"sys_code",
-								"run_status"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.11 system_code error code -all",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/sys_code/err_codes/all",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"sys_code",
-								"err_codes",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "1.2 检查服务: ErrorCode",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/echo/errcode",
 							"host": [
@@ -94,42 +63,6 @@
 							"path": [
 								"echo",
 								"fwfetch"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.31 检查服务: fwfetch run_status",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/run_status",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"run_status"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.32 检查服务: fwfetch errcode",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/errcode",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"errcode"
 							]
 						}
 					},
@@ -210,27 +143,78 @@
 			]
 		},
 		{
-			"name": "Django",
+			"name": "2. 测试",
 			"item": [
 				{
-					"name": "1.1 指定URL下载固件",
+					"name": "示例-当前成员 Copy",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/fw-fetch/download/?url=http://www.luyoudashi.com",
+							"raw": "localhost:10901/api/current?",
 							"host": [
-								"{{base_url}}"
+								"localhost"
 							],
+							"port": "10901",
 							"path": [
-								"fw-fetch",
-								"download",
-								""
+								"api",
+								"current"
 							],
 							"query": [
 								{
-									"key": "url",
-									"value": "http://www.luyoudashi.com"
+									"key": "access_token",
+									"value": "d31eb17f-19e9-4a02-8efd-3efb7e692b07",
+									"disabled": true
+								}
+							]
+						},
+						"description": "参考：SpringCloud+SpringBoot+OAuth2+Spring Security+Redis实现的微服务统一认证授权\r\n    https://blog.csdn.net/WYA1993/article/details/85050120\r\n    对应源码：https://github.com/WYA1993/springcloud_oauth2.0"
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 当前用户 Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept1",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "localhost:10901/test/oath?access_token=d31eb17f-19e9-4a02-8efd-3efb7e692b07",
+							"host": [
+								"localhost"
+							],
+							"port": "10901",
+							"path": [
+								"test",
+								"oath"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "d31eb17f-19e9-4a02-8efd-3efb7e692b07"
 								}
 							]
 						}
@@ -238,24 +222,34 @@
 					"response": []
 				},
 				{
-					"name": "1.1 指定URL下载固件 Copy",
+					"name": "网关-当前用户",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/fw-fetch/downloadex/?url=http://rom.luyoudashi.com/rom/12997/W331A_V1.0.0.12_CN.zip",
+							"raw": "localhost:10110/fw-bend-server/test/current_user?access_token=d31eb17f-19e9-4a02-8efd-3efb7e692b07",
 							"host": [
-								"{{base_url}}"
+								"localhost"
 							],
+							"port": "10110",
 							"path": [
-								"fw-fetch",
-								"downloadex",
-								""
+								"fw-bend-server",
+								"test",
+								"current_user"
 							],
 							"query": [
 								{
-									"key": "url",
-									"value": "http://rom.luyoudashi.com/rom/12997/W331A_V1.0.0.12_CN.zip"
+									"key": "access_token",
+									"value": "d31eb17f-19e9-4a02-8efd-3efb7e692b07"
 								}
 							]
 						}
@@ -263,42 +257,39 @@
 					"response": []
 				},
 				{
-					"name": "1.2 查询固件列表",
+					"name": "2.1 hello",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept-Language",
+								"value": "zh-CN,zh;q=0.9",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/fw-fetch/list",
+							"raw": "{{base_url}}/test/hello?access_token={{access_token}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"fw-fetch",
-								"list"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.3 根据指定ID读取固件",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-fetch/poc/fetch?firmware_id=900017",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-fetch",
-								"poc",
-								"fetch"
+								"test",
+								"hello"
 							],
 							"query": [
 								{
-									"key": "firmware_id",
-									"value": "900017"
+									"key": "access_token",
+									"value": "{{access_token}}"
 								}
 							]
 						}
@@ -306,23 +297,32 @@
 					"response": []
 				},
 				{
-					"name": "1.4 固件文件头自动解码或解析",
+					"name": "2.2 当前用户",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/fw-analyze/decode?filename=C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk",
+							"raw": "{{base_url}}/test/current_user?access_token={{access_token}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"fw-analyze",
-								"decode"
+								"test",
+								"current_user"
 							],
 							"query": [
 								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk"
+									"key": "access_token",
+									"value": "{{access_token}}"
 								}
 							]
 						}
@@ -330,224 +330,228 @@
 					"response": []
 				},
 				{
-					"name": "1.5 架构识别-ARM",
+					"name": "2.3 校验query权限",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/fw-analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk",
+							"raw": "{{base_url}}/test/query?access_token=3833d8a9-39ec-425a-bf3c-713207afa041",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"fw-analyze",
-								"arch"
+								"test",
+								"query"
 							],
 							"query": [
 								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.5 架构识别-MIPS",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-analyze",
-								"arch"
-							],
-							"query": [
-								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.5 架构识别-x86",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\DI_7500G16.12.30A1.bin",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-analyze",
-								"arch"
-							],
-							"query": [
-								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\DI_7500G16.12.30A1.bin"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.5 架构识别- Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-analyze/angrarch?filename=C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-analyze",
-								"angrarch"
-							],
-							"query": [
-								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.6 抽取文件",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-analyze/extract?filename=C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-analyze",
-								"extract"
-							],
-							"query": [
-								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.6 抽取文件 Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-analyze/extract?filename=C:\\GIT\\firmwareanalyze\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn&en_TD.bin",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-analyze",
-								"extract"
-							],
-							"query": [
-								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn"
-								},
-								{
-									"key": "en_TD.bin",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.7 转换代码",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-analyze/convertcode?filename=C:\\GIT\\firmwareanalyze\\firmware\\56",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-analyze",
-								"convertcode"
-							],
-							"query": [
-								{
-									"key": "filename",
-									"value": "C:\\GIT\\firmwareanalyze\\firmware\\56"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "fwfetch test",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw-fetch/test",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw-fetch",
-								"test"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "fwfetch Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/firmwarefetch?url=http://www.luyoudashi.com/roms",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"firmwarefetch"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "http://www.luyoudashi.com/roms"
+									"key": "access_token",
+									"value": "3833d8a9-39ec-425a-bf3c-713207afa041"
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ccd9574c-09e9-43c9-9088-b4940617c7ca",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "469d09e1-051b-4616-ba26-f76527d1075c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "4. 固件分析服务",
+			"item": [
+				{
+					"name": "4.1 服务运行状态",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 固件入口状态机信息",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/state?file_id=111",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"state"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "111"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 代码函数列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/functions?file_id=111",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"functions"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "111"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 函数的后继调用",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/functions/successors?file_id=111&func_addr=0x1000060",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"functions",
+								"successors"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "111"
+								},
+								{
+									"key": "func_addr",
+									"value": "0x1000060",
+									"description": "16进制的字符串"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.5 函数汇编代码",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/functions/asm?file_id=111&func_addr=0x4003c8",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"functions",
+								"asm"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "111"
+								},
+								{
+									"key": "func_addr",
+									"value": "0x4003c8",
+									"description": "16进制的字符串"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.6 函数中间代码",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/functions/vex?file_id=111&func_addr=0x4003c8",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"functions",
+								"vex"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "111"
+								},
+								{
+									"key": "func_addr",
+									"value": "0x4003c8",
+									"description": "16进制的字符串"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"variable": [
 		{
-			"id": "c4c31362-cea7-433c-96fe-23ab22d3808f",
+			"id": "a11fefd0-6a96-4d3d-8c41-418ef4ea8304",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"

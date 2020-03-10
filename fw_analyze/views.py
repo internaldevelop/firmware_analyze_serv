@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+# Create your my_views here.
 from django.http import HttpResponse
 from common.utils.http_request import req_get_param
 from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
@@ -233,7 +233,7 @@ def angr_convert_code(request):
 
 
 # 函数识别
-def angr_recognize(request):
+def angr_recognize_func(request):
     functions = []
     try:
         filename = req_get_param(request, 'filename')

@@ -31,6 +31,7 @@ def old_cfg_analyze(proj, name='bin'):
             #         debug_info=False, remove_imports=True, remove_path_terminator=True)
     return
 
+
 def cfg_analyze(proj):
     # 模块的架构
     print(proj.arch)
@@ -45,8 +46,9 @@ def cfg_analyze(proj):
     total_len = len(nodes)
     # 关闭简化输出，代码需要保留以作参考
     # for node in nodes:
-    #     print(node.addr, node.name)
+    #     print(hex(node.addr), node.name)
 
+    # TODO: VFG 用于变量流转分析
     node = cfg.model.get_any_node(proj.entry)
     vfg = proj.analyses.VFG(start=node.addr)
     # variable_seekr = angr.VariableSeekr(proj, cfg, vfg)
@@ -56,16 +58,33 @@ def cfg_analyze(proj):
     total_len = len(functions)
     for addr, func in functions:
         # 打印函数地址和函数名称
-        print(addr, func.name)
-        # 获取函数的代码块
-        block = proj.factory.block(addr)
-        # 关闭简化输出，代码需要保留以作参考
-        # 取汇编代码
+        print(hex(addr), func.name)
+
+        # 取函数的后继调用
+        # node = cfg.model.get_any_node(addr)
+        # if node is not None:
+        #     successors = list(cfg.graph.successors(node))
+        #     if len(successors) > 0:
+        #         print('\t%d:\t' % len(successors), end='')
+        #         for succ_node in successors:
+        #             print(succ_node, '\t', end='')
+        #         print('', end='\n')
+
+        # # 获取函数的代码块
+        # block = proj.factory.block(addr)
+        # # 关闭简化输出，代码需要保留以作参考
+        # # 取汇编代码
         # print(block.pp())
-        # 取 capstone 汇编代码
+        # # 取 capstone 汇编代码
         # print(block.capstone)
-        # 取 VEX IR，相对汇编语言，VEX IR更像是Compiler的中间语言
+        # # 取 VEX IR，相对汇编语言，VEX IR更像是Compiler的中间语言
         # print(block.vex)
+
+    # 取通用库函数的方法（使用标识 Identifier）
+    # proj = angr.Project(os.path.join(samples_path, 'true'))
+    # idfer = proj.analyses.Identifier()
+    # for addr, symbol in idfer.run():
+    #     print(hex(addr), symbol)
 
     return
 
@@ -80,8 +99,8 @@ def state_analyze(proj):
     # 入口点的内存解析成 int 值
     print('入口点内存值：', entry_state.mem[proj.entry].int.resolved)
     # 取堆信息
-    print('堆基址：', entry_state.heap.heap_base)
-    print('堆大小：', entry_state.heap.heap_size)
+    print('堆基址：', hex(entry_state.heap.heap_base))
+    print('堆大小：', hex(entry_state.heap.heap_size))
 
     # BV 和 int 类型互相转换
     bv = entry_state.solver.BVV(0x1234, 32)
@@ -99,14 +118,13 @@ def state_analyze(proj):
     return
 
 
-def test_angr():
+def test_cfg():
     proj = angr.Project(os.path.join(samples_path, 'ais3_crackme'), load_options={'auto_load_libs': False})
 
     cfg_analyze(proj)
 
     state_analyze(proj)
-    return
 
 
 if __name__ == "__main__":
-    test_angr()
+    test_cfg()

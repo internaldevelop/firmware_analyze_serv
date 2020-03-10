@@ -17,10 +17,12 @@ def main():
         # eureka_server_list = "http://localhost:10100/eureka/"
 
         # 远程服务
-        eureka_server_list = "http://172.16.60.5:10100/eureka/"
+        # eureka_server_list = "http://172.16.60.5:10100/eureka/"
+        eureka_server_list = "http://192.168.43.139:10100/eureka/"
 
         # your_rest_server_host = "localhost"
-        your_rest_server_host = "172.16.113.30"
+        # your_rest_server_host = "172.16.113.30"
+        your_rest_server_host = "192.168.43.139"
         your_rest_server_port = 10112
 
         # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds

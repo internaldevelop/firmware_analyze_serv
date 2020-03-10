@@ -19,11 +19,15 @@
 (2) FACT core : Firmware Analysis and Comparison Tool
     https://github.com/fkie-cad/FACT_core
 (3) angr is a platform-agnostic binary analysis framework
-    http://angr.io/
-    https://github.com/angr/angr
+    官网：http://angr.io/
     docs: https://docs.angr.io/core-concepts/loading
         https://angr.io/api-doc/
-    angr学习：https://www.cnblogs.com/fancystar/p/7851736.html
+    github: https://github.com/angr/angr
+    angr学习(1--4)：https://www.cnblogs.com/fancystar/p/7851736.html
+    angr使用[3]--使用技巧: https://blog.csdn.net/qq_38204481/article/details/103829549
+    符号执行之angr学习-初识angr：http://www.manongjc.com/article/68188.html
+    其他github资料：https://github.com/axt/cfg-explorer
+                    https://github.com/jakespringer/angr_ctf
 
 https://github.com/mirror/firmware-mod-kit
 

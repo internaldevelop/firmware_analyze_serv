@@ -10,12 +10,14 @@ urlpatterns = [
 
     # 固件文件头自动解码或解析
     path('/decode', views.binwalk_scan_signature, name='binwalk_scan_signature'),
+    path('/decodeEx', views.binwalk_scan_signatureEx, name='binwalk_scan_signature'),
 
     # 架构识别
     path('/arch', views.binwalk_scan_opcodes, name='binwalk_scan_opcodes'),
 
     # 抽取文件
     path('/extract', views.binwalk_file_extract, name='binwalk_file_extract'),
+    path('/extractEx', views.binwalk_file_extractEx, name='binwalk_file_extract'),
 
     # 测试 binwalk
     path('/test_binwalk', views.binwalk_file_test, name='binwalk_file_test'),

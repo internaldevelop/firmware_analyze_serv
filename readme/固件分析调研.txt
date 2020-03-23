@@ -13,6 +13,13 @@
     pipreqs ./ --encoding=utf-8 --force
     或者 pipreqs ./ --force --savepath ./readme/reqs-pack.txt --encoding=utf-8
 
+3. 记忆
+(1) Windows OS 虚拟 python 环境
+    https://pypi.org/project/virtualenvwrapper-win/
+    常用命令：workon, deactivate, mkvirtualenv, lsvirtualenv
+(2) 安装指定版本的 python 包
+    pip install robotframework==2.8.7
+
 附录1. 工具资源
 (1) BinCAT 污点分析，值分析
     https://www.freebuf.com/column/154871.html

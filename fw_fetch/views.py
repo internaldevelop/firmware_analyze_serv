@@ -432,9 +432,20 @@ def poc_fetch(request):
     if poc is None:
         return sys_app_err('ERROR_FWPOC_NOT_FOUND')
     print(poc['aliases'])
+    # print(poc['firmware_path'])
+    # print(poc['length'])
+    # print(poc['filelist'])
+    filepath = poc['firmware_path']
+    filename = poc['filelist']
+    length = poc['length']
 
     #SysLog.success('提取POC', '成功提取漏洞的POC（漏洞ID={}）'.format(firmware_id))
     # doc['poc'] = poc
+
+    # 将解压缩后的固件文件信息存入mongodb firmware_info
+    item = {'fw_info': {'filepath': filepath, 'filename': filename, 'length': length}}
+    firmware_db.update(firmware_id, item)
+
     return sys_app_ok_p(poc)
 
 

@@ -9,6 +9,10 @@ import binwalk
 import angr
 from angr.block import CapstoneInsn, CapstoneBlock
 
+from fw_fetch.firmware_db import FirmwareDB
+
+firmware_db = FirmwareDB()
+
 
 def index(request):
     return HttpResponse("Hello firmware analyze.")
@@ -26,8 +30,53 @@ def binwalk_scan_signature(request):
                 print("\t%s    0x%.8X    %s" % (result.file.path, result.offset, result.description))
     except binwalk.ModuleException as e:
         print("Critical failure:", e)
+
     return sys_app_ok_p({'decode': result_list})
 
+
+def binwalk_scan_signatureEx(request):
+    firmware_id = req_get_param(request, 'firmware_id')
+    try:
+        # 查询数据库 得到固件名
+        fw = firmware_db.fetch(firmware_id)
+
+        # todo check fw is NULL
+        if fw['fw_info']['filepath'] is not None:
+            filename = fw['fw_info']['filepath'] + fw['fw_info']['filename'][0]
+        else:
+            return sys_app_ok_p({'decode': 'Null','description': "解析文件名出错"})
+
+        result_list = list()
+        offset_list = list()
+        description_list = list()
+        index = 0
+        # try:
+        for module in binwalk.scan(filename, signature=True, quiet=True):
+            print("%s Results:" % module.name)
+            for result in module.results:
+                result_list.append("\t%s    0x%.8X    %s" % (result.file.path, result.offset, result.description))
+                print("\t%s    0x%.8X    %s" % (result.file.path, result.offset, result.description))
+
+                offset_list.append(result.offset)
+                description_list.append(result.description)
+
+        # 将解压缩后的固件文件信息存入mongodb firmware_info
+        dic = {}
+        item = {}
+        for off_set in offset_list:
+            index += 1
+            offset = 'offset' + str(index)
+            description = 'description' + str(index)
+            dic[offset] = off_set
+            dic[description] = description_list[index-1]
+
+        item['decode_info'] = dic
+        firmware_db.update(firmware_id, item)
+
+    except binwalk.ModuleException as e:
+        print("Critical failure:", e)
+
+    return sys_app_ok_p({'decode': result_list})
 
 # 架构识别
 def binwalk_scan_opcodes(request):
@@ -90,6 +139,63 @@ def binwalk_file_extract(request):
         print("Critical failure:", e)
         return sys_app_err('ERROR_INTERNAL_ERROR')
     return sys_app_ok_p({'extract': 'ok','filelist':list_temp})
+
+
+def binwalk_file_extractEx(request):
+    # filename = req_get_param(request, 'filename')
+    firmware_id = req_get_param(request, 'firmware_id')
+    try:
+        # 查询数据库 得到固件名
+        fw = firmware_db.fetch(firmware_id)
+
+        # todo check fw is NULL
+        if fw['fw_info']['filepath'] is not None:
+            filename = fw['fw_info']['filepath'] + fw['fw_info']['filename'][0]
+        else:
+            return sys_app_ok_p({'decode': 'Null','description': "解析文件名出错"})
+
+        list_temp = []
+
+        # filename=US_W331AV1.0BR_V1.0.0.12_cn&en_TD.bin 文件名带特殊符号无法进行抽取文件
+        for module in binwalk.scan(filename, signature=True, quiet=True, extract=True):
+            for result in module.results:
+                if result.file.path in module.extractor.output:
+                    # These are files that binwalk carved out of the original firmware image, a la dd
+                    if result.offset in module.extractor.output[result.file.path].carved:
+                        print
+                        "Carved data from offset 0x%X to %s" % (
+                        result.offset, module.extractor.output[result.file.path].carved[result.offset])
+
+                        list_temp.append(module.extractor.output[result.file.path].carved[result.offset])
+                    # These are files/directories created by extraction utilities (gunzip, tar, unsquashfs, etc)
+                    if result.offset in module.extractor.output[result.file.path].extracted:
+                        if len(module.extractor.output[result.file.path].extracted[result.offset].files):
+                            print
+                            "Extracted %d files from offset 0x%X to '%s' using '%s'" % (
+                            len(module.extractor.output[result.file.path].extracted[result.offset].files),
+                            result.offset,
+                            module.extractor.output[result.file.path].extracted[result.offset].files[0],
+                            module.extractor.output[result.file.path].extracted[result.offset].command)
+
+                            list_temp.append(module.extractor.output[result.file.path].extracted[result.offset].files)
+
+        # 将抽取的文件信息存入mongodb firmware_info
+        dic = {}
+        item = {}
+        index = 0
+        for off_set in list_temp:
+            index += 1
+            filex = 'file' + str(index)
+            dic[filex] = list_temp[index-1]
+
+        item['extract_info'] = dic
+        firmware_db.update(firmware_id, item)
+
+    except binwalk.ModuleException as e:
+        print("Critical failure:", e)
+        return sys_app_err('ERROR_INTERNAL_ERROR')
+    return sys_app_ok_p({'extract': 'ok','filelist':list_temp})
+
 
 def binwalk_file_test(request):
     filename = req_get_param(request, 'filename')

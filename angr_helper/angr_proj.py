@@ -5,6 +5,7 @@ import angr
 class AngrProj:
 
     def __init__(self, file_id,
+                 task_id='',
                  progress_callback=None,
                  progress_bar=False):
         # 临时用指定文件测试
@@ -24,6 +25,7 @@ class AngrProj:
         self.file_id = file_id
         # 创建 angr project
         self.proj = angr.Project(os.path.join(samples_path, 'ais3_crackme'), load_options={'auto_load_libs': False})
+        self.proj.my_task_id = task_id
 
         # 采用快速模式创建 cfg
         self.cfg = None

@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 from .my_views import state_views
 from .my_views import func_views
+from .my_views import func_async_views
 from .my_views import variable_views
 
 urlpatterns = [
@@ -32,7 +33,7 @@ urlpatterns = [
     path('recognize_func', views.angr_recognize_func, name='angr_recognize_func'),
 
     #
-    # new interface
+    # 函数及状态机基本分析：同步调用接口
     #
 
     # 状态机信息
@@ -49,5 +50,15 @@ urlpatterns = [
 
     # 指定函数的中间代码
     path('functions/vex', func_views.func_vex, name='func_vex'),
+
+    #
+    # 函数分析：异步调用接口
+    #
+
+    # 异步获取函数列表
+    path('async_funcs/list', func_async_views.async_fw_functions_list, name='async_fw_functions_list'),
+
+    # 读取任务结果
+    path('task_result', func_async_views.get_task_result, name='async_fw_functions_list'),
 
 ]

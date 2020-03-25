@@ -22,6 +22,9 @@ g_firmware_info_col_full = g_firmware_db_full["firmware_info"]
 # 固件操作方法文件存储桶
 g_firmware_method_fs_full = GridFS(g_firmware_db_full, collection='firmware_methods')
 
+# 任务表 下载、提取、分析
+g_task_info_col_full = g_firmware_db_full["task_info"]
+
 # author，type，platform 的信息集合
 g_author_coll_full = g_firmware_db_full["firmware_author"]
 g_type_coll_full = g_firmware_db_full["firmware_type"]
@@ -29,6 +32,7 @@ g_platform_coll_full = g_firmware_db_full["firmware_platform"]
 
 g_firmware_db = g_firmware_db_full
 g_firmware_info_col = g_firmware_info_col_full
+g_task_info_col = g_task_info_col_full
 g_firmware_method_fs = g_firmware_method_fs_full
 g_author_coll = g_author_coll_full
 g_type_coll = g_type_coll_full

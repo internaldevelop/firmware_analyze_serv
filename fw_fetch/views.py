@@ -176,6 +176,19 @@ def fwdownloadex(request):
         # 'fw_file_name': filename,
         'firmware_id': firmware_id
             }
+
+    # 任务ID 同固件ID
+    task_id = firmware_db.get_suggest_task_id(None)
+    task_item = {
+        'task_id': task_id
+            }
+
+    task_item['task_id'] = task_id
+    task_item['type'] = 'download'
+    task_item['percentage'] = ''
+    task_item['status'] = '0' # start complate
+    firmware_db.task_add(task_item)
+
     try:
         """
         download file from internet
@@ -191,7 +204,12 @@ def fwdownloadex(request):
             :param c: 远程文件大小
             :return: None
             """
-            print("\rdownloading: %5.1f%%" % (a * b * 100.0 / c), end="")
+            percentage = round(a * b * 100.0 / c, 1)
+            # print("\rdownloading: %5.1f%%" % (a * b * 100.0 / c), end="")
+            print("\rdownloading: %5.1f%%" % percentage, end="")
+
+            task_item['percentage'] = percentage
+            firmware_db.task_update(task_id, task_item)
 
         filename = os.path.basename(homepage)
         # 判断是否为合法下载文件名 .zip .bin .img .rar .exe ...
@@ -206,12 +224,24 @@ def fwdownloadex(request):
         # 判断文件是否存在，如果不存在则下载
         if not os.path.isfile(os.path.join(savepath, filename)):
             print('Downloading data from %s' % homepage)
+            # homepage = 'http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/OrangeOS-X86-V2.1.0_20170114.zip'
+            # 'http://comfast.com.cn/upload/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-AC101-V2.4.0.zip'
+            'http://comfast.com.cn/upload/软件驱动/固件/CF-AC101-V2.4.0.zip'
+            'http://www.comfast.cn/uploadfile/firmware/CF-AC101-V2.6.1.zip'
+            # homepage = homepage.encode()
+            print(homepage)
+
             urlretrieve(homepage, os.path.join(savepath, filename), reporthook=reporthook)
 
             item['fw_file_name'] = filename
             item['application_mode'] = file_list[0]
             item['fw_manufacturer'] = ''
             firmware_db.add(item)
+
+            # task_item['type'] = file_list[0]
+            # task_item['status'] = ''
+            # task_item['remark'] = ''
+            # firmware_db.task_add(task_item)
 
             pathfilename = savepath+"\\"+filename
             with open(pathfilename, 'rb') as myimage:

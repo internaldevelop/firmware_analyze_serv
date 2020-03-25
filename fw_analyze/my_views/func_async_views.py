@@ -5,6 +5,22 @@ from angr_helper.angr_proj import AngrProj
 from angr_helper.fw_func_parse import FwFuncParse
 
 
+def _req_params(request):
+    file_id = req_get_param(request, 'file_id')
+    func_addr_hex = req_get_param(request, 'func_addr')
+    func_addr = int(func_addr_hex, 16)
+    return file_id, func_addr
+
+
+def _init_task_info(task_id):
+    # 初始化缓存的任务信息
+    MyTask.init_exec_status(task_id)
+
+    # 返回任务信息
+    task_info = MyTask.fetch_exec_info(task_id)
+    return task_info
+
+
 def async_fw_functions_list(request):
     # 从请求中取参数：文件 ID
     file_id = req_get_param(request, 'file_id')
@@ -13,12 +29,20 @@ def async_fw_functions_list(request):
     task = MyTask(_proc_fw_functions_list, (file_id, ))
     task_id = task.get_task_id()
 
-    # 初始化缓存的任务信息
-    MyTask.init_exec_status(task_id)
+    # 返回响应：任务初始化的信息
+    return sys_app_ok_p(_init_task_info(task_id))
 
-    # 返回任务信息
-    task_info = MyTask.fetch_exec_info(task_id)
-    return sys_app_ok_p(task_info)
+
+def async_function_info(request):
+    # 从请求中取参数：文件 ID，函数地址
+    file_id, func_addr = _req_params(request)
+
+    # 启动分析任务
+    task = MyTask(_proc_func_info, (file_id, func_addr, ))
+    task_id = task.get_task_id()
+
+    # 返回响应：任务初始化的信息
+    return sys_app_ok_p(_init_task_info(task_id))
 
 
 def _proc_fw_functions_list(file_id, task_id):
@@ -33,6 +57,34 @@ def _proc_fw_functions_list(file_id, task_id):
     MyTask.save_exec_info(task_id, 100.0, {'functions_count': len(functions), 'functions': functions})
 
 
+def _proc_func_info(file_id, func_addr, task_id):
+    # 通过 project 快速解析文件
+    angr_proj = AngrProj(file_id, progress_callback=run_percent_cb, task_id=task_id)
+
+    # 生成函数解析对象
+    func_parse = FwFuncParse(angr_proj)
+
+    # 读取函数的汇编代码
+    asm = func_parse.func_asm(func_addr)
+    print(asm)
+
+    # 读取函数的中间代码
+    vex = func_parse.func_vex(func_addr)
+    print(vex)
+
+    # 获取函数的后继调用
+    successors = func_parse.func_successors(func_addr)
+    print(successors)
+
+    # 保存执行完成后的状态和结果集
+    MyTask.save_exec_info(task_id, 100.0, {'asm': str(asm),
+                                           'vex': str(vex),
+                                           'successors_count': len(successors),
+                                           'successors': successors})
+
+    return
+
+
 def translate_percent(percentage):
     if percentage < 10.0:
         return 0.0
@@ -42,7 +94,7 @@ def translate_percent(percentage):
         return 40.0
     elif 30.0 <= percentage < 40.0:
         return 60.0
-    elif 40.0 <= percentage < 50.0:
+    elif 40.0 <= percentage < 100.0:
         return 80.0
 
 
@@ -57,6 +109,7 @@ def run_percent_cb(percentage, **kwargs):
         info = 'Func-list({}): {}%'.format(task_id, percentage)
         print(info)
 
+        # 只在运行百分比变化时才更新任务状态
         new_percentage = translate_percent(percentage)
         exec_info = MyTask.fetch_exec_info(task_id)
         old_percentage = exec_info['percentage']

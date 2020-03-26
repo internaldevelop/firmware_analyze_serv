@@ -61,6 +61,9 @@ urlpatterns = [
     # 异步获取函数信息，包含诸如：汇编代码、中间代码、后继调用等
     path('async_funcs/func_info', func_async_views.async_function_info, name='async_function_info'),
 
+    # 异步绘制函数调用关系图
+    path('async_funcs/call_graph', func_async_views.async_function_call_graph, name='async_function_call_graph'),
+
     # 读取任务结果
     path('task_result', func_async_views.get_task_result, name='async_fw_functions_list'),
 

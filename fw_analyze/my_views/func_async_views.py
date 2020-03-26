@@ -3,6 +3,7 @@ from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
 from common.task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.fw_func_parse import FwFuncParse
+import base64
 
 
 def _req_params(request):
@@ -45,6 +46,31 @@ def async_function_info(request):
     return sys_app_ok_p(_init_task_info(task_id))
 
 
+def async_function_call_graph(request):
+    # 从请求中取参数：文件 ID，函数地址
+    file_id, func_addr = _req_params(request)
+
+    # 启动分析任务
+    task = MyTask(_proc_func_call_graph, (file_id, func_addr, ))
+    task_id = task.get_task_id()
+
+    # 返回响应：任务初始化的信息
+    return sys_app_ok_p(_init_task_info(task_id))
+
+
+def _proc_func_call_graph(file_id, func_addr, task_id):
+    # 生成 project 对象，但不做 cfg_fast 解析
+    angr_proj = AngrProj(file_id, cfg_mode='cfg_emu', progress_callback=run_percent_cb, task_id=task_id)
+
+    # 解析并生成调用流程图的数据
+    func_parse = FwFuncParse(angr_proj)
+    graph = func_parse.call_graph(func_addr)
+
+    # 保存执行完成后的状态和结果集
+    b64_graph = base64.b64encode(graph).decode()
+    MyTask.save_exec_info(task_id, 100.0, {'call_graph': b64_graph})
+
+
 def _proc_fw_functions_list(file_id, task_id):
     # 通过 project 快速解析文件
     angr_proj = AngrProj(file_id, progress_callback=run_percent_cb, task_id=task_id)
@@ -66,15 +92,15 @@ def _proc_func_info(file_id, func_addr, task_id):
 
     # 读取函数的汇编代码
     asm = func_parse.func_asm(func_addr)
-    print(asm)
+    # print(asm)
 
     # 读取函数的中间代码
     vex = func_parse.func_vex(func_addr)
-    print(vex)
+    # print(vex)
 
     # 获取函数的后继调用
     successors = func_parse.func_successors(func_addr)
-    print(successors)
+    # print(successors)
 
     # 保存执行完成后的状态和结果集
     MyTask.save_exec_info(task_id, 100.0, {'asm': str(asm),

@@ -569,13 +569,23 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"exec": [
+									"pm.environment.set(\"file_id\", \"111\");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/list?file_id=111",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/list?file_id={{file_id}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -587,7 +597,7 @@
 							"query": [
 								{
 									"key": "file_id",
-									"value": "111"
+									"value": "{{file_id}}"
 								}
 							]
 						}
@@ -618,7 +628,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/func_info?file_id=111&func_addr=0x400453",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/func_info?file_id={{file_id}}&func_addr=0x403338",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -630,11 +640,58 @@
 							"query": [
 								{
 									"key": "file_id",
-									"value": "111"
+									"value": "{{file_id}}"
 								},
 								{
 									"key": "func_addr",
-									"value": "0x400453"
+									"value": "0x403338"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 任务：函数调用图",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/call_graph?file_id={{file_id}}&func_addr=0x407930",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"async_funcs",
+								"call_graph"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								},
+								{
+									"key": "func_addr",
+									"value": "0x407930"
 								}
 							]
 						}
@@ -715,13 +772,13 @@
 	],
 	"variable": [
 		{
-			"id": "12316813-94cd-4af2-882b-04f2fff266f9",
+			"id": "0386efbe-4d4d-48f4-9b75-5984a8b78b7a",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "d26ac2a2-6d4d-4fd7-b0b8-97d7dcafa757",
+			"id": "de2fd75a-ff0b-403e-ba8e-c3603158bbac",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

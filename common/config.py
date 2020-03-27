@@ -7,13 +7,23 @@ from redis import StrictRedis
 # EDB_TYPE = 2
 #
 
+# EUREKA 配置信息
+# eureka_server
+eureka_server_list = "http://localhost:10100/eureka/"
+# eureka_server_list = "http://172.16.60.5:10100/eureka/"
+# eureka_server_list = "http://192.168.43.139:10100/eureka/"
+# 本地服务
+your_rest_server_host = "localhost"
+# your_rest_server_host = "172.16.113.30"
+your_rest_server_port = 10112
+
 # ===========================================================================================
 # 各服务地址
 
 # mongo-db客户端
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.60.5:27017/")
-# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.26:27017/")
-g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.43.214:27017/")
+g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.26:27017/")
+# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.43.214:27017/")
 
 # redis 客户端
 # g_redis_client = StrictRedis(host='172.16.113.26', port=16379, db=0, password='123456')

@@ -19,6 +19,8 @@ err = [
     {'code': 1015, 'msg': '漏洞信息ID号不符合要求'},
     {'code': 1016, 'msg': '操作只能适用于定制的漏洞信息（ID号不符合要求）'},
     {'code': 1017, 'msg': '未识别的文件下载类型'},
+    {'code': 1018, 'msg': '没有找到指定的固件文件'},
+    {'code': 1019, 'msg': '固件尚未进行函数调用流程的分析'},
 
     {'code': 9999, 'msg': '未知错误'},
 ]
@@ -41,6 +43,8 @@ Error = enum(
     'INVALID_EDB_ID',
     'NEED_CUSTOM_EDB_ID',
     'UNKNOWN_FILE_TYPE',
+    'FW_FILE_NOT_FOUND',
+    'FW_FILE_NO_CFG_ANALYZE',
     'UNKNOWN',
 )
 

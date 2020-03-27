@@ -25,13 +25,17 @@ class MyTask:
 
     @staticmethod
     def init_exec_status(task_id):
+        # 初始化缓存的任务信息
         init_status = {'task_id': task_id,
                        'start_time': SysUtils.get_now_time_str(),
                        'exec_status': 'running',
                        'percentage': 0.0,
                        'progress_history': [],
                        'result': {}}
+        # 缓存该任务信息
         MyRedis.set(task_id, init_status, category=task_cat)
+        # 返回该任务信息
+        return init_status
 
     @staticmethod
     def _calc_exec_time(exec_info):
@@ -72,8 +76,7 @@ class MyTask:
 
         # 缓存没有记录时创建一条初始状态记录
         if exec_info is None:
-            MyTask.init_exec_status(task_id)
-            exec_info = MyRedis.get(task_id, category=task_cat)
+            exec_info = MyTask.init_exec_status(task_id)
 
         # 设置百分比和运行状态
         exec_info['percentage'] = percent

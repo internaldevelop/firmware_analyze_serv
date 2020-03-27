@@ -814,10 +814,22 @@ def _proc_func_download(downloadurl, g_fw_path, task_id):
             }
 
     #执行文件下载
-    ret_download_info, fwfilename = Mydownload.fwdownload(downloadurl, savepath, task_id)
+    ret_download_info, fwfilename ,file_list = Mydownload.fwdownload(downloadurl, savepath, task_id)
     print(ret_download_info, fwfilename)
 
-    # 下载任务保存到mongodb
+    # 保存固件到mongodb
+    item['fw_file_name'] = fwfilename
+    item['application_mode'] = file_list[0]
+    item['fw_manufacturer'] = ''
+    firmware_db.add(item)
+
+    # 保存到存储桶
+    pathfilename = savepath + "\\" + fwfilename
+    with open(pathfilename, 'rb') as myimage:
+        data = myimage.read()
+        firmware_pocs.add(firmware_id, fwfilename, data)
+
+    # 保存下载任务到mongodb
     task_item = {
         'task_id': task_id
             }

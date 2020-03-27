@@ -1,8 +1,11 @@
 #! /usr/bin/env python
 
+import os
 import angr
 from angrutils import *
 
+root_path = os.path.dirname(os.path.realpath(__file__))
+# samples_path = os.path.join(root_path, 'samples')
 
 def analyze(b, addr, name=None):
     start_state = b.factory.blank_state(addr=addr)
@@ -14,11 +17,11 @@ def analyze(b, addr, name=None):
     plot_cg(b.kb, "%s_callgraph_verbose" % name, format="png", verbose=True)
 
 if __name__ == "__main__":
-    proj = angr.Project("samples/ais3_crackme", load_options={'auto_load_libs':False})
+    proj = angr.Project(os.path.join(root_path, 'ais3_crackme'), load_options={'auto_load_libs': False})
     main = proj.loader.main_object.get_symbol("main")
     analyze(proj, main.rebased_addr, "ais3")
 
-    proj = angr.Project("samples/1.6.26-libjsound.so", load_options={'auto_load_libs':False, 'main_opts': {'base_addr': 0x0}})
+    proj = angr.Project(os.path.join(root_path, '1.6.26-libjsound.so'), load_options={'auto_load_libs':False, 'main_opts': {'base_addr': 0x0}})
     main = proj.loader.main_object.get_symbol("Java_com_sun_media_sound_MixerSequencer_nAddControllerEventCallback")
     analyze(proj, main.rebased_addr, "jsound")
 

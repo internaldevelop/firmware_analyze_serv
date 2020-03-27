@@ -2,6 +2,7 @@ import uuid
 # import threading
 from multiprocessing import Process
 from common.redis import MyRedis
+from common.utils.general import SysUtils
 
 # 定义 redis 中键值的 category
 task_cat = 'task'
@@ -36,8 +37,34 @@ class MyTask:
 
     @staticmethod
     def init_exec_status(task_id):
-        init_status = {'task_id': task_id, 'exec_status': 'running', 'percentage': 0.0, 'result': {}}
+        init_status = {'task_id': task_id,
+                       'start_time': SysUtils.get_now_time_str(),
+                       'exec_status': 'running',
+                       'percentage': 0.0,
+                       'result': {}}
         MyRedis.set(task_id, init_status, category=task_cat)
+
+    @staticmethod
+    def _calc_exec_time(exec_info):
+        percent = exec_info['percentage']
+        # 无意义的百分比，不做处理
+        if percent <= 0:
+            return
+
+        # 计算已进行的时间（秒为单位，含小数）
+        start_time = SysUtils.parse_time_str(exec_info['start_time'])
+        delta_time = SysUtils.elapsed_time_ms(start_time) / 1000.0
+
+        # 任务完成时，剩余时间为0
+        if percent >= 100.0:
+            remain_time = 0.0
+        else:
+            remain_time = delta_time / percent * 100 - delta_time
+        print(remain_time)
+
+        # 设置剩余时间
+        exec_info['remain_time'] = remain_time
+        return
 
     @staticmethod
     def save_exec_info(task_id, percent, result={}, notify=True):
@@ -57,6 +84,9 @@ class MyTask:
         # 结果集不为空时，用新的结果集替换
         if len(result) > 0:
             exec_info['result'] = result
+
+        # 计算执行时间（预计剩余时间）
+        MyTask._calc_exec_time(exec_info)
 
         # 缓存该任务的记录
         MyRedis.set(task_id, exec_info, category=task_cat)

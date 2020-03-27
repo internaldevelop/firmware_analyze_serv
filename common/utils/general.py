@@ -43,6 +43,16 @@ class SysUtils:
         return SysUtils.get_now_time().strftime('%Y-%m-%d %H:%M:%S')
 
     @staticmethod
+    def parse_time_str(time_str):
+        return datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
+
+    @staticmethod
+    def elapsed_time_ms(start_time):
+        now_time = SysUtils.get_now_time()
+        delta_time = now_time - start_time
+        return delta_time.microseconds / 1000
+
+    @staticmethod
     def get_time_delta_days(delta_days):
         now = datetime.now()
         new_time = now + timedelta(days=delta_days)

@@ -11,7 +11,7 @@ class AngrProj:
                  progress_callback=None,
                  progress_bar=False):
 
-        file_path = self._id_to_file(file_id)
+        file_path, file_arch = self._id_to_file(file_id)
 
         # 保存参数：进度回调函数
         self.progress_cb = self._progress_print if progress_callback is None else progress_callback
@@ -21,7 +21,16 @@ class AngrProj:
         # 保存 文件 ID
         # self.file_id = file_id
         # 创建 angr project
-        self.proj = angr.Project(file_path, load_options={'auto_load_libs': False})
+        # self.proj = angr.Project(file_path, load_options={'auto_load_libs': False})
+        self.proj = angr.Project(file_path, load_options={
+            'auto_load_libs': False,
+            'main_opts': {
+                'backend': 'blob',
+                'base_addr': 0,
+                'arch': file_arch,
+            },
+        })
+
         # 利用 angr project 对象保存 task_id，以便传递到进程回调函数
         self.proj.my_task_id = task_id
 
@@ -36,13 +45,17 @@ class AngrProj:
         samples_path = os.path.join(root_path, 'readme', 'studyAndTest', 'angr', 'samples')
         if file_id == '1':
             file_name = 'ais3_crackme'
+            file_arch = 'x86'
         elif file_id == '2':
             file_name = '1.6.26-libjsound.so'
+            file_arch = 'x86'
         elif file_id == '3':
             file_name = 'mysql'
+            file_arch = ''
         else:
             file_name = 'ais3_crackme'
-        return os.path.join(samples_path, file_name)
+            file_arch = 'x86'
+        return os.path.join(samples_path, file_name), file_arch
 
     def call_cfg(self, cfg_mode='cfg_emu', start_addr=[0x0]):
         if cfg_mode == 'cfg_emu':

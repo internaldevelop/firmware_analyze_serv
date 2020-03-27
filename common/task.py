@@ -11,6 +11,12 @@ task_cat = 'task'
 class MyTask:
     def __init__(self, exec=None, args=()):
         self._exec = None
+
+        # 跨进程共享参数
+        # self._fw_path = str(settings.FW_PATH)
+        # args += (self._fw_path,)
+        # self._sys_code = str(settings.SYS_CODE)
+        # args += (self._sys_code,)
         if exec is None:
             self._task_id = None
             self._process = None
@@ -22,6 +28,12 @@ class MyTask:
 
     def get_task_id(self):
         return self._task_id
+
+    # def get_g_fw_path(self):
+    #     return self._fw_path
+    #
+    # def get_g_sys_code(self):
+    #     return self._sys_code
 
     @staticmethod
     def init_exec_status(task_id):

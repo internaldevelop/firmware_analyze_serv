@@ -45,10 +45,13 @@ class FirmwarePocs:
         outf.close()
 
         # uncompress zip
-        filepath, list = SysUtils.un_py7zr(filename)
+        list = SysUtils.un_py7zr(filename)  #for http://www.luyoudashi.com/roms/
+
+        if len(list) == 0:
+            list = SysUtils.un_zip(filename)  #for http://www.comfast.cn
 
         # item['firmware_id'] = firmware_id
-        item['firmware_path'] = filepath
+        item['firmware_path'] = settings.FW_PATH
         item['filelist'] = list
         return item
 

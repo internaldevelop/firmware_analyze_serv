@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',  # 这是我们的主角，放在新建的其他项目之前
     'fw_fetch',
     'fw_analyze',
+    # 'dwebsocket',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +52,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'dwebsocket.middleware.WebSocketMiddleware',  # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
 ]
+# WEBSOCKET_ACCEPT_ALL = True   # 可以允许每一个单独的视图实用websockets
+
 # # 跨域增加忽略
 # CORS_ALLOW_CREDENTIALS = True
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -85,8 +89,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 # 全局变量
-                'blog.my_views.global_settings'
+                'blog.my_views.global_settings',
                 'blog.my_views.global_fw_filepath'
+
             ],
         },
     },
@@ -128,7 +133,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
+# en-us zh-hans 固件的下载URL可能包含中文
 
 TIME_ZONE = 'Asia/Shanghai'
 

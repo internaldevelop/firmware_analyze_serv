@@ -5,25 +5,17 @@ import sys
 import py_eureka_client.eureka_client as eureka_client
 import json
 from django.conf import settings
+import common.config
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'firmware_analyze_serv.settings')
     try:
 
-        # print(Sys_code_err)
-
         # EUREKA接口
-        # 本地服务
-        eureka_server_list = "http://localhost:10100/eureka/"
-
-        # 远程服务
-        # eureka_server_list = "http://172.16.60.5:10100/eureka/"
-        # eureka_server_list = "http://192.168.43.139:10100/eureka/"
-
-        your_rest_server_host = "localhost"
-        # your_rest_server_host = "172.16.113.30"
-        # your_rest_server_host = "192.168.43.139"
-        your_rest_server_port = 10112
+        eureka_server_list = common.config.eureka_server_list
+        your_rest_server_host = common.config.your_rest_server_host
+        your_rest_server_port = common.config.your_rest_server_port
 
         # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
         # 注册服务
@@ -35,12 +27,12 @@ def main():
         # you can reuse the eureka_server_list which you used in registry client
         listservice = eureka_client.init_discovery_client(eureka_server_list)
 
-        # 调用服务
+        # 调用服务 SYSTEM-CODE
         res = eureka_client.do_service("SYSTEM-CODE", "/sys_code/run_status",
                                        # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象
                                        return_type="string")
         print("result of other service" + res)
-
+        # 获取错误码
         syscode = eureka_client.do_service("SYSTEM-CODE", "/sys_code/err_codes/all",
                                            # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象
                                            return_type="json")
@@ -48,7 +40,6 @@ def main():
         #                                # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象
         #                                return_type="string")
         settings.SYS_CODE = syscode['payload']
-        # print(type(settings.SYS_CODE))
 
         #
         # syslog = eureka_client.do_service("SYSTEM-LOG", "/sys_log/add",

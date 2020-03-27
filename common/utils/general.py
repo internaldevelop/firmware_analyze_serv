@@ -180,9 +180,13 @@ class SysUtils:
         # ZIP_DEFLATED：用的是gzip压缩算法
         # ZIP_BZIP2：用的是bzip2压缩算法
         # ZIP_LZMA：用的是lzma压缩算法
-        unzip_files = zipfile.ZipFile(filename, mode='r', compression=zipfile.ZIP_STORED)
-        unzip_files.extractall()
+        # unzip_files = zipfile.ZipFile(filename, mode='r', compression=zipfile.ZIP_STORED)
+        extract_dir = settings.FW_PATH
+        unzip_files = zipfile.ZipFile(filename, mode='r')
+        unzip_files.extractall(extract_dir)
         unzip_files.close()
+
+        return unzip_files.namelist()
 
     def un_patool(filename):
         # patoolib.extract_archive(filename, outdir="/tmp")
@@ -190,13 +194,13 @@ class SysUtils:
 
     def un_py7zr(filename):
         extract_dir = settings.FW_PATH  #os.getcwd() + "\\firmware"
+        list = []
         if os.path.isdir(extract_dir):
             pass
         else:
             os.mkdir(extract_dir)
 
         is7z = py7zr.is_7zfile(filename)
-
         if is7z:
             ret = py7zr.unpack_7zarchive(filename, extract_dir)
             arc = py7zr.SevenZipFile(filename)
@@ -204,7 +208,7 @@ class SysUtils:
             # print(list)
         else:
             print('unknow file type')
-        return extract_dir, list
+        return list
 
     def un_7z(filename):
         # register file format at first.

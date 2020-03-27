@@ -7,6 +7,7 @@ import requests
 import os
 # firmware 信息集合
 firmware_info_col = common.config.g_firmware_info_col
+task_info_col = common.config.g_task_info_col
 firmware_pocs = FirmwarePocs()
 
 # 自定义固件信息的 ID号的起始值为900,000
@@ -191,3 +192,81 @@ class FirmwareDB:
         docs = list(result_cursor)
         return docs
 
+# task_info
+    def task_add(self, item):
+        result = task_info_col.insert_one(item)
+        return result
+
+    def task_update(self, task_id, item):
+        result = task_info_col.update_one({'task_id': task_id}, {'$set': item})
+        return result
+
+    def task_delete(self, task_id):
+        result = task_info_col.delete_one({'task_id': task_id})
+        return result
+
+    def task_query(self, offset, count):
+        result_cursor = task_info_col.find({}, {'_id': 0}).sort([("_id", pymongo.DESCENDING)])
+        item_list = list(result_cursor[offset: offset + count])
+        return item_list
+
+    def exist_task_id(self, task_id):
+        item = task_info_col.find_one({'task_id': task_id})
+        return item is not None
+
+    def task_fetch(self, task_id):
+        doc = task_info_col.find_one({'task_id': task_id}, {'_id': 0})
+        return doc
+
+    def task_search(self, value):
+        key = 'description'
+        # 正则表达式匹配特定字符串：re.compile(r'%s' % word, re.IGNORECASE)
+        result_cursor = task_info_col.find({key: re.compile(r'%s' % value, re.IGNORECASE)}, {'_id': 0}).sort(
+            [("_id", pymongo.DESCENDING)])
+        return result_cursor
+
+    def task_fetch_field_id(self, field, value):
+        # 不同的字段对应不同的字段索引集合
+        index_coll, field_name = self.get_index_coll(field)
+        if index_coll is None:
+            return None
+        # 在字段索引集合中查找指定值是否已存在
+        item = index_coll.find_one({field_name: value})
+        if item is not None:
+            return item['id']
+
+        # 新的域值的ID取值，在现有数据的最大ID的基础上增加1
+        id = self.get_field_max_value_int(index_coll, 'id') + 1
+        id_str = str(id)
+        # 写入该条字段索引信息
+        result = index_coll.insert_one({'id': id_str, field_name: value})
+        return id_str
+
+    def task_get_field_max_value_int(self, coll, field):
+        return int(self.get_field_max_value(coll, field))
+
+    def get_suggest_task_id(self, task_id):
+        max_id = self.get_field_max_value_int(task_info_col, 'task_id')
+        if max_id < 1:
+            suggest_id = 1
+        else:
+            suggest_id = max_id + 1
+        if task_id is None or int(task_id) < 0 or self.exist_task_id(task_id):
+            return str(suggest_id)
+        else:
+            return task_id
+
+    def task_info_count(self):
+        total_count = task_info_col.count()
+        return total_count
+
+    def task_get_field_max_value(self, coll, field):
+        # 字段按照数字顺序整理：collation({'locale': 'zh', 'numericOrdering': True})
+        res_curosr = coll.find({}, {'_id': 0, field: 1}). \
+            collation({'locale': 'zh', 'numericOrdering': True}).sort(field, -1)
+        # if list(res_curosr).__len__() > 0:
+        if res_curosr.count() > 0:
+            item = list(res_curosr)[0]
+            return item[field]
+        else:
+            return 0

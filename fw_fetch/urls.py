@@ -14,4 +14,10 @@ urlpatterns = [
     # 1.3 根据指定ID读取固件
     path('poc/fetch', views.poc_fetch, name='firmware_poc_fetch'),
 
+    #
+    # 固件获取：异步调用接口
+    #
+    # 固件下载
+    path('async_funcs/download', views.async_fwdownload, name='async_fwdownload'),
+
 ]

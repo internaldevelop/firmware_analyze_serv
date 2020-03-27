@@ -89,8 +89,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 # 全局变量
-                'blog.my_views.global_settings'
+                'blog.my_views.global_settings',
                 'blog.my_views.global_fw_filepath'
+
             ],
         },
     },

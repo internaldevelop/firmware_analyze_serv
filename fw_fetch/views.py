@@ -7,7 +7,9 @@ from common.utils.http_request import req_get_param_int, req_get_param, req_post
 from common.utils.general import SysUtils
 from common.utils.strutil import StrUtils
 
+from common.task import MyTask
 from fw_fetch.firmware_db import FirmwareDB
+from common.utils.download import Mydownload
 
 from django.http import HttpResponse, FileResponse
 from django.utils.http import urlquote
@@ -20,6 +22,8 @@ import os
 from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 from django.conf import settings
+
+
 
 firmware_db = FirmwareDB()
 firmware_pocs = FirmwarePocs()
@@ -158,22 +162,19 @@ def fwdownload(request):
 def fwdownloadex(request):
     # print(Sys_code_err)
     print("run into fwdownload")
-    homepage = req_get_param(request, 'url')
-    print(homepage)
+
+    # 获取下载URL
+    downloadurl = req_get_param(request, 'url')
+    print(downloadurl)
     savepath = settings.FW_PATH #os.getcwd() + "\\firmware"
     if os.path.isdir(savepath):
         pass
     else:
         os.mkdir(savepath)
 
+    # 获取数据库固件ID
     firmware_id = firmware_db.get_suggest_firmware_id(None)
     item = {
-        # 'fw_manufacturer': firmware_manufacturer,
-        # 'application_mode': application_mode,
-        # 'fw_version': firmware_version,
-        # 'fw_size': firmware_size,
-        # 'pub_date': pub_date,
-        # 'fw_file_name': filename,
         'firmware_id': firmware_id
             }
 
@@ -186,8 +187,11 @@ def fwdownloadex(request):
     task_item['task_id'] = task_id
     task_item['type'] = 'download'
     task_item['percentage'] = ''
-    task_item['status'] = '0' # start complate
+    task_item['status'] = '0'
     firmware_db.task_add(task_item)
+
+    # download_info = Mydownload.fwdownload(downloadurl,savepath)
+    # print(download_info)
 
     try:
         """
@@ -211,7 +215,7 @@ def fwdownloadex(request):
             task_item['percentage'] = percentage
             firmware_db.task_update(task_id, task_item)
 
-        filename = os.path.basename(homepage)
+        filename = os.path.basename(downloadurl)
         # 判断是否为合法下载文件名 .zip .bin .img .rar .exe ...
         filetype = 'zip,bin,img,rar,exe'
         file_list = filename.split('.')
@@ -223,15 +227,15 @@ def fwdownloadex(request):
 
         # 判断文件是否存在，如果不存在则下载
         if not os.path.isfile(os.path.join(savepath, filename)):
-            print('Downloading data from %s' % homepage)
+            print('Downloading data from %s' % downloadurl)
             # homepage = 'http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/OrangeOS-X86-V2.1.0_20170114.zip'
             # 'http://comfast.com.cn/upload/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-AC101-V2.4.0.zip'
             'http://comfast.com.cn/upload/软件驱动/固件/CF-AC101-V2.4.0.zip'
             'http://www.comfast.cn/uploadfile/firmware/CF-AC101-V2.6.1.zip'
             # homepage = homepage.encode()
-            print(homepage)
+            print(downloadurl)
 
-            urlretrieve(homepage, os.path.join(savepath, filename), reporthook=reporthook)
+            urlretrieve(downloadurl, os.path.join(savepath, filename), reporthook=reporthook)
 
             item['fw_file_name'] = filename
             item['application_mode'] = file_list[0]
@@ -765,3 +769,62 @@ def get_firmware(url_firmware, savepath):
     except Exception as e:
         print(e)
 
+
+def _init_task_info(task_id):
+    # 初始化缓存的任务信息
+    MyTask.init_exec_status(task_id)
+
+    # 返回任务信息
+    task_info = MyTask.fetch_exec_info(task_id)
+    return task_info
+
+
+# 固件下载
+def async_fwdownload(request):
+
+
+    # 获取下载URL
+    downloadurl = req_get_param(request, 'url')
+    print(downloadurl)
+
+    # 启动下载任务
+    task = MyTask(_proc_func_download, (downloadurl, settings.FW_PATH, ))
+    task_id = task.get_task_id()
+
+    # settings.FW_PATH = task.get_g_fw_path()
+    # settings.SYS_CODE = task.get_g_sys_code()
+
+    # 返回响应：任务初始化的信息
+    return sys_app_ok_p(_init_task_info(task_id))
+
+
+def _proc_func_download(downloadurl, g_fw_path, task_id):
+
+    print("run download")
+    savepath = g_fw_path
+    if os.path.isdir(savepath):
+        pass
+    else:
+        os.mkdir(savepath)
+
+    # 获取数据库固件ID
+    firmware_id = firmware_db.get_suggest_firmware_id(None)
+    item = {
+        'firmware_id': firmware_id
+            }
+
+    #执行文件下载
+    ret_download_info, fwfilename = Mydownload.fwdownload(downloadurl, savepath, task_id)
+    print(ret_download_info, fwfilename)
+
+    # 下载任务保存到mongodb
+    task_item = {
+        'task_id': task_id
+            }
+    task_item['task_id'] = task_id
+    task_item['type'] = 'download'
+    task_item['percentage'] = '100'
+    task_item['status'] = '0'
+    firmware_db.task_add(task_item)
+
+    return ret_download_info

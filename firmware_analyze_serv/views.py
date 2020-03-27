@@ -7,10 +7,12 @@ def global_settings(request):
         'SYS_CODE': settings.SYS_CODE
     }
 
+
 def global_fw_filepath(request):
     return {
         'FW_PATH': settings.FW_PATH
     }
+
 
 def index(request):
     return render(request, 'index.html', locals())

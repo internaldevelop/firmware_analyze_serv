@@ -34,7 +34,6 @@ def sys_get_err(err):
     try:
         for code in settings.SYS_CODE:
             if code['code'] == err:
-                # return code['concept']
                 return code
 
         return {'code': 9999, 'msg': '未知错误'}

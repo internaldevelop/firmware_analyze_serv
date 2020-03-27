@@ -46,17 +46,49 @@ class FwFuncParse:
 
         # 测试用
         # self._test_successors(cfg, node)
+        # for function_addr in cfg.kb.functions
 
-        # 取函数的后继调用
-        successors = list(cfg.graph.successors(node))
+        # 取函数的后继调用的地址列表
+        successors = list(cfg.kb.callgraph.successors(func_addr))
         succ_func_list = []
-        if len(successors) > 0:
-            # print('\t%d:\t' % len(successors), end='')
-            for succ_node in successors:
-                succ_func_list.append({'name': succ_node.name, 'addr': hex(succ_node.addr)})
-                # print(succ_node, '\t', end='')
-            # print('', end='\n')
+        for succ_addr in successors:
+            # 根据地址获取节点
+            succ_node = cfg.model.get_any_node(succ_addr)
+            # 伪节点，非函数地址，再找下一级
+            if succ_node.name is None:
+                # temp1 = list(cfg.kb.callgraph.successors(succ_node.addr))
+                # t1 = cfg.model.get_any_node(temp1[0])
+                # temp_node1 = list(cfg.kb.callgraph.successors(succ_node.addr))[0]
+                # temp_node2 = list(cfg.graph.successors(succ_node))[0]
+                # succ_node = cfg.model.get_any_node(temp_node2.addr)
+
+                # 有函数名称为 PathTerminator，不知何故
+                succ_node = list(cfg.graph.successors(succ_node))[0]
+
+            succ_func_list.append({'name': succ_node.name, 'addr': hex(succ_node.addr)})
+
         return succ_func_list
+
+
+        # 废弃
+        # # 取函数的后继调用
+        # successors = list(cfg.graph.successors(node))
+        # succ_func_list = []
+        # if len(successors) > 0:
+        #     # print('\t%d:\t' % len(successors), end='')
+        #     for succ_node in successors:
+        #         # 伪节点，非函数地址
+        #         if succ_node.name is None:
+        #             continue
+        #         # 或者含加号，需要再找下一级，才是真实的调用函数：
+        #         # "Java_com_sun_media_sound_MixerSequencer_nAddControllerEventCallback+0x11"
+        #         if '+' in succ_node.name:
+        #             succ_node = list(cfg.graph.successors(succ_node))[0]
+        #
+        #         succ_func_list.append({'name': succ_node.name, 'addr': hex(succ_node.addr)})
+        #         # print(succ_node, '\t', end='')
+        #     # print('', end='\n')
+        # return succ_func_list
 
     def func_asm(self, func_addr):
         # 获取函数的代码块

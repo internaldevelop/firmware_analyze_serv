@@ -3,6 +3,7 @@ from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
 from common.task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.fw_func_parse import FwFuncParse
+from fw_analyze.progress.cfg_progress import CfgProgress
 import base64
 
 
@@ -72,8 +73,9 @@ def _proc_func_call_graph(file_id, func_addr, task_id):
 
 
 def _proc_fw_functions_list(file_id, task_id):
+    cfg_progress = CfgProgress(task_id=task_id)
     # 通过 project 快速解析文件
-    angr_proj = AngrProj(file_id, progress_callback=run_percent_cb, task_id=task_id)
+    angr_proj = AngrProj(file_id, progress_callback=cfg_progress.run_percent_cb, task_id=task_id)
 
     # 获取代码中的函数列表
     func_parse = FwFuncParse(angr_proj)

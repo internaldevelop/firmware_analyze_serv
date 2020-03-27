@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path('system/', include('system.urls')),
     path('admin', admin.site.urls),
     path('fw_fetch/', include('fw_fetch.urls')),
     path('fw_analyze/', include('fw_analyze.urls')),

@@ -50,7 +50,7 @@ class SysUtils:
     def elapsed_time_ms(start_time):
         now_time = SysUtils.get_now_time()
         delta_time = now_time - start_time
-        return delta_time.microseconds / 1000
+        return delta_time.seconds * 1000.0 + delta_time.microseconds / 1000.0
 
     @staticmethod
     def get_time_delta_days(delta_days):

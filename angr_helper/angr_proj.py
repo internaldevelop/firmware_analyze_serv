@@ -34,12 +34,14 @@ class AngrProj:
         root_path = os.path.dirname(os.path.realpath(__file__))
         root_path = os.path.dirname(root_path)
         samples_path = os.path.join(root_path, 'readme', 'studyAndTest', 'angr', 'samples')
-        if file_id == '111':
+        if file_id == '1':
             file_name = 'ais3_crackme'
-        elif file_id == '222':
+        elif file_id == '2':
             file_name = '1.6.26-libjsound.so'
+        elif file_id == '3':
+            file_name = 'mysql'
         else:
-            return None
+            file_name = 'ais3_crackme'
         return os.path.join(samples_path, file_name)
 
     def call_cfg(self, cfg_mode='cfg_emu', start_addr=[0x0]):

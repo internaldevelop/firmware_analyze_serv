@@ -16,7 +16,7 @@ class MyTask:
             self._process = None
         else:
             self._task_id = str(uuid.uuid4())
-            args += (self._task_id, )
+            args += (self._task_id,)
             self._process = Process(target=exec, args=args)
             self._process.start()
 
@@ -29,6 +29,7 @@ class MyTask:
                        'start_time': SysUtils.get_now_time_str(),
                        'exec_status': 'running',
                        'percentage': 0.0,
+                       'progress_history': [],
                        'result': {}}
         MyRedis.set(task_id, init_status, category=task_cat)
 
@@ -50,8 +51,18 @@ class MyTask:
             remain_time = delta_time / percent * 100 - delta_time
         print(remain_time)
 
-        # 设置剩余时间
-        exec_info['remain_time'] = remain_time
+        return remain_time
+
+    @staticmethod
+    def _save_progress_history(exec_info):
+        history = exec_info['progress_history']
+
+        history.append({
+            'percentage': exec_info['percentage'],
+            'exec_status': exec_info['exec_status'],
+            'remain_time': exec_info['remain_time'],
+            'record_time': exec_info['record_time']
+        })
         return
 
     @staticmethod
@@ -73,8 +84,13 @@ class MyTask:
         if len(result) > 0:
             exec_info['result'] = result
 
-        # 计算执行时间（预计剩余时间）
-        MyTask._calc_exec_time(exec_info)
+        # 计算并记录执行时间（预计剩余时间）
+        exec_info['remain_time'] = MyTask._calc_exec_time(exec_info)
+        # 设置当前记录时间
+        exec_info['record_time'] = SysUtils.get_now_time_str()
+
+        # 保存处理进程的历史记录
+        MyTask._save_progress_history(exec_info)
 
         # 缓存该任务的记录
         MyRedis.set(task_id, exec_info, category=task_cat)

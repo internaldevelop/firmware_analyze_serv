@@ -2,7 +2,7 @@ from common.utils.http_request import req_get_param
 from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
 from common.task import MyTask
 from angr_helper.angr_proj import AngrProj
-from angr_helper.fw_func_parse import FwFuncParse
+from angr_helper.old_fw_func_parse import FwFuncParse
 
 
 def _req_params(request):

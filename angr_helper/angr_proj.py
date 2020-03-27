@@ -35,8 +35,6 @@ class AngrProj:
         self.proj.my_task_id = task_id
 
         self.cfg = self.call_cfg(cfg_mode=cfg_mode)
-        # 采用快速模式创建 cfg
-        # self.cfg = self._cfg_fast() if cfg_fast else None
 
     def _id_to_file(self, file_id):
         # 临时用指定文件测试

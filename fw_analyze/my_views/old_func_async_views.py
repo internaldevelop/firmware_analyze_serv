@@ -2,7 +2,7 @@ from common.utils.http_request import req_get_param
 from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
 from common.task import MyTask
 from angr_helper.angr_proj import AngrProj
-from angr_helper.fw_func_parse import FwFuncParse
+from angr_helper.old_fw_func_parse import FwFuncParse
 from fw_analyze.progress.cfg_progress import CfgProgress
 import base64
 
@@ -16,11 +16,7 @@ def _req_params(request):
 
 def _init_task_info(task_id):
     # 初始化缓存的任务信息
-    MyTask.init_exec_status(task_id)
-
-    # 返回任务信息
-    task_info = MyTask.fetch_exec_info(task_id)
-    return task_info
+    return MyTask.init_exec_status(task_id)
 
 
 def async_fw_functions_list(request):

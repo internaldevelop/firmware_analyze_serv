@@ -25,7 +25,6 @@ your_rest_server_port = 10112
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.26:27017/")
 g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.182.88:27017/")
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.199.244:27017/")
-g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.26:27017/")
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.43.214:27017/")
 
 # redis 客户端

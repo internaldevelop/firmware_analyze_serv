@@ -1,11 +1,11 @@
-import common.config
-from common.utils.general import SysUtils
-from common.utils.strutil import StrUtils
-from common.db.sys_config import SystemConfig
+import utils.sys.config
+from utils.gadget.general import SysUtils
+from utils.gadget.strutil import StrUtils
+from utils.db.sys_config import SystemConfig
 
 
 # 日志记录集合
-logs_coll = common.config.g_logs_coll
+logs_coll = utils.sys.config.g_logs_coll
 
 
 class LogRecords:

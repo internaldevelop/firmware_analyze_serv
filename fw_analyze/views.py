@@ -1,10 +1,7 @@
-from django.shortcuts import render
-
 # Create your my_views here.
 from django.http import HttpResponse
-from common.utils.http_request import req_get_param
-from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
-from common.error_code import Error
+from utils.http.http_request import req_get_param
+from utils.http.response import sys_app_ok_p, sys_app_err
 import binwalk
 import angr
 from angr.block import CapstoneInsn, CapstoneBlock

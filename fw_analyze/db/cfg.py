@@ -1,8 +1,8 @@
-import common.config
-from common.utils.general import SysUtils
+import utils.sys.config
+from utils.gadget.general import SysUtils
 
 # firmware 信息集合
-cfg_result_col = common.config.g_cfg_result_coll
+cfg_result_col = utils.sys.config.g_cfg_result_coll
 
 
 class CfgAnalyzeResult:

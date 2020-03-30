@@ -1,7 +1,7 @@
-from common.utils.general import TimeEncoder
+from utils.gadget.general import TimeEncoder
 
 from django.http import HttpResponse
-from .error_code import Error, get_err
+from utils.sys.error_code import Error, get_err
 import datetime
 import json
 from django.conf import settings

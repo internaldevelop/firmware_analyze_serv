@@ -5,8 +5,8 @@ import sys
 import py_eureka_client.eureka_client as eureka_client
 import json
 from django.conf import settings
-import common.config
-from common.db.sys_config import SystemConfig
+import utils.sys.config
+from utils.db.sys_config import SystemConfig
 
 
 def main():
@@ -17,9 +17,9 @@ def main():
     try:
 
         # EUREKA接口
-        eureka_server_list = common.config.eureka_server_list
-        your_rest_server_host = common.config.your_rest_server_host
-        your_rest_server_port = common.config.your_rest_server_port
+        eureka_server_list = utils.sys.config.eureka_server_list
+        your_rest_server_host = utils.sys.config.your_rest_server_host
+        your_rest_server_port = utils.sys.config.your_rest_server_port
 
         # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
         # 注册服务

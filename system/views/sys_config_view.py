@@ -1,7 +1,7 @@
-from common.db.sys_config import SystemConfig
-from common.db.logs import LogRecords
-from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
-from common.utils.http_request import req_get_param, req_post_param
+from utils.db.sys_config import SystemConfig
+from utils.db.logs import LogRecords
+from utils.http.response import sys_app_ok_p
+from utils.http.http_request import req_post_param
 
 
 def reset_default_sys_config(request):
@@ -12,7 +12,7 @@ def reset_default_sys_config(request):
     config = SystemConfig.cache_load()
 
     # 保存操作日志
-    LogRecords.save({'data': config}, category='system_config', action='重置系统配置',
+    LogRecords.save(config, category='system_config', action='重置系统配置',
                     desc='重置系统配置为出厂模式')
 
     return sys_app_ok_p(config)
@@ -30,7 +30,7 @@ def write_sys_config(request):
     config = SystemConfig.cache_load()
 
     # 保存操作日志
-    LogRecords.save({'data': config}, category='system_config', action='更新系统配置',
+    LogRecords.save(config, category='system_config', action='更新系统配置',
                     desc='更新系统各项配置参数')
 
     return sys_app_ok_p(config)
@@ -41,7 +41,7 @@ def read_sys_config(request):
     config = SystemConfig.read_db()
 
     # 保存操作日志
-    LogRecords.save({'data': config}, category='system_config', action='读取系统配置',
+    LogRecords.save(config, category='system_config', action='读取系统配置',
                     desc='读取系统各项配置参数')
 
     return sys_app_ok_p(config)

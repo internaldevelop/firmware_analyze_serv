@@ -1,4 +1,4 @@
-import common.config
+import utils.sys.config
 
 from fw_fetch.firmware_pocs import FirmwarePocs
 import pymongo
@@ -6,8 +6,8 @@ import re
 import requests
 import os
 # firmware 信息集合
-firmware_info_col = common.config.g_firmware_info_col
-task_info_col = common.config.g_task_info_col
+firmware_info_col = utils.sys.config.g_firmware_info_col
+task_info_col = utils.sys.config.g_task_info_col
 firmware_pocs = FirmwarePocs()
 
 # 自定义固件信息的 ID号的起始值为900,000
@@ -124,11 +124,11 @@ class FirmwareDB:
         index_coll = None
         field_name = 'name'
         if field == 'author':
-            index_coll = common.config.g_author_coll
+            index_coll = utils.sys.config.g_author_coll
         elif field == 'type':
-            index_coll = common.config.g_type_coll
+            index_coll = utils.sys.config.g_type_coll
         elif field == 'platform':
-            index_coll = common.config.g_platform_coll
+            index_coll = utils.sys.config.g_platform_coll
             field_name = 'platform'
         return index_coll, field_name
 
@@ -169,11 +169,11 @@ class FirmwareDB:
         return result
 
     def query_type(self):
-        result_cursor = common.config.g_type_coll.find({}, {'_id': 0})
+        result_cursor = utils.sys.config.g_type_coll.find({}, {'_id': 0})
         return list(result_cursor)
 
     def query_platform(self):
-        result_cursor = common.config.g_platform_coll.find({}, {'_id': 0})
+        result_cursor = utils.sys.config.g_platform_coll.find({}, {'_id': 0})
         return list(result_cursor)
 
     def fetch_some(self, id_list):

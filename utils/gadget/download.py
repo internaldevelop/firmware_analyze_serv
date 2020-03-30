@@ -1,25 +1,6 @@
-import urllib.request
-from common.response import app_ok_p, app_err_p, app_ok, app_err, sys_app_ok_p, sys_app_err_p, sys_app_ok, sys_app_err
 import os
+
 from urllib.request import urlretrieve
-from common.utils.general import SysUtils
-from common.utils.strutil import StrUtils
-from django.conf import settings
-import time
-from common.error_code import Error
-
-from common.utils.http_request import req_get_param_int, req_get_param, req_post_param, req_post_param_int, req_post_param_dict
-
-from fw_fetch.firmware_db import FirmwareDB
-
-from django.http import HttpResponse, FileResponse
-from django.utils.http import urlquote
-from urllib.request import urlretrieve
-
-from fw_fetch.firmware_pocs import FirmwarePocs
-import re
-import urllib.request
-from django.conf import settings
 
 
 class Mydownload:

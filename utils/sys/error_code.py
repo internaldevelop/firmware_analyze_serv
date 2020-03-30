@@ -1,5 +1,5 @@
 from enum import Enum, unique
-from common.utils.general import enum
+from utils.gadget.general import enum
 
 err = [
     {'code': 0, 'msg': '成功'},

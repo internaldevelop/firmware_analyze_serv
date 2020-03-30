@@ -1,6 +1,6 @@
 import uuid
 from angrutils import hook0, plot_cg
-from common.utils.strutil import StrUtils
+from utils.gadget.strutil import StrUtils
 
 
 class FwFuncParse:

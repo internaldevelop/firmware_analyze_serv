@@ -1,290 +1,26 @@
 {
 	"info": {
-		"_postman_id": "0dbe0ab0-4338-4a0e-8d4f-708475713360",
+		"_postman_id": "977692eb-2882-45d2-a201-ed2d781988b4",
 		"name": "固件漏洞挖掘测试集",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "1. System",
+			"name": "1. 系统",
 			"item": [
 				{
-					"name": "1.1 运行状态自检",
+					"name": "1.1 系统信息",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/actuator/info",
+							"raw": "{{FW_SERV_URL}}/system/info?access_token={{access_token}}",
 							"host": [
-								"{{base_url}}"
+								"{{FW_SERV_URL}}"
 							],
 							"path": [
-								"actuator",
+								"system",
 								"info"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.2 检查服务: ErrorCode",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/echo/errcode",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"echo",
-								"errcode"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.3 检查服务: fwfetch",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/echo/fwfetch",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"echo",
-								"fwfetch"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.4 检查服务: fwanalyze",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/echo/fwanalyze",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"echo",
-								"fwanalyze"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.5 检查服务: mqbus",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/echo/mqbus",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"echo",
-								"mqbus"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.6 检查服务: syslog",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/echo/syslog",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"echo",
-								"syslog"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.7 检查服务: uniauth",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/echo/uniauth",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"echo",
-								"uniauth"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "2. 测试",
-			"item": [
-				{
-					"name": "示例-当前成员 Copy",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:10901/api/current",
-							"host": [
-								"localhost"
-							],
-							"port": "10901",
-							"path": [
-								"api",
-								"current"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "d31eb17f-19e9-4a02-8efd-3efb7e692b07",
-									"disabled": true
-								}
-							]
-						},
-						"description": "参考：SpringCloud+SpringBoot+OAuth2+Spring Security+Redis实现的微服务统一认证授权\r\n    https://blog.csdn.net/WYA1993/article/details/85050120\r\n    对应源码：https://github.com/WYA1993/springcloud_oauth2.0"
-					},
-					"response": []
-				},
-				{
-					"name": "1.4 当前用户 Copy",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept1",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "localhost:10901/test/oath?access_token=d31eb17f-19e9-4a02-8efd-3efb7e692b07",
-							"host": [
-								"localhost"
-							],
-							"port": "10901",
-							"path": [
-								"test",
-								"oath"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "d31eb17f-19e9-4a02-8efd-3efb7e692b07"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "网关-当前用户",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "localhost:10110/fw-bend-server/test/current_user?access_token=d31eb17f-19e9-4a02-8efd-3efb7e692b07",
-							"host": [
-								"localhost"
-							],
-							"port": "10110",
-							"path": [
-								"fw-bend-server",
-								"test",
-								"current_user"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "d31eb17f-19e9-4a02-8efd-3efb7e692b07"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "2.1 hello",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Accept-Language",
-								"value": "zh-CN,zh;q=0.9",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/test/hello?access_token={{access_token}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"test",
-								"hello"
 							],
 							"query": [
 								{
@@ -297,27 +33,47 @@
 					"response": []
 				},
 				{
-					"name": "2.2 当前用户",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"type": "text",
-								"value": "application/json"
+					"name": "1.2 重置系统出厂配置",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
 							}
-						],
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
 						"url": {
-							"raw": "{{base_url}}/test/current_user?access_token={{access_token}}",
+							"raw": "{{FW_SERV_URL}}/system/default_config?access_token={{access_token}}",
 							"host": [
-								"{{base_url}}"
+								"{{FW_SERV_URL}}"
 							],
 							"path": [
-								"test",
-								"current_user"
+								"system",
+								"default_config"
 							],
 							"query": [
 								{
@@ -330,32 +86,107 @@
 					"response": []
 				},
 				{
-					"name": "2.3 校验query权限",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"type": "text",
-								"value": "application/json"
+					"name": "1.3 设置系统配置",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
 							}
-						],
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}",
+									"type": "text"
+								},
+								{
+									"key": "sys_config",
+									"value": "{\n        \"log_categories\": [\n            {\n                \"category\": \"analysis\",\n                \"description\": \"文件解析操作\"\n            },\n            {\n                \"category\": \"system_config\",\n                \"description\": \"系统配置参数设置\"\n            },\n            {\n                \"category\": \"task\",\n                \"description\": \"后台任务记录\"\n            },\n            {\n                \"category\": \"query_task\",\n                \"description\": \"读取任务当前执行状态及结果信息\"\n            },\n            {\n                \"category\": \"query\",\n                \"description\": \"查询操作\"\n            },\n            {\n                \"category\": \"search\",\n                \"description\": \"搜索操作\"\n            },\n            {\n                \"category\": \"statistics\",\n                \"description\": \"统计操作记录\"\n            },\n            {\n                \"category\": \"debug\",\n                \"description\": \"系统调试信息\"\n            }\n        ]\n    }",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{base_url}}/test/query?access_token=3833d8a9-39ec-425a-bf3c-713207afa041",
+							"raw": "{{FW_SERV_URL}}/system/write_config",
 							"host": [
-								"{{base_url}}"
+								"{{FW_SERV_URL}}"
 							],
 							"path": [
-								"test",
-								"query"
+								"system",
+								"write_config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 读取系统配置",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{FW_SERV_URL}}/system/read_config?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"system",
+								"read_config"
 							],
 							"query": [
 								{
 									"key": "access_token",
-									"value": "3833d8a9-39ec-425a-bf3c-713207afa041"
+									"value": "{{access_token}}"
 								}
 							]
 						}
@@ -367,7 +198,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "ccd9574c-09e9-43c9-9088-b4940617c7ca",
+						"id": "196825a2-46a5-4a64-88ba-584a16a46f70",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -377,7 +208,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "469d09e1-051b-4616-ba26-f76527d1075c",
+						"id": "2b9aefb5-eae7-44fa-a6c8-ad15c5c2afc5",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -391,29 +222,42 @@
 			"name": "4. 固件分析服务",
 			"item": [
 				{
-					"name": "4.1 服务运行状态",
+					"name": "设置 file_id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
+								"exec": [
+									"pm.environment.set(\"file_id\", \"1\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze",
+							"raw": "{{FW_SERV_URL}}/system/info",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
-								"fw_analyze"
+								"system",
+								"info"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "4.2 固件入口状态机信息",
+					"name": "4.1 固件入口状态机信息",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/state?file_id=111",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/state?access_token={{access_token}}&file_id=111",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -423,62 +267,12 @@
 							],
 							"query": [
 								{
-									"key": "file_id",
-									"value": "111"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "4.3 代码函数列表",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/functions?file_id=111",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"fw_analyze",
-								"functions"
-							],
-							"query": [
-								{
-									"key": "file_id",
-									"value": "111"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "4.4 函数的后继调用",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/functions/successors?file_id=111&func_addr=0x1000060",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"fw_analyze",
-								"functions",
-								"successors"
-							],
-							"query": [
-								{
-									"key": "file_id",
-									"value": "111"
+									"key": "access_token",
+									"value": "{{access_token}}"
 								},
 								{
-									"key": "func_addr",
-									"value": "0x1000060",
-									"description": "16进制的字符串"
+									"key": "file_id",
+									"value": "111"
 								}
 							]
 						}
@@ -486,59 +280,89 @@
 					"response": []
 				},
 				{
-					"name": "4.5 函数汇编代码",
+					"name": "4.2 启动CFG分析",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"exec": [
+									"pm.test(\"run cfg analyze\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}",
+									"type": "text"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/functions/asm?file_id=111&func_addr=0x4003c8",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/analyze_cfg",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
 								"fw_analyze",
-								"functions",
-								"asm"
-							],
-							"query": [
-								{
-									"key": "file_id",
-									"value": "111"
-								},
-								{
-									"key": "func_addr",
-									"value": "0x4003c8",
-									"description": "16进制的字符串"
-								}
+								"task",
+								"analyze_cfg"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "4.6 函数中间代码",
+					"name": "4.5 读取任务结果",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/functions/vex?file_id=111&func_addr=0x4003c8",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task_result?access_token={{access_token}}&task_id={{task_id}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
 								"fw_analyze",
-								"functions",
-								"vex"
+								"task_result"
 							],
 							"query": [
 								{
-									"key": "file_id",
-									"value": "111"
+									"key": "access_token",
+									"value": "{{access_token}}"
 								},
 								{
-									"key": "func_addr",
-									"value": "0x4003c8",
-									"description": "16进制的字符串"
+									"key": "task_id",
+									"value": "{{task_id}}"
 								}
 							]
 						}
@@ -546,25 +370,41 @@
 					"response": []
 				}
 			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "04fda363-99b5-4da1-81e7-77938ac29443",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "28690c9e-65e6-4d50-a91e-079f7e7f0b6d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "5. 启动固件分析任务",
+			"name": "6. 固件函数信息",
 			"item": [
 				{
-					"name": "5.1 任务：代码函数列表",
+					"name": "6.1 代码函数列表",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
 								"exec": [
-									"pm.test(\"async functions list\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
-									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -575,7 +415,7 @@
 							"script": {
 								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
 								"exec": [
-									"pm.environment.set(\"file_id\", \"111\");"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -585,16 +425,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/list?file_id={{file_id}}",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_list?access_token={{access_token}}&file_id={{file_id}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
 								"fw_analyze",
-								"async_funcs",
-								"list"
+								"cfg",
+								"func_list"
 							],
 							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
 								{
 									"key": "file_id",
 									"value": "{{file_id}}"
@@ -605,7 +449,62 @@
 					"response": []
 				},
 				{
-					"name": "5.2 任务：读取指定函数信息",
+					"name": "6.2 获取函数流程图",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_list?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"cfg",
+								"func_list"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								},
+								{
+									"key": "func_addr",
+									"value": "0x407930"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 废弃：任务：读取指定函数信息",
 					"event": [
 						{
 							"listen": "test",
@@ -652,7 +551,7 @@
 					"response": []
 				},
 				{
-					"name": "5.3 任务：函数调用图",
+					"name": "5.3 废弃：任务：函数调用图",
 					"event": [
 						{
 							"listen": "test",
@@ -692,30 +591,6 @@
 								{
 									"key": "func_addr",
 									"value": "0x407930"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "5.11 读取任务结果",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/task_result?task_id={{task_id}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"fw_analyze",
-								"task_result"
-							],
-							"query": [
-								{
-									"key": "task_id",
-									"value": "{{task_id}}"
 								}
 							]
 						}
@@ -772,16 +647,17 @@
 	],
 	"variable": [
 		{
-			"id": "0386efbe-4d4d-48f4-9b75-5984a8b78b7a",
+			"id": "a7173656-af63-42cf-a6a4-dbe4b9e7f05a",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "de2fd75a-ff0b-403e-ba8e-c3603158bbac",
+			"id": "d12bbc28-9392-4ce2-893e-b9240f1dd36d",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

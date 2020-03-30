@@ -1,18 +1,12 @@
-from common.response import app_ok_p, app_err_p, app_ok, app_err
-from common.error_code import Error
-from common.utils.http_request import req_get_param_int, req_get_param, req_post_param, req_post_param_int, \
-    req_post_param_dict
-import common.config
-from common.utils.general import SysUtils
+import utils.sys.config
+from utils.gadget.general import SysUtils
 from django.conf import settings
 
 import pymongo
 import re
-import os
-import zipfile
 
 # 固件文件方法存储桶
-method_fs = common.config.g_firmware_method_fs
+method_fs = utils.sys.config.g_firmware_method_fs
 
 
 class FirmwarePocs:

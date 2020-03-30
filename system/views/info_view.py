@@ -1,5 +1,4 @@
-from common.utils.http_request import req_get_param
-from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
+from utils.http.response import sys_app_ok_p
 
 
 def system_info(request):

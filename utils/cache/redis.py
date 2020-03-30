@@ -1,6 +1,6 @@
-import common.config
+import utils.sys.config
 
-redis = common.config.g_redis_client
+redis = utils.sys.config.g_redis_client
 
 
 class MyRedis:

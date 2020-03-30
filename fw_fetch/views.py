@@ -1,17 +1,17 @@
 # Create your my_views here.
 import time
-from common.response import app_ok_p, app_err_p, app_ok, app_err, sys_app_ok_p, sys_app_err_p, sys_app_ok, sys_app_err
-from common.error_code import Error
+from utils.http.response import app_ok_p, app_err_p, app_ok, app_err, sys_app_ok_p, sys_app_err_p, sys_app_err
+from utils.sys.error_code import Error
 
-from common.utils.http_request import req_get_param_int, req_get_param, req_post_param, req_post_param_int, req_post_param_dict
-from common.utils.general import SysUtils
-from common.utils.strutil import StrUtils
+from utils.http.http_request import req_get_param_int, req_get_param, req_post_param
+from utils.gadget.general import SysUtils
+from utils.gadget.strutil import StrUtils
 
-from common.task import MyTask
+from utils.task import MyTask
 from fw_fetch.firmware_db import FirmwareDB
-from common.utils.download import Mydownload
+from utils.gadget.download import Mydownload
 
-from django.http import HttpResponse, FileResponse
+from django.http import HttpResponse
 from django.utils.http import urlquote
 from urllib.request import urlretrieve
 
@@ -363,7 +363,7 @@ def add(request):
     # 获取可用的firmware_id，内部检查取值范围和是否冲突（firmware_id需要唯一）
     firmware_id = firmware_db.get_suggest_firmware_id(None)
 
-    # with common.config.g_mongo_client.start_session(causal_consistency=True) as session:
+    # with gadget.config.g_mongo_client.start_session(causal_consistency=True) as session:
     #     """事物必须在session下执行,with保证了session的正常关闭"""
     # with session.start_transaction():
     #     """一旦出现异常会自动调用session.abort_transaction()"""

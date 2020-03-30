@@ -20,8 +20,11 @@ urlpatterns = [
     # 读取任务结果
     path('task_result', task_view.get_task_result, name='get_task_result'),
 
-    # 获取获取函数列表
+    # 获取函数列表
     path('cfg/func_list', parse_cfg_view.cfg_file_list, name='parse_cfg_file_list'),
+
+    # 获取指定函数的 call-graph
+    path('cfg/call_graph', parse_cfg_view.call_graph, name='draw_call_graph'),
 
     # 获取函数信息，包含诸如：汇编代码、中间代码、后继调用等
     # path('cfg/func_info', old_func_async_views.async_function_info, name='async_function_info'),

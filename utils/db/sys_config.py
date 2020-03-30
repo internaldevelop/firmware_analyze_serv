@@ -1,9 +1,9 @@
-from common.redis import MyRedis
-import common.config
+from utils.cache.redis import MyRedis
+import utils.sys.config
 
 
 # 系统字典集合
-sys_dict_coll = common.config.g_sys_dict_coll
+sys_dict_coll = utils.sys.config.g_sys_dict_coll
 
 
 class SystemConfig:

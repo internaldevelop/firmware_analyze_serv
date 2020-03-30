@@ -1,7 +1,7 @@
-from common.utils.http_request import req_get_param
-from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
-from common.task import MyTask
-from common.db.logs import LogRecords
+from utils.http.http_request import req_get_param
+from utils.http.response import sys_app_ok_p
+from utils.task import MyTask
+from utils.db.logs import LogRecords
 
 
 def get_task_result(request):

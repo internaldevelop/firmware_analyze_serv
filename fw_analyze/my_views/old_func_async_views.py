@@ -1,6 +1,6 @@
-from common.utils.http_request import req_get_param
-from common.response import app_ok_p, app_err, sys_app_ok_p, sys_app_err
-from common.task import MyTask
+from utils.http.http_request import req_get_param
+from utils.http.response import sys_app_ok_p
+from utils.task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.old_fw_func_parse import FwFuncParse
 from fw_analyze.progress.cfg_progress import CfgProgress

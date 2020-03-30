@@ -1,11 +1,8 @@
 import common.config
-
-import re
-import os
 from common.utils.general import SysUtils
 
 # firmware 信息集合
-cfg_result_col = common.config.g_cfg_result_col
+cfg_result_col = common.config.g_cfg_result_coll
 
 
 class CfgAnalyzeResult:
@@ -13,7 +10,8 @@ class CfgAnalyzeResult:
     @staticmethod
     def save(file_id, task_id, cfg_result):
         doc = {'file_id': file_id, 'task_id': task_id, 'cfg_result': cfg_result, 'create_time': SysUtils.get_now_time()}
-        cfg_result_col.insert_one(doc)
+        # 更新一条 cfg 分析结果，如果没有旧记录，则创建一条新记录
+        cfg_result_col.update_one({'file_id': file_id}, {'$set': doc}, True)
 
     @staticmethod
     def find(file_id):

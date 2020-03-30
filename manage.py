@@ -6,9 +6,13 @@ import py_eureka_client.eureka_client as eureka_client
 import json
 from django.conf import settings
 import common.config
+from common.db.sys_config import SystemConfig
 
 
 def main():
+    # 加载系统配置，写入到 redis 缓存中
+    SystemConfig.cache_load()
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'firmware_analyze_serv.settings')
     try:
 

@@ -1,3 +1,5 @@
+import uuid
+
 
 class StrUtils:
     @staticmethod
@@ -12,4 +14,8 @@ class StrUtils:
             value = int(str_input)
 
         return value
+
+    @staticmethod
+    def uuid_str():
+        return str(uuid.uuid4())
 

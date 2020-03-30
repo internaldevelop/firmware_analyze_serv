@@ -12,16 +12,6 @@ class CfgProgress:
             return 100.0
         else:
             return int(percentage / 5) * 5 + 5
-        # if percentage < 10.0:
-        #     return 0.0
-        # elif 10.0 <= percentage < 20.0:
-        #     return 20.0
-        # elif 20.0 <= percentage < 30.0:
-        #     return 40.0
-        # elif 30.0 <= percentage < 40.0:
-        #     return 60.0
-        # elif 40.0 <= percentage < 100.0:
-        #     return 80.0
 
     def run_percent_cb(self, percentage, **kwargs):
         # 由于大于50%进程后没有 project 可以获取，需要做进度百分比转换
@@ -44,9 +34,3 @@ class CfgProgress:
         if new_percentage != old_percentage:
             MyTask.save_exec_info(task_id, new_percentage)
 
-    # else:
-    #     # 调试信息打印
-    #     info = 'Func-list({}): {}%'.format('??', percentage)
-    #     print(info)
-    #     print(kwargs)
-    #     print(self.task_id)

@@ -3,6 +3,8 @@ import uuid
 from multiprocessing import Process
 from common.redis import MyRedis
 from common.utils.general import SysUtils
+from common.utils.strutil import StrUtils
+from common.db.logs import LogRecords
 
 # 定义 redis 中键值的 category
 task_cat = 'task'
@@ -21,7 +23,7 @@ class MyTask:
             self._task_id = None
             self._process = None
         else:
-            self._task_id = str(uuid.uuid4())
+            self._task_id = StrUtils.uuid_str()
             args += (self._task_id,)
             self._process = Process(target=exec, args=args)
             self._process.start()
@@ -109,6 +111,9 @@ class MyTask:
 
         # 缓存该任务的记录
         MyRedis.set(task_id, exec_info, category=task_cat)
+
+        # 保存任务详情日志
+        LogRecords.save(exec_info, category='task', action='任务运行状态', desc='记录任务执行过程中状态及结果详情')
 
         # 发送执行状态的更新消息
         if notify:

@@ -20,6 +20,10 @@ class MyRedis:
     @staticmethod
     def get(key, category=''):
         real_key = MyRedis.get_real_key(category, key)
+        if not redis.exists(real_key):
+            return None
+        # val = redis.get(real_key)
+        # val_r = eval(val)
         return eval(redis.get(real_key))
 
     @staticmethod

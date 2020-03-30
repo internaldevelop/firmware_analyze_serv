@@ -6,6 +6,7 @@ from .my_views import old_func_views
 from .my_views import old_func_async_views
 from .my_views import analyze_cfg_view
 from .my_views import parse_cfg_view
+from .my_views import task_view
 from .my_views import variable_views
 
 urlpatterns = [
@@ -16,11 +17,15 @@ urlpatterns = [
     # 启动 cfg 分析任务，并保存分析结果到数据库
     path('task/analyze_cfg', analyze_cfg_view.analyze_cfg, name='task_analyze_cfg'),
 
+    # 读取任务结果
+    path('task_result', task_view.get_task_result, name='get_task_result'),
+
     # 获取获取函数列表
     path('cfg/func_list', parse_cfg_view.cfg_file_list, name='parse_cfg_file_list'),
 
     # 获取函数信息，包含诸如：汇编代码、中间代码、后继调用等
     # path('cfg/func_info', old_func_async_views.async_function_info, name='async_function_info'),
+
 
     # =========================================================================
     # 以下部分均为测试指令
@@ -83,7 +88,5 @@ urlpatterns = [
     # 异步绘制函数调用关系图
     path('async_funcs/call_graph', old_func_async_views.async_function_call_graph, name='async_function_call_graph'),
 
-    # 读取任务结果
-    path('task_result', old_func_async_views.get_task_result, name='async_fw_functions_list'),
 
 ]

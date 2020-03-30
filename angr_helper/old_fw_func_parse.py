@@ -1,9 +1,6 @@
 import uuid
-
-import angr
-import os
-
 from angrutils import hook0, plot_cg
+from common.utils.strutil import StrUtils
 
 
 class FwFuncParse:
@@ -121,7 +118,7 @@ class FwFuncParse:
         cfg = self.angr_proj.call_cfg(start_addr=[func_addr])
 
         # 将函数关系图生成到一个随机文件名的 png 中
-        graph_file = str(uuid.uuid4())
+        graph_file = StrUtils.uuid_str()
         plot_cg(proj.kb, graph_file, format="png", verbose=verbose)
 
         # 读取文件

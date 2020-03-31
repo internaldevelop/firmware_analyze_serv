@@ -1,4 +1,6 @@
 from utils.http.response import sys_app_ok_p
+from utils.http.request import ReqParams
+from angr_helper.angr_proj import AngrProj
 
 
 def system_info(request):
@@ -10,3 +12,9 @@ def system_info(request):
                          'version': '1.0.0.1',
                          'copyright': '中国电力科学研究院 2020'
                          })
+
+
+def check_file(request):
+    file_id = ReqParams.one(request, 'file_id')
+    file_path, file_arch = AngrProj.id_to_file(file_id)
+    return sys_app_ok_p({'file_path': file_path, 'file_arch': file_arch})

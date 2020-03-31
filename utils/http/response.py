@@ -6,6 +6,7 @@ import datetime
 import json
 from django.conf import settings
 
+
 def app_resp(err, payload):
     now_time = datetime.datetime.now()
     response = get_err(err)
@@ -40,6 +41,7 @@ def sys_get_err(err):
 
     except Exception as e:
         print(e)
+
 
 def sys_app_resp(err, payload):
     now_time = datetime.datetime.now()

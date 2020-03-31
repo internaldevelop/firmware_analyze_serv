@@ -7,6 +7,7 @@ from fw_analyze.progress.cfg_progress import CfgProgress
 from fw_analyze.db.cfg import CfgAnalyzeResult
 from fw_analyze.db.functions import FunctionsResult
 from utils.db.logs import LogRecords
+from angr.knowledge_plugins.cfg import CFGModel
 
 # def _req_params(request):
 #     file_id = req_get_param(request, 'file_id')
@@ -41,6 +42,9 @@ def _proc_analyze_cfg(file_id, task_id):
 
     # 通过 project 快速解析文件
     angr_proj = AngrProj(file_id, progress_callback=cfg_progress.run_percent_cb, task_id=task_id, cfg_mode='cfg_fast')
+
+    # ser = angr_proj.proj.serialize()
+    # proj = angr_proj.proj.parse(ser)
 
     # 序列化 cfg
     cfg_result = angr_proj.cfg.model.serialize()

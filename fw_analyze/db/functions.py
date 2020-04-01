@@ -16,7 +16,11 @@ class FunctionsResult:
     def find(file_id):
         doc = func_result_col.find({'file_id': file_id}, {'_id': 0})
         if doc is not None:
-            result = list(doc)[0]
+            records = list(doc)
+            if len(records) == 0:
+                return None, None
+
+            result = records[0]
             return result['task_id'], result['func_result']
         else:
             return None, None

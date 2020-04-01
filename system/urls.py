@@ -7,6 +7,9 @@ urlpatterns = [
     # 系统信息
     path('info', info_view.system_info, name='system_info'),
 
+    # 初步检验文件 -- 多用于测试
+    path('check_file', info_view.check_file, name='check_file'),
+
     # 系统配置重置为出厂参数
     path('default_config', sys_config_view.reset_default_sys_config, name='reset_default_sys_config'),
 

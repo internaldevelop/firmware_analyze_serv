@@ -192,6 +192,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "1.5 检查 file_id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
+								"exec": [
+									"pm.environment.set(\"file_id\", \"1\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/system/check_file?file_id={{file_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"system",
+								"check_file"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -221,36 +257,6 @@
 		{
 			"name": "4. 固件分析服务",
 			"item": [
-				{
-					"name": "设置 file_id",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
-								"exec": [
-									"pm.environment.set(\"file_id\", \"1\");"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/system/info",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"system",
-								"info"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "4.1 固件入口状态机信息",
 					"request": {
@@ -449,7 +455,7 @@
 					"response": []
 				},
 				{
-					"name": "6.2 获取函数流程图",
+					"name": "6.2 获取函数流程图-A",
 					"event": [
 						{
 							"listen": "test",
@@ -476,14 +482,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_list?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/call_graph_a?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
 								"fw_analyze",
 								"cfg",
-								"func_list"
+								"call_graph_a"
 							],
 							"query": [
 								{
@@ -504,19 +510,23 @@
 					"response": []
 				},
 				{
-					"name": "5.2 废弃：任务：读取指定函数信息",
+					"name": "6.3 获取函数信息",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
 								"exec": [
-									"pm.test(\"async functions list\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
-									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"exec": [
 									""
 								],
 								"type": "text/javascript"
@@ -527,63 +537,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/func_info?file_id={{file_id}}&func_addr=0x403338",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_info?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
 								"fw_analyze",
-								"async_funcs",
+								"cfg",
 								"func_info"
 							],
 							"query": [
 								{
-									"key": "file_id",
-									"value": "{{file_id}}"
+									"key": "access_token",
+									"value": "{{access_token}}"
 								},
-								{
-									"key": "func_addr",
-									"value": "0x403338"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "5.3 废弃：任务：函数调用图",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
-								"exec": [
-									"pm.test(\"async functions list\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/async_funcs/call_graph?file_id={{file_id}}&func_addr=0x407930",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"fw_analyze",
-								"async_funcs",
-								"call_graph"
-							],
-							"query": [
 								{
 									"key": "file_id",
 									"value": "{{file_id}}"
@@ -647,13 +614,13 @@
 	],
 	"variable": [
 		{
-			"id": "a7173656-af63-42cf-a6a4-dbe4b9e7f05a",
+			"id": "7dec8076-c4e4-4c52-b179-18fada6c3fdc",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "d12bbc28-9392-4ce2-893e-b9240f1dd36d",
+			"id": "de9b1c69-cfae-4855-b266-1e284c6f5e56",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

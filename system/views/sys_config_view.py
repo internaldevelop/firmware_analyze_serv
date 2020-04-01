@@ -4,7 +4,10 @@ from utils.http.response import sys_app_ok_p
 from utils.http.http_request import req_post_param
 
 
+# 重置包含两件事：1. 重置管理员和审计员密码；2. 系统配置回到出厂缺省状态
 def reset_default_sys_config(request):
+    # 重置管理员和审计员密码
+
     # 数据库中写入默认出厂参数
     SystemConfig.write_db(None)
 

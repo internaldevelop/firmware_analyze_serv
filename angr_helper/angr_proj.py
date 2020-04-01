@@ -52,6 +52,7 @@ class AngrProj:
             '12': {'file_name': 'libstdc++.so.6.0.16', 'file_arch': ''},
             '13': {'file_name': '2E0.7z', 'file_arch': 'MIPS32'},
             '14': {'file_name': 'libm-0.9.33.2.so', 'file_arch': ''},
+            '15': {'file_name': '1702A0.squashfs', 'file_arch': ''},
             '21': {'file_name': 'opkg', 'file_arch': ''},
         }
         if file_id not in file_list:

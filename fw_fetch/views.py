@@ -51,31 +51,32 @@ def _proc_func_download(downloadurl, g_fw_save_path, task_id):
         os.mkdir(g_fw_save_path)
 
     # 执行下载操作
-    # ret_download_info, fwfilename ,file_list = Mydownload.fwdownload(downloadurl, g_fw_save_path, task_id)
-    # print(ret_download_info, fwfilename)
+    ret_download_info, fwfilename ,file_list = Mydownload.fwdownload(downloadurl, g_fw_save_path, task_id)
+    print(ret_download_info, fwfilename)
 
     # 保存到mongodb
-    # g_fw_save_path = "C:\\GIT\\firmware_analyze_serv\\firmware\\"
-    fwfilename = "CF-EW71-V2.6.0.zip"
-    ret_download_info = ""
-    task_item = save_mongodb(g_fw_save_path, fwfilename, ret_download_info, task_id)
+    # fwfilename = "CF-EW71-V2.6.0.zip"
+    # ret_download_info = ""
+    task_item = save_mongodb(downloadurl, g_fw_save_path, fwfilename, ret_download_info, task_id)
 
     # websocket通知页面
     # ws = MyWebsocket()
     # ws.sendmsg(str(task_item))
-    MyWebsocket.sendmsg(str(task_item))
+
+    # MyWebsocket.sendmsg(str(task_item))
 
 
-def save_mongodb(fwpath, fwfilename, download_info, task_id):
+def save_mongodb(downloadurl, fwpath, fwfilename, download_info, task_id):
 
     # 保存固件到mongodb 集合
     fw_coll = MongoDB(firmware_info_coll)
     firmware_id = fw_coll.get_suggest_firmware_id(None)
     item = {
-        'firmware_id': firmware_id,
+        'id': firmware_id,
         'fw_file_name': fwfilename,
         'application_mode': '',
-        'fw_manufacturer': ''
+        'fw_manufacturer': '',
+        'url': downloadurl
     }
     fw_coll.update(firmware_id, item)
 
@@ -97,3 +98,14 @@ def save_mongodb(fwpath, fwfilename, download_info, task_id):
     task_coll.update(task_id, task_item)
 
     return task_item
+
+
+# 1.2 查询固件列表
+def list(reuqest):
+    # 获取信息总数
+    fw_coll = MongoDB(firmware_info_coll)
+    total = fw_coll.info_count()
+
+    # 读取固件信息
+    docs = fw_coll.query(0, total)
+    return sys_app_ok_p({'total': total, 'count': len(docs), 'items': docs})

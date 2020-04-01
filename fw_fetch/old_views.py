@@ -50,7 +50,11 @@ def testws(request):
 
 def test(request):
     print("run into test")
-    filename = 'C:/GIT/firmwareanalyze/fw_fetch/TP-Link/TL-WVR900L_V1.0_161207.zip'
+    filename = 'C:\\GIT\\firmware_analyze_serv\\firmware\\_CF-AC101-V2.6.1.bin.extracted\\12F304.squashfs'
+    list = SysUtils.un_py7zr(filename)
+    list = SysUtils.un_py7zrEx(filename)
+
+
     # SysUtils.un_tgz(filename)
     # SysUtils.un_tar(filename)
     # SysUtils.un_rar(filename)

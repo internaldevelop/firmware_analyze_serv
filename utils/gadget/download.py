@@ -46,7 +46,7 @@ class Mydownload:
 
             filename = os.path.basename(downloadurl)
             # 判断是否为合法下载文件名 .zip .bin .img .rar .exe ...
-            filetype = 'zip,bin,img,rar,exe'
+            filetype = 'zip,bin,img,rar,exe,trx'
             file_list = filename.split('.')
             result = file_list[file_list.__len__() - 1] in filetype
             print(result)

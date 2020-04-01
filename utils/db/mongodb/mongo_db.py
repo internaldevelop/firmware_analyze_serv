@@ -1,6 +1,6 @@
 # mongo集合操作
 # import utils.sys.config
-# import pymongo
+import pymongo
 # import re
 # import requests
 # import os
@@ -43,3 +43,11 @@ class MongoDB:
     def update(self, _id, item):
         result = self.collection.update_one({'id': _id}, {'$set': item}, True)
         return result
+
+    def info_count(self):
+        return self.collection.count()
+
+    def query(self, offset, count):
+        result_cursor = self.collection.find({}, {'_id': 0}).sort([("_id", pymongo.DESCENDING)])
+        item_list = list(result_cursor[offset: offset + count])
+        return item_list

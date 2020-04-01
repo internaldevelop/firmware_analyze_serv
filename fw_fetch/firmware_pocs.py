@@ -39,8 +39,8 @@ class FirmwarePocs:
         outf.close()
 
         # uncompress zip
+        # 判断文件类型 进一步处理 zip , trx
         list = SysUtils.un_py7zr(filename)  #for http://www.luyoudashi.com/roms/
-
         if len(list) == 0:
             list = SysUtils.un_zip(filename)  #for http://www.comfast.cn
 

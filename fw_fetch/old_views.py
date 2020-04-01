@@ -51,7 +51,7 @@ def testws(request):
 def test(request):
     print("run into test")
     filename = 'C:\\GIT\\firmware_analyze_serv\\firmware\\_CF-AC101-V2.6.1.bin.extracted\\12F304.squashfs'
-    list = SysUtils.un_py7zr(filename)
+    list = SysUtils.un_py7zr(filename, settings.FW_PATH)
     list = SysUtils.un_py7zrEx(filename)
 
 

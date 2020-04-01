@@ -137,7 +137,7 @@ class SysUtils:
         return type
 
     # 解压tgz压缩文件
-
+    @staticmethod
     def un_tgz(filename):
         tar = tarfile.open(filename)
         # 判断同名文件夹是否存在，若不存在则创建同名文件夹
@@ -148,6 +148,7 @@ class SysUtils:
         tar.extractall(os.path.splitext(filename)[0])
         tar.close()
 
+    @staticmethod
     def un_tar(file_name):
         # untar zip file"""
         tar = tarfile.open(file_name)
@@ -162,6 +163,7 @@ class SysUtils:
         tar.close()
 
     #解压rar压缩包
+    @staticmethod
     def un_rar(filename):
         rar = rarfile.RarFile(filename)
         #判断同名文件夹是否存在，若不存在则创建同名文件夹
@@ -171,8 +173,8 @@ class SysUtils:
             os.mkdir(os.path.splitext(filename)[0])
         rar.extractall(os.path.splitext(filename)[0])
 
-
-    def un_zip(filename):
+    @staticmethod
+    def un_zip(filename, extract_dir):
         # zip_file2_path = r'F:\tk_demo.zip'
         # zipfile提供的压缩方法有：
         # ZIP_STORED，ZIP_DEFLATED， ZIP_BZIP2和ZIP_LZMA
@@ -181,25 +183,29 @@ class SysUtils:
         # ZIP_BZIP2：用的是bzip2压缩算法
         # ZIP_LZMA：用的是lzma压缩算法
         # unzip_files = zipfile.ZipFile(filename, mode='r', compression=zipfile.ZIP_STORED)
-        extract_dir = settings.FW_PATH
         unzip_files = zipfile.ZipFile(filename, mode='r')
         unzip_files.extractall(extract_dir)
         unzip_files.close()
 
         return unzip_files.namelist()
 
+    @staticmethod
     def un_patool(filename):
         # patoolib.extract_archive(filename, outdir="/tmp")
         patoolib.extract_archive(filename)
 
-    def un_py7zr(filename):
-        extract_dir = settings.FW_PATH  #os.getcwd() + "\\firmware"
-        list = []
-        if os.path.isdir(extract_dir):
-            pass
-        else:
-            os.mkdir(extract_dir)
+    @staticmethod
+    def uncompress(filename, extract_dir):
+        # 判断文件类型 进一步处理 zip , trx
+        list = SysUtils.un_py7zr(filename, extract_dir)  #for http://www.luyoudashi.com/roms/
+        if len(list) == 0:
+            list = SysUtils.un_zip(filename, extract_dir)  #for http://www.comfast.cn
 
+        return list
+
+    @staticmethod
+    def un_py7zr(filename, extract_dir):
+        list = []
         is7z = py7zr.is_7zfile(filename)
         if is7z:
             ret = py7zr.unpack_7zarchive(filename, extract_dir)
@@ -210,6 +216,7 @@ class SysUtils:
             print('unknow file type')
         return list
 
+    @staticmethod
     def un_7z(filename):
         # register file format at first.
         # shutil.register_archive_format('7zip', pack_7zarchive, description='7zip archive')

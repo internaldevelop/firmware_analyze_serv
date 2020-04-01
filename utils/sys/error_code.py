@@ -21,6 +21,7 @@ err = [
     {'code': 1017, 'msg': '未识别的文件下载类型'},
     {'code': 1018, 'msg': '没有找到指定的固件文件'},
     {'code': 1019, 'msg': '固件尚未进行函数调用流程的分析'},
+    {'code': 1020, 'msg': '不能识别压缩文件格式，请检查文件的压缩格式'},
 
     {'code': 9999, 'msg': '未知错误'},
 ]
@@ -45,6 +46,7 @@ Error = enum(
     'UNKNOWN_FILE_TYPE',
     'FW_FILE_NOT_FOUND',
     'FW_FILE_NO_CFG_ANALYZE',
+    'ZIP_FORMAT_UNKNOWN',
     'UNKNOWN',
 )
 

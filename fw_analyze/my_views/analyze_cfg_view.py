@@ -4,10 +4,10 @@ from utils.task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.function_parse import FunctionParse
 from fw_analyze.progress.cfg_progress import CfgProgress
-from fw_analyze.db.cfg import CfgAnalyzeResult
-from fw_analyze.db.functions import FunctionsResult
-from utils.db.logs import LogRecords
-from angr.knowledge_plugins.cfg import CFGModel
+from utils.db.mongodb.cfg import CfgAnalyzeResult
+from utils.db.mongodb.functions import FunctionsResult
+from utils.db.mongodb.logs import LogRecords
+
 
 # def _req_params(request):
 #     file_id = req_get_param(request, 'file_id')

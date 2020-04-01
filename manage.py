@@ -3,10 +3,9 @@
 import os
 import sys
 import py_eureka_client.eureka_client as eureka_client
-import json
 from django.conf import settings
 import utils.sys.config
-from utils.db.sys_config import SystemConfig
+from utils.db.mongodb.sys_config import SystemConfig
 
 
 def main():

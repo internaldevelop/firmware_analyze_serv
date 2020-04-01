@@ -10,6 +10,9 @@ urlpatterns = [
     # 测试 squash fs
     path('squash', test_squash_view.test_squash_fs, name='test_squash_fs'),
 
+    # 测试抽取 squash fs
+    path('extract_squash', test_squash_view.test_extract_squash_fs, name='test_extract_squash_fs'),
+
     #
     # # 初步检验文件 -- 多用于测试
     # path('check_file', info_view.check_file, name='check_file'),

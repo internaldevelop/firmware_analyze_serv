@@ -1,4 +1,10 @@
 import os
+import utils.sys.config
+
+from utils.gadget.general import SysUtils
+
+# 解包出来的文件 信息集合
+fw_files_coll = utils.sys.config.g_fw_files_coll
 
 
 class FwFile:
@@ -6,6 +12,17 @@ class FwFile:
     @staticmethod
     def id_to_file(file_id):
         return FwFile._simulate_id_to_file(file_id)
+
+    @staticmethod
+    def _db_get_file(file_id):
+        fw_files_coll.find({'file_id': file_id}, {'_id': 0})
+
+    @staticmethod
+    def save_file_item(image_file_id, file_id, file_name, file_path, folder):
+        doc = {'image_file_id': image_file_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
+               'folder': folder, 'create_time': SysUtils.get_now_time()}
+        # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
+        fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)
 
     @staticmethod
     def _simulate_id_to_file(file_id):

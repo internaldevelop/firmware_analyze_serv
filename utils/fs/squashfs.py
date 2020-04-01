@@ -57,7 +57,7 @@ class SquashFS(FsBase):
             name, path, folder = self.node_props(inode)
             content = self.node_content(inode)
             # 属性和数据内容交由 extract_func 回调函数处理
-            extract_func(name, path, content)
+            extract_func(name, path, folder, content)
 
     def check_format(self):
         # 检测加载的镜像，是否为有效的 squash-fs 格式
@@ -76,3 +76,6 @@ class SquashFS(FsBase):
         if self.image is not None:
             self.image.close()
             self.image = None
+
+    def __del__(self):
+        self.close()

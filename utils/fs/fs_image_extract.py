@@ -22,6 +22,8 @@ class FsImageExtract:
     def save(self, name, path, folder, content):
         name = str(name)
         file_id = StrUtils.uuid_str()
+        # 保存文件参数
         FwFile.save_file_item(self.image_file_id, file_id, name, path, folder)
+        # 保存文件内容
         FwFilesStorage.save(file_id, name, path, 'Unknown', content)
 

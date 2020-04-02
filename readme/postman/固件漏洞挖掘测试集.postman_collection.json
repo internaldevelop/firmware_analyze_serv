@@ -255,6 +255,202 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "2. 模块测试",
+			"item": [
+				{
+					"name": "2.1 ZIP文件测试",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/zip_info?access_token={{access_token}}&file_id={{file_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"zip_info"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 squashfs测试",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/squash?access_token={{access_token}}&file_id={{file_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"squash"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 抽取squashfs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/extract_squash?access_token={{access_token}}&image_file_id={{file_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"extract_squash"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "image_file_id",
+									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.4 生成 UUID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/uuid?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"uuid"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.5 保存 pack 文件",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									"pm.test(\"test\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"pack_id\", jsonData.payload.pack_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/save_pack?access_token={{access_token}}&virtual_id=1&pack_name=1",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"save_pack"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "virtual_id",
+									"value": "1"
+								},
+								{
+									"key": "pack_name",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.6 保存 镜像 文件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/save_image?access_token={{access_token}}&virtual_id=1&pack_id={{pack_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"save_image"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "virtual_id",
+									"value": "1"
+								},
+								{
+									"key": "pack_id",
+									"value": "{{pack_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "4. 固件分析服务",
 			"item": [
 				{
@@ -614,13 +810,13 @@
 	],
 	"variable": [
 		{
-			"id": "7dec8076-c4e4-4c52-b179-18fada6c3fdc",
+			"id": "2357c5c2-7cc9-487a-8b0b-6b4bc020ffb1",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "de9b1c69-cfae-4855-b266-1e284c6f5e56",
+			"id": "49e98078-7743-406b-9401-c23903cd661c",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

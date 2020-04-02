@@ -6,6 +6,7 @@ import py_eureka_client.eureka_client as eureka_client
 from django.conf import settings
 import utils.sys.config
 from utils.db.mongodb.sys_config import SystemConfig
+from utils.gadget.general import SysUtils
 
 
 def main():
@@ -51,10 +52,7 @@ def main():
         # print("system-log:" + syslog)
         print(os.getcwd() + "\\firmware")
         settings.FW_PATH = os.getcwd() + "\\firmware\\"
-        if os.path.isdir(settings.FW_PATH):
-            pass
-        else:
-            os.mkdir(settings.FW_PATH)
+        SysUtils.check_filepath(settings.FW_PATH)
 
 
 

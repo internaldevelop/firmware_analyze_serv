@@ -141,10 +141,8 @@ class SysUtils:
     def un_tgz(filename):
         tar = tarfile.open(filename)
         # 判断同名文件夹是否存在，若不存在则创建同名文件夹
-        if os.path.isdir(os.path.splitext(filename)[0]):
-            pass
-        else:
-            os.mkdir(os.path.splitext(filename)[0])
+        SysUtils.check_filepath(os.path.splitext(filename)[0])
+
         tar.extractall(os.path.splitext(filename)[0])
         tar.close()
 
@@ -153,10 +151,8 @@ class SysUtils:
         # untar zip file"""
         tar = tarfile.open(file_name)
         names = tar.getnames()
-        if os.path.isdir(file_name + "_files"):
-            pass
-        else:
-            os.mkdir(file_name + "_files")
+        SysUtils.check_filepath(file_name + "_files")
+
         # 由于解压后是许多文件，预先建立同名文件夹
         for name in names:
             tar.extract(name, file_name + "_files/")
@@ -167,10 +163,8 @@ class SysUtils:
     def un_rar(filename):
         rar = rarfile.RarFile(filename)
         # 判断同名文件夹是否存在，若不存在则创建同名文件夹
-        if os.path.isdir(os.path.splitext(filename)[0]):
-            pass
-        else:
-            os.mkdir(os.path.splitext(filename)[0])
+        SysUtils.check_filepath(os.path.splitext(filename)[0])
+
         rar.extractall(os.path.splitext(filename)[0])
 
     @staticmethod
@@ -223,6 +217,14 @@ class SysUtils:
         shutil.register_unpack_format('7zip', ['.7z'], unpack_7zarchive)
         # extraction
         shutil.unpack_archive(filename)
+
+    # 检查本地保存路径 没有则创建
+    @staticmethod
+    def check_filepath(path):
+        if os.path.isdir(path):
+            pass
+        else:
+            os.mkdir(path)
 
 
 class TimeEncoder(json.JSONEncoder):

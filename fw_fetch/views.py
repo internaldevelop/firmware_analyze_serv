@@ -3,9 +3,16 @@ import datetime
 import os
 import utils.sys.config
 from django.conf import settings
+
+from utils.db.mongodb.logs import LogRecords
+from utils.db.mongodb.pack_file import PackFile
+from utils.db.mongodb.pack_files_storage import PackFilesStorage
+from utils.file.my_file import MyFile
+from utils.gadget.strutil import StrUtils
 from utils.http.response import app_ok_p, app_err_p, app_ok, app_err, sys_app_ok_p, sys_app_err_p, sys_app_ok, sys_app_err
 from utils.http.http_request import req_get_param_int, req_get_param, req_post_param, req_post_param_int, req_post_param_dict
 from utils.gadget.download import Mydownload
+from utils.sys.file_type import FileType
 from utils.task import MyTask
 from utils.websocket.websocket import MyWebsocket
 from utils.db.mongodb.mongo_db import MongoDB
@@ -44,24 +51,23 @@ def async_fwdownload(request):
     task = MyTask(_proc_func_download, (fw_download_url, settings.FW_PATH, ))
     task_id = task.get_task_id()
 
+    # 保存操作日志
+    LogRecords.save({'task_id': task_id }, category='download', action='下载固件',
+                    desc='存储桶读取固件保存并进行文件抽取')
+
     # 返回响应：任务初始化的信息
     return sys_app_ok_p(_init_task_info(task_id))
 
 
 def _proc_func_download(fw_download_url, g_fw_save_path, task_id):
-    # 检查本地保存路径
-    if os.path.isdir(g_fw_save_path):
-        pass
-    else:
-        os.mkdir(g_fw_save_path)
+    # 检查本地保存路径 没有则创建
+    SysUtils.check_filepath(g_fw_save_path)
 
     # 执行下载操作
     ret_download_info, fwfilename ,file_list = Mydownload.fwdownload(fw_download_url, g_fw_save_path, task_id)
     print(ret_download_info, fwfilename)
 
     # 保存到mongodb
-    # fwfilename = "CF-EW71-V2.6.0.zip"
-    # ret_download_info = ""
     task_item = save_mongodb(fw_download_url, g_fw_save_path, fwfilename, ret_download_info, task_id)
 
     # websocket通知页面
@@ -72,37 +78,52 @@ def _proc_func_download(fw_download_url, g_fw_save_path, task_id):
 
 
 def save_mongodb(fw_download_url, fw_path, fw_filename, download_info, task_id):
+    # 新建或保存文件记录
+    # 新的 pack ID
+    pack_id = StrUtils.uuid_str()
+    # 新的 pack 文件 UUID
+    file_id = StrUtils.uuid_str()
+    # 读取包文件内容
+    contents = MyFile.read(fw_path + fw_filename)
+    # 保存文件记录
+    PackFile.save(pack_id, file_id, name=fw_filename, file_type=FileType.PACK.value)
+    # 保存文件内容
+    PackFilesStorage.save(file_id, fw_filename, FileType.PACK.value, contents)
 
-    # 保存固件到mongodb 集合
-    fw_coll = MongoDB(firmware_info_coll)
-    firmware_id = fw_coll.get_suggest_firmware_id(None)
-    item = {
-        'id': firmware_id,
-        'fw_file_name': fw_filename,
-        'application_mode': '',
-        'fw_manufacturer': '',
-        'url': fw_download_url
-    }
-    fw_coll.update(firmware_id, item)
+    return
 
-    # 保存到存储桶
-    fw_pocs = MongoPocs(method_fs)
-    with open(fw_path + fw_filename, 'rb') as myimage:
-        data = myimage.read()
-        fw_pocs.add(firmware_id, fw_filename, data)
+    # # 保存固件到mongodb 集合
+    # fw_coll = MongoDB(firmware_info_coll)
+    # firmware_id = fw_coll.get_suggest_firmware_id(None)
+    # item = {
+    #     'id': firmware_id,
+    #     'fw_file_name': fw_filename,
+    #     'application_mode': '',
+    #     'fw_manufacturer': '',
+    #     'url': fw_download_url
+    # }
+    # fw_coll.update(firmware_id, item)
+    #
+    # # 保存到存储桶
+    # fw_pocs = MongoPocs(method_fs)
+    # with open(fw_path + fw_filename, 'rb') as myimage:
+    #     data = myimage.read()
+    #     fw_pocs.add(firmware_id, fw_filename, data)
+    #
 
-    task_coll = MongoDB(task_info_coll)
-    # 保存下载任务到mongodb
-    task_item = {
-        'task_id': task_id,
-        'type': 'download',
-        'time': datetime.datetime.now(),
-        'percentage': '100',
-        'status': download_info
-    }
-    task_coll.update(task_id, task_item)
+    # task_coll = MongoDB(task_info_coll)
+    #
+    # # 保存下载任务到mongodb
+    # task_item = {
+    #     'task_id': task_id,
+    #     'type': 'download',
+    #     'time': datetime.datetime.now(),
+    #     'percentage': '100',
+    #     'status': download_info
+    # }
+    # task_coll.update(task_id, task_item)
 
-    return task_item
+    # return task_item
 
 
 # 1.2 查询固件列表
@@ -124,6 +145,10 @@ def async_funcs_fetch(request):
     # 启动任务 存储桶读取固件内容
     task = MyTask(_proc_fetch, (firmware_id, settings.FW_PATH))
     task_id = task.get_task_id()
+
+    # 保存操作日志
+    LogRecords.save({'task_id': task_id, 'file_id': firmware_id}, category='fetch', action='下载固件',
+                    desc='存储桶读取固件保存并进行文件抽取')
 
     # 返回响应：任务初始化的信息
     return sys_app_ok_p(_init_task_info(task_id))

@@ -162,12 +162,8 @@ class SysUtils:
             tar.extract(name, file_name + "_files/")
         tar.close()
 
-<<<<<<< HEAD
-    #解压rar压缩包
-    @staticmethod
-=======
     # 解压rar压缩包
->>>>>>> 3cef8605729521e63874a620c85840d9496e4e12
+    @staticmethod
     def un_rar(filename):
         rar = rarfile.RarFile(filename)
         # 判断同名文件夹是否存在，若不存在则创建同名文件夹

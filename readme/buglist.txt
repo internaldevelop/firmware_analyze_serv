@@ -1,0 +1,6 @@
+1. 做 CFG 分析时，有的固件文件出现异常：angr got SimZeroDivisionException: divide by zero!
+    angr 8.20版本修复，该版本尚无windows平台的轮子
+    参见官方链接：
+    https://github.com/angr/angr/issues/1696
+    https://github.com/angr/angr/issues/1856
+    https://github.com/angr/cle/pull/216

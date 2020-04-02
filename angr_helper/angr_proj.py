@@ -65,13 +65,13 @@ class AngrProj:
     #         file_arch = file_list[file_id]['file_arch']
     #     return os.path.join(samples_path, file_name), file_arch
     #
-    # def call_cfg(self, cfg_mode='cfg_emu', start_addr=[0x0], initial_state=None):
-    #     if cfg_mode == 'cfg_emu':
-    #         return self._cfg_emulated(start_addr=start_addr, initial_state=initial_state)
-    #     elif cfg_mode == 'cfg_fast':
-    #         return self._cfg_fast()
-    #     else:
-    #         return None
+    def call_cfg(self, cfg_mode='cfg_emu', start_addr=[0x0], initial_state=None):
+        if cfg_mode == 'cfg_emu':
+            return self._cfg_emulated(start_addr=start_addr, initial_state=initial_state)
+        elif cfg_mode == 'cfg_fast':
+            return self._cfg_fast()
+        else:
+            return None
 
     def parse_cfg(self, cfg_ser):
         self.cfg_model = CFGModel.parse(cfg_ser, cfg_manager=self.proj.kb.cfgs)

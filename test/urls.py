@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import test_zip_view
 from .views import test_squash_view
+from .views import test_aux
 
 urlpatterns = [
     # 测试压缩包文件信息
@@ -12,6 +13,15 @@ urlpatterns = [
 
     # 测试抽取 squash fs
     path('extract_squash', test_squash_view.test_extract_squash_fs, name='test_extract_squash_fs'),
+
+    # 生成 UUID
+    path('uuid', test_aux.test_generate_uuid, name='test_generate_uuid'),
+
+    # 保存包文件
+    path('save_pack', test_aux.test_save_pack, name='test_save_pack'),
+
+    # 保存镜像文件
+    path('save_image', test_aux.test_save_image, name='test_save_image'),
 
     #
     # # 初步检验文件 -- 多用于测试

@@ -9,9 +9,9 @@ fw_files_storage = utils.sys.config.g_fw_files_storage
 
 class FwFilesStorage:
     @staticmethod
-    def save(file_id, file_name, file_path, content_type, content):
-        # 更新POC到 GridFS 存储桶中
-        fw_files_storage.put(content, content_type=content_type, filename=file_id,
+    def save(file_id, file_name, file_path, content_type, contents):
+        # 更新文件内容到 GridFS 存储桶中
+        fw_files_storage.put(contents, content_type=content_type, filename=file_id,
                              aliases=[file_name, file_path])
         # fw_files_storage.put(content.encode(encoding="utf-8"), content_type=content_type, filename=file_id,
         #                      aliases=[file_name, file_path])

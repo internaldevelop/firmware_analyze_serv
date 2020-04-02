@@ -1,10 +1,10 @@
 from PySquashfsImage import SquashFsImage
 import os
+from utils.fs.squashfs import SquashFS
+from utils.gadget.strutil import StrUtils
 
 class MySquashfs:
     # https://github.com/matteomattei/PySquashfsImage
-
-
 
     @staticmethod
     def squash_fs_file(sq_file, path, sub_path):

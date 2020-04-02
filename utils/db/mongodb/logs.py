@@ -1,7 +1,7 @@
 import utils.sys.config
 from utils.gadget.general import SysUtils
 from utils.gadget.strutil import StrUtils
-from utils.db.sys_config import SystemConfig
+from utils.db.mongodb.sys_config import SystemConfig
 
 
 # 日志记录集合

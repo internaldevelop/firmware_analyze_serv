@@ -1,7 +1,7 @@
 import utils.sys.config
 from utils.gadget.general import SysUtils
 
-# firmware 信息集合
+# 函数列表 信息集合
 func_result_col = utils.sys.config.g_func_result_coll
 
 

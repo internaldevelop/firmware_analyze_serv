@@ -1,10 +1,9 @@
-import uuid
 # import threading
 from multiprocessing import Process
 from utils.cache.redis import MyRedis
 from utils.gadget.general import SysUtils
 from utils.gadget.strutil import StrUtils
-from utils.db.logs import LogRecords
+from utils.db.mongodb.logs import LogRecords
 
 # 定义 redis 中键值的 category
 task_cat = 'task'

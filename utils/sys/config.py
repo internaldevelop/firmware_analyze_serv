@@ -56,6 +56,10 @@ g_cfg_result_coll = g_firmware_db_full["cfg_result"]
 g_func_result_coll = g_firmware_db_full["func_result"]
 # 日志集合
 g_logs_coll = g_firmware_db_full["logs"]
+# 固件文件记录集合
+g_fw_files_coll = g_firmware_db_full["fw_files"]
+# 固件文件存储桶集合
+g_fw_files_storage = GridFS(g_firmware_db_full, collection='fw_files_storage')
 
 # 任务表 下载、提取、分析
 g_task_info_col_full = g_firmware_db_full["task_info"]

@@ -2,7 +2,7 @@ from utils.http.http_request import req_get_param
 from utils.http.response import sys_app_ok_p
 from angr_helper.angr_proj import AngrProj
 from angr_helper.fw_entry_state import FwEntryState
-from utils.db.logs import LogRecords
+from utils.db.mongodb.logs import LogRecords
 
 
 def entry_state_info(request):

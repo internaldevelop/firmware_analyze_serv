@@ -1,5 +1,5 @@
-from utils.db.sys_config import SystemConfig
-from utils.db.logs import LogRecords
+from utils.db.mongodb.sys_config import SystemConfig
+from utils.db.mongodb.logs import LogRecords
 from utils.http.response import sys_app_ok_p
 from utils.http.http_request import req_post_param
 

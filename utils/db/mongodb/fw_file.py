@@ -18,13 +18,19 @@ class FwFile:
         pass
 
     @staticmethod
+    def search_files_of_pack(pack_id, file_type):
+        result_cursor = fw_files_coll.find({'pack_id': pack_id, 'file_type': file_type}, {'_id': 0})
+        item_list = list(result_cursor)
+        return item_list
+
+    @staticmethod
     def _db_get_file(file_id):
         fw_files_coll.find({'file_id': file_id}, {'_id': 0})
 
     @staticmethod
-    def save_file_item(pack_id, file_id, file_name, file_path='', folder=False):
+    def save_file_item(pack_id, file_id, file_name, file_type, file_path=''):
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
-               'folder': folder, 'create_time': SysUtils.get_now_time()}
+               'file_type': file_type, 'create_time': SysUtils.get_now_time()}
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
         fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)
 

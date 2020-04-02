@@ -12,9 +12,9 @@ def _test_jffs2_fs_file(file_path):
 
 
 def test_extract_squash_fs(request):
-    image_file_id = ReqParams.one(request, 'image_file_id')
+    pack_id = ReqParams.one(request, 'pack_id')
 
-    fs_image = FsImage(image_file_id)
+    fs_image = FsImage(pack_id)
     fs_image.extract()
 
     return sys_app_ok_p({})

@@ -319,7 +319,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/test/extract_squash?access_token={{access_token}}&image_file_id={{file_id}}",
+							"raw": "{{FW_SERV_URL}}/test/extract_squash?access_token={{access_token}}&pack_id={{pack_id}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -333,8 +333,8 @@
 									"value": "{{access_token}}"
 								},
 								{
-									"key": "image_file_id",
-									"value": "{{file_id}}"
+									"key": "pack_id",
+									"value": "{{pack_id}}"
 								}
 							]
 						}
@@ -1750,13 +1750,13 @@
 	],
 	"variable": [
 		{
-			"id": "2357c5c2-7cc9-487a-8b0b-6b4bc020ffb1",
+			"id": "b0f51972-8f79-4ff1-999d-3f6737695822",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "49e98078-7743-406b-9401-c23903cd661c",
+			"id": "d7313d52-3023-4352-bf2b-808027239ec8",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

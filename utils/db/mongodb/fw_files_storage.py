@@ -22,3 +22,16 @@ class FwFilesStorage:
         item = SysUtils.grid_out_to_dict(grid_out)
         return item
 
+    @staticmethod
+    def export(file_id, folder_path):
+        grid_out = fw_files_storage.find_one({'filename': file_id})
+        item = SysUtils.grid_out_to_dict(grid_out)
+        if item is None:
+            return None
+
+        data = grid_out.read()
+        file_path = os.path.join(folder_path, item['filename'])
+        with open(file_path, 'wb') as file:
+            file.write(data)
+        return file_path
+

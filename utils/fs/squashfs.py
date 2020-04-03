@@ -1,6 +1,7 @@
 from PySquashfsImage import SquashFsImage
 
 from utils.fs.fs_base import FsBase
+from utils.sys.file_type import FileType
 
 
 class SquashFS(FsBase):
@@ -57,7 +58,8 @@ class SquashFS(FsBase):
             name, path, folder = self.node_props(inode)
             content = self.node_content(inode)
             # 属性和数据内容交由 extract_func 回调函数处理
-            extract_func(name, path, folder, content)
+            # 需从 node 中提取文件属性，区分普通文件和可执行文件
+            extract_func(name, path, FileType.EXEC_FILE.value, content)
 
     def check_format(self):
         # 检测加载的镜像，是否为有效的 squash-fs 格式

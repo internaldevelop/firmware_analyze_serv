@@ -17,11 +17,13 @@ def test_generate_uuid(request):
 
 virtual_file_list = {
     '1': {'file_name': 'CF-AC101-V2.6.1.zip', 'file_type': FileType.ZIP_FLE},
-    '2': {'file_name': 'WPN824N_V1.0.0.28.zip', 'file_type': FileType.ZIP_FLE},
-    '3': {'file_name': '12F304.squashfs', 'file_type': FileType.FS_IMAGE},
-    '4': {'file_name': '1702A0.squashfs', 'file_type': FileType.FS_IMAGE},
-    '5': {'file_name': '2E0.7z', 'file_type': FileType.ZIP_FLE},
-    '6': {'file_name': '2E0', 'file_type': FileType.SYS_IMAGE},
+    '11': {'file_name': '12F304.squashfs', 'file_type': FileType.FS_IMAGE},
+    '12': {'file_name': '40.7z', 'file_type': FileType.ZIP_FLE},
+    '13': {'file_name': '40', 'file_type': FileType.SYS_IMAGE},
+    '2': {'file_name': 'R1CL_2.7.81.zip', 'file_type': FileType.ZIP_FLE},
+    '21': {'file_name': '1702A0.squashfs', 'file_type': FileType.FS_IMAGE},
+    '22': {'file_name': '2E0.7z', 'file_type': FileType.ZIP_FLE},
+    '23': {'file_name': '2E0', 'file_type': FileType.SYS_IMAGE},
 }
 
 
@@ -76,7 +78,7 @@ def test_save_image(request):
     # 读取文件内容
     contents = MyFile.read(file_path)
     # 保存文件记录
-    FwFile.save_file_item(pack_id, file_id, os.path.basename(file_path))
+    FwFile.save_file_item(pack_id, file_id, os.path.basename(file_path), file_type.value)
     # 保存文件内容
     FwFilesStorage.save(file_id, os.path.basename(file_path), '', file_type.value, contents)
 

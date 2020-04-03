@@ -5,7 +5,7 @@ from utils.gadget.general import SysUtils
 cfg_result_col = utils.sys.config.g_cfg_result_coll
 
 
-class CfgAnalyzeResult:
+class CfgAnalyzeResultDO:
 
     @staticmethod
     def save(file_id, task_id, cfg_result):

@@ -1,6 +1,6 @@
 from angrutils import hook0, plot_cg, plot_cfg
 
-from utils.db.mongodb.fw_file import FwFile
+from utils.db.mongodb.fw_file import FwFileDO
 from utils.gadget.strutil import StrUtils
 from angr_helper.angr_proj import AngrProj
 import os
@@ -128,7 +128,7 @@ class FunctionParse:
         return vex
 
     def file_name(self):
-        file_name, file_arch = FwFile.id_to_file(self.file_id)
+        file_name, file_arch = FwFileDO.id_to_file(self.file_id)
         return os.path.basename(file_name)
 
     def function_name(self):

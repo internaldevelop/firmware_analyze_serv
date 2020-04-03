@@ -7,11 +7,11 @@ from utils.gadget.general import SysUtils
 fw_files_coll = utils.sys.config.g_fw_files_coll
 
 
-class FwFile:
+class FwFileDO:
 
     @staticmethod
     def id_to_file(file_id):
-        return FwFile._simulate_id_to_file(file_id)
+        return FwFileDO._simulate_id_to_file(file_id)
 
     @staticmethod
     def fetch_file():
@@ -24,6 +24,10 @@ class FwFile:
         return item_list
 
     @staticmethod
+    def count_files(pack_id, file_type):
+        return fw_files_coll.find({'pack_id': pack_id, 'file_type': file_type}, {}).count()
+
+    @staticmethod
     def _db_get_file(file_id):
         fw_files_coll.find({'file_id': file_id}, {'_id': 0})
 
@@ -31,6 +35,7 @@ class FwFile:
     def save_file_item(pack_id, file_id, file_name, file_type, file_path=''):
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
                'file_type': file_type, 'create_time': SysUtils.get_now_time()}
+
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
         rv = fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)
         # print(rv)

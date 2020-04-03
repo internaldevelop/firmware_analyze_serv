@@ -3,7 +3,7 @@ import angr
 from angrutils import hook0
 from angr.knowledge_plugins.cfg import CFGModel
 
-from utils.db.mongodb.fw_file import FwFile
+from utils.db.mongodb.fw_file import FwFileDO
 
 
 class AngrProj:
@@ -14,7 +14,7 @@ class AngrProj:
                  progress_callback=None,
                  progress_bar=False):
 
-        file_path, file_arch = FwFile.id_to_file(file_id)
+        file_path, file_arch = FwFileDO.id_to_file(file_id)
 
         # 保存参数：进度回调函数
         self.progress_cb = self._progress_print if progress_callback is None else progress_callback

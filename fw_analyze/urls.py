@@ -7,6 +7,7 @@ from .my_views import old_func_async_views
 from .my_views import analyze_cfg_view
 from .my_views import parse_cfg_view
 from .my_views import task_view
+from .my_views import pack_view
 from .my_views import variable_views
 
 urlpatterns = [
@@ -21,15 +22,24 @@ urlpatterns = [
     path('task_result', task_view.get_task_result, name='get_task_result'),
 
     # 获取函数列表
-    path('cfg/func_list', parse_cfg_view.cfg_file_list, name='parse_cfg_file_list'),
+    path('cfg/func_list', parse_cfg_view.cfg_func_list, name='parse_cfg_func_list'),
 
     # 获取指定函数的 call-graph，分成 A B 两种处理模式
     path('cfg/call_graph_a', parse_cfg_view.call_graph_a, name='parse_cfg_call_graph_a'),
+    # TODO: call_graph_b 未实验成功
     path('cfg/call_graph_b', parse_cfg_view.call_graph_b, name='parse_cfg_call_graph_b'),
 
     # 获取函数信息，包含诸如：汇编代码、中间代码、后继调用等
     path('cfg/func_info', parse_cfg_view.function_info, name='parse_cfg_function_info'),
 
+    # 查询所有固件包信息
+    path('pack/all', pack_view.all_packs_info, name='query_all_packs_info'),
+
+    # 查询指定固件包信息
+    path('pack/info', pack_view.pack_info, name='query_pack_info'),
+
+    # 查询指定固件包中所含的执行文件目录树
+    path('pack/exec_files_tree', pack_view.pack_exec_files_tree, name='query_pack_exec_files_tree'),
 
     # =========================================================================
     # 以下部分均为测试指令

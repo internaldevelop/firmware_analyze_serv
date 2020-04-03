@@ -2,7 +2,7 @@ import zipfile
 import patoolib
 import py7zr
 
-from utils.db.mongodb.fw_file import FwFile
+from utils.db.mongodb.fw_file import FwFileDO
 from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok_p, sys_app_err
 
@@ -10,7 +10,7 @@ from utils.http.response import sys_app_ok_p, sys_app_err
 def test_zip_file(request):
     file_id = ReqParams.one(request, 'file_id')
 
-    file_path, file_arch = FwFile.id_to_file(file_id)
+    file_path, file_arch = FwFileDO.id_to_file(file_id)
 
     # compress_files = _test_zipfile(file_path)
 

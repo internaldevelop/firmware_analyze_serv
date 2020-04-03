@@ -1,11 +1,13 @@
-from utils.db.mongodb.fw_file import FwFile
+from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
-from utils.db.mongodb.pack_file import PackFile
+from utils.db.mongodb.logs import LogRecords
+from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
+from utils.db.mongodb.sys_config import SystemConfig
 from utils.file.my_file import MyFile
 from utils.fs.fs_image import FsImage
 from utils.gadget.strutil import StrUtils
-from utils.http.response import sys_app_ok_p
+from utils.http.response import sys_app_ok_p, sys_app_ok
 from utils.http.request import ReqParams
 import os
 
@@ -17,13 +19,13 @@ def test_generate_uuid(request):
 
 
 virtual_file_list = {
-    '1': {'file_name': 'CF-AC101-V2.6.1.zip', 'file_type': FileType.ZIP_FLE},
+    '1': {'file_name': 'CF-AC101-V2.6.1.zip', 'file_type': FileType.ZIP_FILE},
     '11': {'file_name': '12F304.squashfs', 'file_type': FileType.FS_IMAGE},
-    '12': {'file_name': '40.7z', 'file_type': FileType.ZIP_FLE},
+    '12': {'file_name': '40.7z', 'file_type': FileType.ZIP_FILE},
     '13': {'file_name': '40', 'file_type': FileType.SYS_IMAGE},
-    '2': {'file_name': 'R1CL_2.7.81.zip', 'file_type': FileType.ZIP_FLE},
+    '2': {'file_name': 'R1CL_2.7.81.zip', 'file_type': FileType.ZIP_FILE},
     '21': {'file_name': '1702A0.squashfs', 'file_type': FileType.FS_IMAGE},
-    '22': {'file_name': '2E0.7z', 'file_type': FileType.ZIP_FLE},
+    '22': {'file_name': '2E0.7z', 'file_type': FileType.ZIP_FILE},
     '23': {'file_name': '2E0', 'file_type': FileType.SYS_IMAGE},
 }
 
@@ -50,7 +52,7 @@ def _save_pack(virtual_id, pack_name):
     # 获取 pack 文件的路径
     file_path = _get_file_path(virtual_id)
     file_type = _get_file_type(virtual_id)
-    # file_type = FileType.ZIP_FLE if file_path[-4:-1] == '.zip' else FileType.OTHER_FILE
+    # file_type = FileType.ZIP_FILE if file_path[-4:-1] == '.zip' else FileType.OTHER_FILE
 
     # 新建或保存文件记录
     # 新的 pack ID
@@ -60,7 +62,7 @@ def _save_pack(virtual_id, pack_name):
     # 读取包文件内容
     contents = MyFile.read(file_path)
     # 保存文件记录
-    PackFile.save(pack_id, file_id, name=pack_name, file_type=file_type)
+    PackFileDO.save(pack_id, file_id, name=pack_name, file_type=file_type)
     # 保存文件内容
     PackFilesStorage.save(file_id, pack_name, file_type, contents)
 
@@ -85,7 +87,7 @@ def _save_image(virtual_id, pack_id):
     # 读取文件内容
     contents = MyFile.read(file_path)
     # 保存文件记录
-    FwFile.save_file_item(pack_id, file_id, os.path.basename(file_path), file_type)
+    FwFileDO.save_file_item(pack_id, file_id, os.path.basename(file_path), file_type)
     # 保存文件内容
     FwFilesStorage.save(file_id, os.path.basename(file_path), '', file_type, contents)
 
@@ -116,3 +118,11 @@ def test_pack_extract_bat(request):
     fs_image.extract()
 
     return sys_app_ok_p(pack_id)
+
+
+def test_log_switch(request):
+    log_configs = SystemConfig.get_cache_log_cfg()
+    keys = log_configs.keys()
+    for category in keys:
+        LogRecords.save('test_log_switch: ' + category, category=category, action='test_log_switch')
+    return sys_app_ok()

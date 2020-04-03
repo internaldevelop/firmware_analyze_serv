@@ -5,7 +5,7 @@ from utils.gadget.general import SysUtils
 func_result_col = utils.sys.config.g_func_result_coll
 
 
-class FunctionsResult:
+class FunctionsResultDO:
     @staticmethod
     def save(file_id, task_id, func_result):
         doc = {'file_id': file_id, 'task_id': task_id, 'func_result': func_result, 'create_time': SysUtils.get_now_time()}

@@ -29,6 +29,9 @@ urlpatterns = [
     # 包文件提取批处理
     path('pack_extract_bat', test_aux.test_pack_extract_bat, name='test_pack_extract_bat'),
 
+    # 日志开关测试
+    path('log_switch', test_aux.test_log_switch, name='test_log_switch'),
+
     #
     # # 初步检验文件 -- 多用于测试
     # path('check_file', info_view.check_file, name='check_file'),

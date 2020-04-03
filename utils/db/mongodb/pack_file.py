@@ -9,7 +9,7 @@ from utils.const.pack_type import PackType
 pack_files_coll = utils.sys.config.g_pack_files_coll
 
 
-class PackFile:
+class PackFileDO:
 
     # def __init__(self, pack_id=None):
     #     # pack_id 为None时表示新建的pack文件对象
@@ -32,3 +32,10 @@ class PackFile:
             if len(docs) != 0:
                 return docs[0]
         return None
+
+    @staticmethod
+    def all_packs_info():
+        cursor = pack_files_coll.find({}, {'_id': 0})
+        if cursor is not None:
+            return list(cursor)
+        return []

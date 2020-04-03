@@ -5,14 +5,14 @@ import utils.sys.config
 from django.conf import settings
 
 from utils.db.mongodb.logs import LogRecords
-from utils.db.mongodb.pack_file import PackFile
+from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.file.my_file import MyFile
 from utils.gadget.strutil import StrUtils
 from utils.http.response import app_ok_p, app_err_p, app_ok, app_err, sys_app_ok_p, sys_app_err_p, sys_app_ok, sys_app_err
 from utils.http.http_request import req_get_param_int, req_get_param, req_post_param, req_post_param_int, req_post_param_dict
 from utils.gadget.download import Mydownload
-from utils.sys.file_type import FileType
+from utils.const.file_type import FileType
 from utils.task import MyTask
 from utils.websocket.websocket import MyWebsocket
 from utils.db.mongodb.mongo_db import MongoDB
@@ -86,9 +86,9 @@ def save_mongodb(fw_download_url, fw_path, fw_filename, download_info, task_id):
     # 读取包文件内容
     contents = MyFile.read(fw_path + fw_filename)
     # 保存文件记录
-    PackFile.save(pack_id, file_id, name=fw_filename, file_type=FileType.PACK.value)
+    PackFileDO.save(pack_id, file_id, name=fw_filename, file_type=FileType.PACK)
     # 保存文件内容
-    PackFilesStorage.save(file_id, fw_filename, FileType.PACK.value, contents)
+    PackFilesStorage.save(file_id, fw_filename, FileType.PACK, contents)
 
     return
 

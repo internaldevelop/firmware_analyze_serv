@@ -4,8 +4,8 @@ from utils.task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.function_parse import FunctionParse
 from fw_analyze.progress.cfg_progress import CfgProgress
-from utils.db.mongodb.cfg import CfgAnalyzeResult
-from utils.db.mongodb.functions import FunctionsResult
+from utils.db.mongodb.cfg import CfgAnalyzeResultDO
+from utils.db.mongodb.functions import FunctionsResultDO
 from utils.db.mongodb.logs import LogRecords
 
 
@@ -50,10 +50,10 @@ def _proc_analyze_cfg(file_id, task_id):
     cfg_result = angr_proj.cfg.model.serialize()
 
     # 保存 cfg 分析结果到数据库
-    CfgAnalyzeResult.save(file_id, task_id, cfg_result)
+    CfgAnalyzeResultDO.save(file_id, task_id, cfg_result)
 
     # 从 project 中提取函数列表
     functions = FunctionParse.functions_extract(angr_proj.proj)
 
     # 保存 函数列表到数据库
-    FunctionsResult.save(file_id, task_id, functions)
+    FunctionsResultDO.save(file_id, task_id, functions)

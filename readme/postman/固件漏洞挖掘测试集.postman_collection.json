@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "977692eb-2882-45d2-a201-ed2d781988b4",
+		"_postman_id": "dcd6a42c-a90e-4ffc-a32e-eab2388fe919",
 		"name": "固件漏洞挖掘测试集",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -515,6 +515,946 @@
 								{
 									"key": "virtual_id",
 									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Django测试",
+			"item": [
+				{
+					"name": "1.1 指定URL下载固件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/download/?url=http://www.luyoudashi.com",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"download",
+								""
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.luyoudashi.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/downloadex?url=http://comfast.com.cn/upload/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-AC101-V2.4.0.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"downloadex"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://comfast.com.cn/upload/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-AC101-V2.4.0.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 Copy Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/downloadex?url=http://www.comfast.cn/uploadfile/firmware/CF-AC101-V2.6.1.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"downloadex"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.comfast.cn/uploadfile/firmware/CF-AC101-V2.6.1.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 FTP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/downloadex/?ftp=http://rom.luyoudashi.com/rom/12997/W331A_V1.0.0.12_CN.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"downloadex",
+								""
+							],
+							"query": [
+								{
+									"key": "ftp",
+									"value": "http://rom.luyoudashi.com/rom/12997/W331A_V1.0.0.12_CN.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 查询固件列表 -gateway",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 根据指定ID读取固件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/fetch?firmware_id=900000",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "firmware_id",
+									"value": "900000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 固件文件头自动解码或解析",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/decodeEx?firmware_id=900014",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"decodeEx"
+							],
+							"query": [
+								{
+									"key": "firmware_id",
+									"value": "900014"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 固件文件头自动解码或解析 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/decode?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\miwifi_r1cl_firmware_82b5c_2.7.81.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"decode"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\miwifi_r1cl_firmware_82b5c_2.7.81.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 固件文件头自动解码或解析 Copy Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/decode?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\CF-AC101-V2.6.1\\CF-AC101-V2.6.1.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"decode"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\CF-AC101-V2.6.1\\CF-AC101-V2.6.1.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 组件加载基址解析",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/decode?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn_TD.bin&baseadd=0x",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"decode"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn_TD.bin"
+								},
+								{
+									"key": "baseadd",
+									"value": "0x"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别-ARM",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"arch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\WNR3500v2-V1.0.2.10_23.0.70.chk"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别-MIPS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"arch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别-x86",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/arch?filename=C:\\GIT\\firmwareanalyze\\firmware\\DI_7500G16.12.30A1.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"arch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\DI_7500G16.12.30A1.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.5 架构识别- Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/angrarch?filename=C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"angrarch"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\fwr310v3-cn-up.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.6 抽取文件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/extract?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\miwifi_r1cl_firmware_82b5c_2.7.81.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\miwifi_r1cl_firmware_82b5c_2.7.81.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.6 抽取文件 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/extract?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\CF-AC101-V2.6.1.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\CF-AC101-V2.6.1.bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.6 抽取文件 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/extract?filename=C:\\GIT\\firmwareanalyze\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn&en_TD.bin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmwareanalyze\\firmware\\US_W331AV1.0BR_V1.0.0.12_cn"
+								},
+								{
+									"key": "en_TD.bin",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/convert_code?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin-1.extracted\\2E0.7z",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"convert_code"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin-1.extracted\\2E0.7z"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/convert_code?filename=C:\\GIT\\firmware_analyze_serv\\readme\\studyAndTest\\angr\\samples\\1.6.26-libjsound.so",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"convert_code"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\readme\\studyAndTest\\angr\\samples\\1.6.26-libjsound.so"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码 Copy Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/convert_code?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin-1.extracted\\2E0.7z",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"convert_code"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin-1.extracted\\2E0.7z"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码 asm",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/convertasm?filename=C:\\GIT\\firmware_analyze_serv\\readme\\studyAndTest\\angr\\samples\\2E0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"convertasm"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\readme\\studyAndTest\\angr\\samples\\2E0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码 asm Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/convertasm?filename=C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"convertasm"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码 asm2IR",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/convertasm?filename=C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"convertasm"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 转换代码 asm2IR Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/convertasm?filename=C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"convertasm"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.8 函数识别",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_analyze/recognize_func?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin.extracted\\2E0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_analyze",
+								"recognize_func"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin.extracted\\2E0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.8 函数识别 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/recognize?filename=C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin-1.extracted\\2E0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"recognize"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\firmware_analyze_serv\\firmware\\_miwifi_r1cl_firmware_82b5c_2.7.81.bin-1.extracted\\2E0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.9 栈空间大小提取",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/stacksize?filename=C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"stacksize"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.10 堆空间大小提取",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw-analyze/heapsize?filename=C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw-analyze",
+								"heapsize"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "C:\\GIT\\angr\\angr-doc\\examples\\fauxware\\fauxware"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fwfetch test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fwfetch test Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/testws",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"testws"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fwfetch Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/firmwarefetch?url=http://www.luyoudashi.com/roms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"firmwarefetch"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.luyoudashi.com/roms"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "3.固件下载",
+			"item": [
+				{
+					"name": "1.0 任务结果查询",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task_result?task_id={{task_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task_result"
+							],
+							"query": [
+								{
+									"key": "task_id",
+									"value": "{{task_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6ebf1c72-a1e9-4d6e-bb53-63915dfdb3b7",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://www.comfast.cn/uploadfile/firmware/CF-EW71-V2.6.0.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.comfast.cn/uploadfile/firmware/CF-EW71-V2.6.0.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 JFFS2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=https://dlsvr04.asus.com/pub/ASUS/wireless/GT-AC5300/FW_GT_AC5300_300438445149.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "https://dlsvr04.asus.com/pub/ASUS/wireless/GT-AC5300/FW_GT_AC5300_300438445149.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=https://dlsvr04.asus.com.cn/pub/ASUS/wireless/RT-AC86U/FW_RT_AC86U_300438481352.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "https://dlsvr04.asus.com.cn/pub/ASUS/wireless/RT-AC86U/FW_RT_AC86U_300438481352.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 带中文下载URL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-WR635AC-V1.0.0.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-WR635AC-V1.0.0.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 查询固件列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 根据指定ID读取固件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/fetch?firmware_id=900001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "firmware_id",
+									"value": "900001"
 								}
 							]
 						}

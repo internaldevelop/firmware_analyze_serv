@@ -20,6 +20,15 @@ def test_extract_squash_fs(request):
     return sys_app_ok_p({})
 
 
+def test_list_squash_fs(request):
+    pack_id = ReqParams.one(request, 'pack_id')
+
+    fs_image = FsImage(pack_id)
+    fs_image.enum_files()
+
+    return sys_app_ok_p({})
+
+
 def test_squash_fs(request):
     file_id = ReqParams.one(request, 'file_id')
     file_path, file_arch = FwFile.id_to_file(file_id)

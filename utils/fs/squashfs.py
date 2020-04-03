@@ -1,7 +1,7 @@
 from PySquashfsImage import SquashFsImage
 
 from utils.fs.fs_base import FsBase
-from utils.sys.file_type import FileType
+from utils.const.file_type import FileType
 
 
 class SquashFS(FsBase):
@@ -47,19 +47,24 @@ class SquashFS(FsBase):
         # 获取节点名称，节点路径和目录属性
         return inode.getName(), inode.getPath(), inode.isFolder()
 
+    @staticmethod
+    def _file_type(mode):
+        return FileType.EXEC_FILE if mode & 0o111 else FileType.NORMAL_FILE
+
     def extract_files(self, extract_func=None):
         # 导出文件内容，忽略目录，导出方式由 extract_func 来进行
-        if extract_func is None:
-            return
-
-        # 忽略目录
         nodes = self.list_all(exclude_folder=True)
         for inode in nodes:
             name, path, folder = self.node_props(inode)
             content = self.node_content(inode)
             # 属性和数据内容交由 extract_func 回调函数处理
             # 需从 node 中提取文件属性，区分普通文件和可执行文件
-            extract_func(name, path, FileType.EXEC_FILE.value, content)
+            # mode: 33188 =100644 33261 = 100755
+            # TODO: 最好用 angr project 检验一下是否为可执行文件
+            file_type = SquashFS._file_type(inode.inode.mode)
+            # print(('EXEC_FILE({})' if file_type == 4 else 'NORMAL_FILE({})').format(inode.inode.mode))
+            if extract_func is not None:
+                extract_func(name, path, file_type, content)
 
     def check_format(self):
         # 检测加载的镜像，是否为有效的 squash-fs 格式

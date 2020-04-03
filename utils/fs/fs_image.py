@@ -2,7 +2,7 @@ from utils.db.mongodb.fw_file import FwFile
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.fs.squashfs import SquashFS
 from utils.gadget.strutil import StrUtils
-from utils.sys.file_type import FileType
+from utils.const.file_type import FileType
 import os
 
 
@@ -12,7 +12,7 @@ class FsImage:
         self.image = None
 
         # 查找指定包的 FS 镜像文件
-        file_docs = FwFile.search_files_of_pack(pack_id, FileType.FS_IMAGE.value)
+        file_docs = FwFile.search_files_of_pack(pack_id, FileType.FS_IMAGE)
         if len(file_docs) == 0:
             return
         # 只取第一个镜像文件
@@ -31,9 +31,9 @@ class FsImage:
     def extract(self):
         if self.image is None:
             return
-        self.image.extract_files(self.save)
+        self.image.extract_files(extract_func=self.save_proc)
 
-    def save(self, name, path, file_type, content):
+    def save_proc(self, name, path, file_type, content):
         name = str(name)
         file_id = StrUtils.uuid_str()
 
@@ -41,4 +41,9 @@ class FsImage:
         FwFile.save_file_item(self.pack_id, file_id, name, file_type, file_path=path)
         # 保存文件内容
         FwFilesStorage.save(file_id, name, path, file_type, content)
+
+    def enum_files(self):
+        if self.image is None:
+            return
+        self.image.extract_files()
 

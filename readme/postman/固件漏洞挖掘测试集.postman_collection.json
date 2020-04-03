@@ -446,6 +446,80 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "2.7 squashfs 枚举",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/list_squash?access_token={{access_token}}&pack_id={{pack_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"list_squash"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "pack_id",
+									"value": "{{pack_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.8 包文件提取批处理",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									"pm.test(\"test\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"pack_id\", jsonData.payload.pack_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/pack_extract_bat?access_token={{access_token}}&virtual_id=1",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"pack_extract_bat"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "virtual_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -810,13 +884,13 @@
 	],
 	"variable": [
 		{
-			"id": "b0f51972-8f79-4ff1-999d-3f6737695822",
+			"id": "6910ed37-1c02-49b4-8188-99d5651f2c92",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "d7313d52-3023-4352-bf2b-808027239ec8",
+			"id": "6ee92f4a-e138-4b3d-9819-7e931da75e18",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

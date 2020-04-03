@@ -1,7 +1,6 @@
-import enum
 
 
-class FileType(enum.Enum):
+class FileType:
     # 原始包
     PACK = 1
     # 系统镜像文件

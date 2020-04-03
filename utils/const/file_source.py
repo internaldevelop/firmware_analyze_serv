@@ -1,7 +1,6 @@
-import enum
 
 
-class FileSource(enum.Enum):
+class FileSource:
     # 远程下载
     REMOTE_DOWNLOAD = 1
     # 客户端上传

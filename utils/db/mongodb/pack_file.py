@@ -1,8 +1,8 @@
 import utils.sys.config
 from utils.gadget.general import SysUtils
-from utils.sys.file_source import FileSource
-from utils.sys.file_type import FileType
-from utils.sys.pack_type import PackType
+from utils.const.file_source import FileSource
+from utils.const.file_type import FileType
+from utils.const.pack_type import PackType
 
 
 # 解包出来的文件 信息集合
@@ -16,8 +16,8 @@ class PackFile:
     #     pass
 
     @staticmethod
-    def save(pack_id, file_id, name=None, description='', pack_type=PackType.REAL.value,
-             source_type=FileSource.REMOTE_DOWNLOAD.value, file_type=FileType.OTHER_FILE.value, source_addr=''):
+    def save(pack_id, file_id, name=None, description='', pack_type=PackType.REAL,
+             source_type=FileSource.REMOTE_DOWNLOAD, file_type=FileType.OTHER_FILE, source_addr=''):
         doc = {'pack_id': pack_id, 'file_id': file_id, 'name': name, 'description': description,
                'pack_type': pack_type, 'source_type': source_type, 'file_type': file_type, 'source_addr': source_addr,
                'create_time': SysUtils.get_now_time()}

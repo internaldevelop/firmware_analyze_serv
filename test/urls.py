@@ -14,6 +14,9 @@ urlpatterns = [
     # 测试抽取 squash fs
     path('extract_squash', test_squash_view.test_extract_squash_fs, name='test_extract_squash_fs'),
 
+    # 枚举 squash fs 镜像中的文件
+    path('list_squash', test_squash_view.test_list_squash_fs, name='test_list_squash_fs'),
+
     # 生成 UUID
     path('uuid', test_aux.test_generate_uuid, name='test_generate_uuid'),
 
@@ -22,6 +25,9 @@ urlpatterns = [
 
     # 保存镜像文件
     path('save_image', test_aux.test_save_image, name='test_save_image'),
+
+    # 包文件提取批处理
+    path('pack_extract_bat', test_aux.test_pack_extract_bat, name='test_pack_extract_bat'),
 
     #
     # # 初步检验文件 -- 多用于测试

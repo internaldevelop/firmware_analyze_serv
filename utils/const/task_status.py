@@ -1,7 +1,6 @@
-import enum
 
 
-class TaskStatus(enum.Enum):
+class TaskStatus:
     # 任务启动
     START = 0
     # 远程下载

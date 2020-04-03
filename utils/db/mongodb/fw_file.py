@@ -32,7 +32,8 @@ class FwFile:
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
                'file_type': file_type, 'create_time': SysUtils.get_now_time()}
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
-        fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)
+        rv = fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)
+        # print(rv)
 
     @staticmethod
     def _simulate_id_to_file(file_id):

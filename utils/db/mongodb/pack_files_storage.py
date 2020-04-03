@@ -1,9 +1,5 @@
 import utils.sys.config
 from utils.gadget.general import SysUtils
-from utils.sys.file_source import FileSource
-from utils.sys.file_type import FileType
-from utils.sys.pack_type import PackType
-
 
 # 解包出来的文件 信息集合
 pack_files_storage = utils.sys.config.g_pack_files_storage

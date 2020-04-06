@@ -1,4 +1,5 @@
 from utils.db.mongodb.fw_file import FwFileDO
+from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.fs.fs_image import FsImage
 from utils.fs.squashfs import SquashFS
 from utils.http.request import ReqParams
@@ -31,7 +32,7 @@ def test_list_squash_fs(request):
 
 def test_squash_fs(request):
     file_id = ReqParams.one(request, 'file_id')
-    file_path, file_arch = FwFileDO.id_to_file(file_id)
+    file_path = FwFilesStorage.export(file_id)
 
     squash = SquashFS(file_path)
 

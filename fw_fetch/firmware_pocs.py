@@ -33,7 +33,7 @@ class FirmwarePocs:
         print(item['aliases'])
 
         # save path file
-        filename = settings.FW_PATH + item['aliases'] #os.getcwd() + "\\firmware\\" + item['aliases']
+        filename = settings.FW_PATH + item['aliases']
         outf = open(filename, 'wb')  # 创建文件
         outf.write(data)
         outf.close()

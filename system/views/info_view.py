@@ -1,5 +1,6 @@
 from utils.db.mongodb.fw_file import FwFileDO
-from utils.http.response import sys_app_ok_p
+from utils.db.mongodb.fw_files_storage import FwFilesStorage
+from utils.http.response import sys_app_ok_p, sys_app_err
 from utils.http.request import ReqParams
 from angr_helper.angr_proj import AngrProj
 import zipfile
@@ -19,6 +20,9 @@ def system_info(request):
 
 def check_file(request):
     file_id = ReqParams.one(request, 'file_id')
-    file_path, file_arch = FwFileDO.id_to_file(file_id)
+    file_path = FwFilesStorage.export(file_id)
 
-    return sys_app_ok_p({'file_path': file_path, 'file_arch': file_arch})
+    if file_path is None:
+        return sys_app_err('FW_FILE_NOT_FOUND')
+
+    return sys_app_ok_p({'file_id': file_id, 'file_path': file_path})

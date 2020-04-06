@@ -25,7 +25,7 @@ class MongoPocs:
         print(item['aliases'])
 
         # save path file
-        filename = self.FW_PATH + item['aliases'] #os.getcwd() + "\\firmware\\" + item['aliases']
+        filename = self.FW_PATH + item['aliases']
         outf = open(filename, 'wb')  # 创建文件
         outf.write(data)
         outf.close()

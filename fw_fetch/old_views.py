@@ -184,7 +184,7 @@ def fwdownloadex(request):
     # 获取下载URL
     downloadurl = req_get_param(request, 'url')
     print(downloadurl)
-    savepath = settings.FW_PATH #os.getcwd() + "\\firmware"
+    savepath = settings.FW_PATH
     if os.path.isdir(savepath):
         pass
     else:

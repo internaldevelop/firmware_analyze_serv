@@ -1,6 +1,7 @@
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.fs.squashfs import SquashFS
+from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
 from utils.const.file_type import FileType
 import os
@@ -19,9 +20,7 @@ class FsImage:
         image_file = file_docs[0]
 
         # 导出镜像文件到临时目录
-        root_path = os.getcwd()
-        temp_folder = os.path.join(root_path, 'files', 'temporary')
-        self.image_file_path = FwFilesStorage.export(image_file['file_id'], temp_folder)
+        self.image_file_path = FwFilesStorage.export(image_file['file_id'])
 
         # 尝试 SquashFS 解析，并验证
         self.image = SquashFS(self.image_file_path)

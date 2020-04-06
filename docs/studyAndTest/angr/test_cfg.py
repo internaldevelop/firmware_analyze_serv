@@ -3,7 +3,6 @@ import angr
 from angrutils import hook0, plot_cfg
 from angr.knowledge_plugins.cfg import CFGNode, CFGModel, MemoryDataSort
 
-# root_path = os.getcwd()
 root_path = os.path.dirname(os.path.realpath(__file__))
 samples_path = os.path.join(root_path, 'samples')
 
@@ -119,7 +118,7 @@ def state_analyze(proj):
 
 
 def test_cfg():
-    proj = angr.Project(os.path.join(samples_path, 'ais3_crackme'), load_options={'auto_load_libs': False})
+    proj = angr.Project(os.path.join(samples_path, '../../../files/samples/ais3_crackme'), load_options={'auto_load_libs': False})
 
     cfg_analyze(proj)
 

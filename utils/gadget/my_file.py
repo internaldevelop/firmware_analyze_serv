@@ -1,3 +1,5 @@
+import os
+
 
 class MyFile:
     @staticmethod
@@ -8,4 +10,10 @@ class MyFile:
             else:
                 contents = file.read(read_len)
         return contents
+
+    @staticmethod
+    def exist(file_path, folder=None):
+        if folder is not None:
+            file_path = os.path.join(folder, file_path)
+        return os.path.exists(file_path)
 

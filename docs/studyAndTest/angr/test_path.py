@@ -15,7 +15,7 @@ def path_analyze(proj):
 
 
 def test_path():
-    proj = angr.Project(os.path.join(samples_path, 'ais3_crackme'), load_options={'auto_load_libs': False})
+    proj = angr.Project(os.path.join(samples_path, '../../../files/samples/ais3_crackme'), load_options={'auto_load_libs': False})
 
     path_analyze(proj)
 

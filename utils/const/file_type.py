@@ -13,8 +13,10 @@ class FileType:
     NORMAL_FILE = 5
     # 压缩文件
     ZIP_FILE = 6
+    # 固件二进制文件
+    FW_BIN = 7
     # 其他类型文件，比如未知文件，或不关心类型的文件
-    OTHER_FILE = 7
+    OTHER_FILE = 99
 
     @staticmethod
     def get_alias(file_type):

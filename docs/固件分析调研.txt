@@ -35,6 +35,15 @@
     符号执行之angr学习-初识angr：http://www.manongjc.com/article/68188.html
     其他github资料：https://github.com/axt/cfg-explorer
                     https://github.com/jakespringer/angr_ctf
+(4) firmware-mod-kit
+    官方：https://bitsum.com//firmware_mod_kit.htm
+    教程：https://blog.csdn.net/caofengtao1314/article/details/81252047
+    开源：https://github.com/rampageX/firmware-mod-kit
+(5) 文件系统介绍
+    https://blog.csdn.net/li_wen01/article/details/80090624
+    文件系统制作：https://blog.csdn.net/lh2016rocky/article/details/70886244
+    文件系统制作：https://www.cnblogs.com/pengdonglin137/p/3521456.html
+
 
 https://github.com/mirror/firmware-mod-kit
 

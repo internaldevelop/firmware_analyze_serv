@@ -10,16 +10,18 @@ fw_files_coll = utils.sys.config.g_fw_files_coll
 class FwFileDO:
 
     @staticmethod
-    def id_to_file(file_id):
-        return FwFileDO._simulate_id_to_file(file_id)
-
-    @staticmethod
     def fetch_file():
         pass
 
     @staticmethod
     def search_files_of_pack(pack_id, file_type):
         result_cursor = fw_files_coll.find({'pack_id': pack_id, 'file_type': file_type}, {'_id': 0})
+        item_list = list(result_cursor)
+        return item_list
+
+    @staticmethod
+    def get_files_of_pack(pack_id):
+        result_cursor = fw_files_coll.find({'pack_id': pack_id}, {'_id': 0})
         item_list = list(result_cursor)
         return item_list
 
@@ -33,12 +35,26 @@ class FwFileDO:
 
     @staticmethod
     def save_file_item(pack_id, file_id, file_name, file_type, file_path=''):
+        # 如果文件路径未给定，则使用文件名称代替
+        if len(file_path) == 0:
+            file_path = file_name
+
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
                'file_type': file_type, 'create_time': SysUtils.get_now_time()}
 
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
         rv = fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)
         # print(rv)
+
+    @staticmethod
+    def delete(file_id):
+        result = fw_files_coll.delete_one({'file_id': file_id})
+        return result.deleted_count == 1
+
+    @staticmethod
+    def delete_many_of_pack(pack_id):
+        result = fw_files_coll.delete_many({'pack_id': pack_id})
+        return result.deleted_count >= 1
 
     @staticmethod
     def _simulate_id_to_file(file_id):

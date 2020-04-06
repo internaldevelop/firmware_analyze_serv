@@ -14,7 +14,7 @@ from utils.sys.error_code import Error
 
 def all_packs_info(request):
     # 所有包的基本信息
-    packs_list = PackFileDO.all_packs_info()
+    packs_list = PackFileDO.all_packs()
     info_list = []
     for pack in packs_list:
         # 各个包的所含文件信息

@@ -34,8 +34,25 @@ class PackFileDO:
         return None
 
     @staticmethod
-    def all_packs_info():
+    def all_packs():
         cursor = pack_files_coll.find({}, {'_id': 0})
         if cursor is not None:
             return list(cursor)
         return []
+
+    @staticmethod
+    def all_packs_type(pack_type):
+        cursor = pack_files_coll.find({'pack_type': pack_type}, {'_id': 0})
+        if cursor is not None:
+            return list(cursor)
+        return []
+
+    @staticmethod
+    def delete(pack_id):
+        result = pack_files_coll.delete_one({'pack_id': pack_id})
+        return result.deleted_count == 1
+
+    @staticmethod
+    def delete_many(pack_id_list):
+        for pack_id in pack_id_list:
+            PackFileDO.delete(pack_id)

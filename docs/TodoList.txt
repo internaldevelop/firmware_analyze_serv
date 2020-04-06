@@ -4,3 +4,7 @@
     https://github.com/angr/angr/issues/1696
     https://github.com/angr/angr/issues/1856
     https://github.com/angr/cle/pull/216
+
+2. 污点数据源
+    project.analyses.ReachingDefinitions
+    参考：test_reachingdefinitions.py

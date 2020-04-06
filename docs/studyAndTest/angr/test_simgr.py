@@ -26,7 +26,7 @@ def simgr_ops(proj):
 
 
 def test_simgr():
-    proj = angr.Project(os.path.join(samples_path, 'ais3_crackme'), load_options={'auto_load_libs': False})
+    proj = angr.Project(os.path.join(samples_path, '../../../files/samples/ais3_crackme'), load_options={'auto_load_libs': False})
 
     simgr_ops(proj)
 

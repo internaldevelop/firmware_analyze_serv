@@ -3,6 +3,7 @@ import patoolib
 import py7zr
 
 from utils.db.mongodb.fw_file import FwFileDO
+from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok_p, sys_app_err
 
@@ -10,7 +11,9 @@ from utils.http.response import sys_app_ok_p, sys_app_err
 def test_zip_file(request):
     file_id = ReqParams.one(request, 'file_id')
 
-    file_path, file_arch = FwFileDO.id_to_file(file_id)
+    file_path = FwFilesStorage.export(file_id)
+    if file_path is None:
+        return sys_app_err('FW_FILE_NOT_FOUND')
 
     # compress_files = _test_zipfile(file_path)
 

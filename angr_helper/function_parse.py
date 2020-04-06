@@ -1,6 +1,7 @@
 from angrutils import hook0, plot_cg, plot_cfg
 
 from utils.db.mongodb.fw_file import FwFileDO
+from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.gadget.strutil import StrUtils
 from angr_helper.angr_proj import AngrProj
 import os
@@ -127,8 +128,8 @@ class FunctionParse:
         vex = block.vex
         return vex
 
-    def file_name(self):
-        file_name, file_arch = FwFileDO.id_to_file(self.file_id)
+    def _file_name(self):
+        file_name = FwFilesStorage.export(self.file_id)
         return os.path.basename(file_name)
 
     def function_name(self):
@@ -148,7 +149,7 @@ class FunctionParse:
 
         return {
             'file_id': self.file_id,
-            'file_name': self.file_name(),
+            'file_name': self._file_name(),
             'function_name': self.function_name(),
             'function_addr': self.func_addr,
             'asm': str(asm),

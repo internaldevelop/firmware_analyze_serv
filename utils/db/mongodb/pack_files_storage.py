@@ -16,3 +16,16 @@ class PackFilesStorage:
         grid_out = pack_files_storage.find_one({'filename': file_id})
         item = SysUtils.grid_out_to_dict(grid_out)
         return item
+
+    @staticmethod
+    def delete(file_id):
+        file_item = pack_files_storage.find_one({'filename': file_id})
+        if file_item is None:
+            return False
+        pack_files_storage.delete(file_item._id)
+        return True
+
+    @staticmethod
+    def delete_many(file_id_list):
+        for file_id in file_id_list:
+            PackFilesStorage.delete(file_id)

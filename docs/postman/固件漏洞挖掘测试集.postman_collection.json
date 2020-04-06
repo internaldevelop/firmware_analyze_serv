@@ -499,7 +499,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/test/pack_extract_bat?access_token={{access_token}}&virtual_id=1",
+							"raw": "{{FW_SERV_URL}}/test/pack_extract_bat?access_token={{access_token}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -511,10 +511,6 @@
 								{
 									"key": "access_token",
 									"value": "{{access_token}}"
-								},
-								{
-									"key": "virtual_id",
-									"value": "1"
 								}
 							]
 						}
@@ -546,6 +542,119 @@
 							"path": [
 								"test",
 								"log_switch"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.10 上传单个可执行文件的虚拟包",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/add_single_exec?access_token={{access_token}}&file_name=true",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"add_single_exec"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_name",
+									"value": "true",
+									"description": "如果为空，则批量上传默认的几个文件"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.11 清空虚拟包",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/clear_virtual_packs?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"clear_virtual_packs"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.12 清空实体包",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/clear_real_packs?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"clear_real_packs"
 							],
 							"query": [
 								{
@@ -1023,13 +1132,13 @@
 	],
 	"variable": [
 		{
-			"id": "e84e7a8f-05e5-4f9d-914f-638efb6dbeb1",
+			"id": "17f249a7-8a72-4311-b5cd-772c2bff9b62",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "6f10f247-29ea-4aea-aea4-98f23cfa1c8e",
+			"id": "5a0640fe-706a-4690-8c02-1bba7ed9dbe5",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

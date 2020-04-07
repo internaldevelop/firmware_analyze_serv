@@ -11,7 +11,7 @@ import nose
 import angr
 
 # Load the tests
-test_location = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'samples')
+test_location = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', '..', 'files', 'samples')
 
 
 def perform_one(binary_path):
@@ -72,7 +72,7 @@ def perform_one(binary_path):
 
 
 def test_ddg_0():
-    binary_path = os.path.join(test_location, '../../../files/samples/datadep_test')
+    binary_path = os.path.join(test_location, 'datadep_test')
     perform_one(binary_path)
 
 
@@ -91,4 +91,5 @@ if __name__ == "__main__":
         globals()['test_' + sys.argv[1]]()
     else:
         run_all()
+
 

@@ -476,7 +476,43 @@
 					"response": []
 				},
 				{
-					"name": "2.8 包文件提取批处理",
+					"name": "2.8 日志开关测试",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/log_switch?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"log_switch"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.9 创建实体包",
 					"event": [
 						{
 							"listen": "test",
@@ -518,43 +554,7 @@
 					"response": []
 				},
 				{
-					"name": "2.9 日志开关测试",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/test/log_switch?access_token={{access_token}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"test",
-								"log_switch"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "2.10 上传单个可执行文件的虚拟包",
+					"name": "2.10 创建虚拟包",
 					"event": [
 						{
 							"listen": "test",
@@ -1132,13 +1132,13 @@
 	],
 	"variable": [
 		{
-			"id": "17f249a7-8a72-4311-b5cd-772c2bff9b62",
+			"id": "58cb7f1f-7123-437d-9965-5039b99494c3",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "5a0640fe-706a-4690-8c02-1bba7ed9dbe5",
+			"id": "f00406bb-dad5-4ed1-a2d6-e415f60ef810",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

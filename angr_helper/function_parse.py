@@ -2,6 +2,7 @@ from angrutils import hook0, plot_cg, plot_cfg
 
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
+from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
 from angr_helper.angr_proj import AngrProj
 import os
@@ -51,7 +52,8 @@ class FunctionParse:
         # cfg = angr_proj.call_cfg(start_addr=[func_addr], initial_state=start_state)
 
         # 将函数关系图生成到一个随机文件名的 png 中
-        graph_file = StrUtils.uuid_str()
+        graph_file = os.path.join(MyPath.temporary(), StrUtils.uuid_str())
+        # graph_file = StrUtils.uuid_str()
         plot_cg(self.angr_proj.proj.kb, graph_file, format="png", verbose=verbose)
 
         # 读取文件

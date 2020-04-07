@@ -8,3 +8,6 @@
 2. 污点数据源
     project.analyses.ReachingDefinitions
     参考：test_reachingdefinitions.py
+
+3. 约束
+    参考：https://xz.aliyun.com/t/7199

@@ -70,7 +70,6 @@ class FwFileDO:
             # 自动检测结果 arch 为 'X86'
             '2': {'file_name': '1.6.26-libjsound.so', 'file_arch': ''},
             # 自动检测结果 arch 为 'AMD64'
-            '3': {'file_name': 'mysql', 'file_arch': ''},
             '4': {'file_name': 'samples.zip', 'file_arch': ''},
             '5': {'file_name': 'samples.7z', 'file_arch': ''},
             '11': {'file_name': '2E0', 'file_arch': 'MIPS32'},

@@ -34,8 +34,11 @@ urlpatterns = [
     # 日志开关测试
     path('log_switch', test_aux.test_log_switch, name='test_log_switch'),
 
-    # 文件类别测试
-    path('file_type', test_aux.test_file_type, name='test_file_type'),
+    # 检测常用文件的类型
+    path('check_file_type', test_aux.test_check_file_type, name='test_check_file_type'),
+
+    # 读取系统内置的文件类型
+    path('list_file_types', test_aux.test_list_file_types, name='test_list_file_types'),
 
     # ===========================================================================
     # 固件包测试部分

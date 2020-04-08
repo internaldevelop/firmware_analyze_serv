@@ -1,5 +1,7 @@
 from utils.const.file_type import FileType
 
+""" Deprecated """
+
 
 class ImageFile:
     @staticmethod

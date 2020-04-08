@@ -2,6 +2,7 @@ import os
 import angr
 import binwalk
 
+from utils.const.file_type import FileType
 from utils.gadget.my_path import MyPath
 from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok, sys_app_ok_p
@@ -13,7 +14,7 @@ def test_bin_info(request):
 
     # bw_result = binwalk.scan(file_path, signature=True, opcodes=True)
     bw_result = binwalk.scan('--signature', '--opcodes', file_path)
-    # bw_result = binwalk.scan('--signature', file_path)
+    bw_result = binwalk.scan('--signature', file_path)
     return sys_app_ok_p({})
 
     if load_options == 1:

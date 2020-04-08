@@ -34,13 +34,15 @@ class FwFileDO:
         fw_files_coll.find({'file_id': file_id}, {'_id': 0})
 
     @staticmethod
-    def save_file_item(pack_id, file_id, file_name, file_type, file_path=''):
+    def save_file_item(pack_id, file_id, file_name, file_type, file_path='', extra_data=None):
         # 如果文件路径未给定，则使用文件名称代替
         if len(file_path) == 0:
             file_path = file_name
 
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
                'file_type': file_type, 'create_time': SysUtils.get_now_time()}
+        if extra_data is not None:
+            doc['extra_data'] = extra_data
 
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
         rv = fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)

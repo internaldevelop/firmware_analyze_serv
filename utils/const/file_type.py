@@ -24,6 +24,10 @@ class FileType:
     OTHER_OFFICE_FILE = 104
 
     PDF_FILE = 120
+    RAR_FILE = 121
+    Z7Z_FILE = 122
+    TAR_FILE = 123
+    SH_SCRIPT = 124
 
     PNG_FILE = 130
     BMP_FILE = 131
@@ -52,6 +56,10 @@ class FileType:
             str(FileType.OTHER_OFFICE_FILE): 'Office文件',
 
             str(FileType.PDF_FILE): 'PDF文件',
+            str(FileType.RAR_FILE): 'RAR文件',
+            str(FileType.Z7Z_FILE): '7Z文件',
+            str(FileType.TAR_FILE): 'TAR文件',
+            str(FileType.SH_SCRIPT): 'shell脚本',
 
             str(FileType.PNG_FILE): 'PNG文件',
             str(FileType.BMP_FILE): 'BMP文件',
@@ -63,15 +71,26 @@ class FileType:
         }
         return alias_list[str(file_type)]
 
-    # TODO: 需补充
     @staticmethod
-    def name_list():
-        return ['PACK', 'SYS_IMAGE', 'FS_IMAGE', 'EXEC_FILE', 'NORMAL_FILE', 'ZIP_FILE', 'OTHER_FILE', ]
+    def names_list():
+        # 也可以采用 vars(FileType) 获得所有的函数、变量的 mappingproxy，再用dict转成字典
+        props_list = dir(FileType)
+        results = []
+        for prop in props_list:
+            if prop.isupper():
+                results.append(prop)
+        return results
 
-    # TODO: 需补充
     @staticmethod
-    def value_list():
-        return [FileType.PACK, FileType.SYS_IMAGE, FileType.FS_IMAGE, FileType.EXEC_FILE, FileType.NORMAL_FILE,
-                FileType.ZIP_FILE, FileType.OTHER_FILE, ]
+    def values_list():
+        ftypes_list = FileType.names_list()
+        results = [eval('FileType.' + key) for key in ftypes_list]
+        return results
 
-    # def
+    @staticmethod
+    def kv_list():
+        names = FileType.names_list()
+        values = FileType.values_list()
+        results = dict(zip(names, values))
+        # results = [{key: eval('FileType.' + key)} for key in names]
+        return results

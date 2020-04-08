@@ -10,11 +10,14 @@ class PackInfoService:
             pack_info = PackFileDO.fetch_pack(pack_id)
         self.pack_info = pack_info
 
+    @staticmethod
+    def _file_type_list():
+        return [FileType.PACK, FileType.SYS_IMAGE, FileType.FS_IMAGE, FileType.EXEC_FILE, ]
+
     """ 获取固件包解包后所有的文件统计信息 """
     def get_unpack_files_stat(self):
         pack_id = self.pack_id
-        # TODO: 补充 value_list 后，类中增加新的 list
-        file_type_list = FileType.value_list()
+        file_type_list = PackInfoService._file_type_list()
 
         unpack_files = {}
         for file_type in file_type_list:

@@ -32,12 +32,12 @@ class FsImage:
             return
         self.image.extract_files(extract_func=self.save_proc)
 
-    def save_proc(self, name, path, file_type, content):
+    def save_proc(self, name, path, file_type, content, extra_data=None):
         name = str(name)
         file_id = StrUtils.uuid_str()
 
         # 保存文件参数
-        FwFileDO.save_file_item(self.pack_id, file_id, name, file_type, file_path=path)
+        FwFileDO.save_file_item(self.pack_id, file_id, name, file_type, file_path=path, extra_data=extra_data)
         # 保存文件内容
         FwFilesStorage.save(file_id, name, path, file_type, content)
 

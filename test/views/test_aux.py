@@ -4,6 +4,7 @@ from utils.db.mongodb.logs import LogRecords
 from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.db.mongodb.sys_config import SystemConfig
+from utils.gadget.file_type_scan.exec_file import ExecFile
 from utils.gadget.file_type_scan.file_type_judge import FileTypeJudge
 from utils.gadget.my_file import MyFile
 from utils.fs.fs_image import FsImage
@@ -28,16 +29,60 @@ def test_log_switch(request):
     return sys_app_ok()
 
 
-def test_file_type(request):
-    files_list = ['image.bmp', 'image.gif', 'image.jpg', 'image.png', 'image.tif', 'image2.png',
-                  'office.docx', 'office.pptx', 'office.xlsx', 'office2.docx', 'office2.xlsx',
-                  'pdf.pdf', 'text.js', 'text.py', 'text.txt', 'zip.zip',
-                  ]
+def test_check_file_type(request):
+    category = ReqParams.one(request, 'category')
 
-    types_list = []
-    for file_name in files_list:
-        file_path = os.path.join(MyPath.samples(), 'bin', file_name)
-        file_type = FileTypeJudge.scan_file_type(file_path, quiet=False)
-        types_list.append({'file_name': file_name, 'file_type': file_type, 'type_name': FileType.get_alias(file_type)})
+    if len(category) == 0:
+        # 未指定检查类型时，可执行文件和非可执行都检测一遍
+        check_exec = check_no_exec = True
+    elif category == '1':
+        # 指定'1'时，只检测非可执行文件
+        check_exec = False
+        check_no_exec = True
+    elif category == '2':
+        # 指定'2'时，只检测可执行文件
+        check_exec = True
+        check_no_exec = False
+    else:
+        return sys_app_ok_p('category=1，检测非可执行文件；category=2，检测可执行文件；category为空时，检测全部文件')
 
-    return sys_app_ok_p(types_list)
+    results = []
+
+    if check_no_exec:
+        files_list = ['image.bmp', 'image.gif', 'image.jpg', 'image.png', 'image.tif', 'image2.png',
+                      'office.docx', 'office.pptx', 'office.xlsx', 'office2.docx', 'office2.xlsx',
+                      'pdf.pdf', 'text.js', 'text.py', 'text.txt', 'zip.zip', 'zip2.zip', 'rar.rar',
+                      '7z.7z', 'tar.tar'
+                      ]
+
+        for file_name in files_list:
+            file_path = os.path.join(MyPath.samples(), 'bin', file_name)
+            file_type, extra_data = FileTypeJudge.scan_file_type(file_path, quiet=False)
+            results.append({'file_name': file_name, 'file_type': file_type, 'type_name': FileType.get_alias(file_type)})
+
+    if check_exec:
+        files_list = ['bash', 'regedit.exe', 'opkg', 'polkitd', 'true', 'ais3_crackme',
+                      'r100', 'AcXtrnal.dll', 'WdNisDrv.sys',
+                      ]
+
+        for file_name in files_list:
+            file_path = os.path.join(MyPath.samples(), 'bin', file_name)
+            file_type, extra_data = FileTypeJudge.scan_file_type(file_path, quiet=False)
+            if file_type == FileType.EXEC_FILE:
+                arch, endianness = ExecFile.parse_exec_arch(file_path, prefer=extra_data)
+            else:
+                arch = endianness = ''
+            results.append({'file_name': file_name, 'file_type': file_type,
+                            'type_name': FileType.get_alias(file_type),
+                            'arch': arch, 'endianness': endianness,
+                            })
+
+    return sys_app_ok_p(results)
+
+
+def test_list_file_types(request):
+    names = FileType.names_list()
+    values = FileType.values_list()
+    kv_set = FileType.kv_list()
+
+    return sys_app_ok_p({'names': names, 'values': values, 'dict': kv_set})

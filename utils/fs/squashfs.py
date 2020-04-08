@@ -1,7 +1,12 @@
+import os
+
 from PySquashfsImage import SquashFsImage
 
 from utils.fs.fs_base import FsBase
 from utils.const.file_type import FileType
+from utils.gadget.file_type_scan.exec_file import ExecFile
+from utils.gadget.file_type_scan.file_type_judge import FileTypeJudge
+from utils.gadget.my_path import MyPath
 
 
 class SquashFS(FsBase):
@@ -48,8 +53,54 @@ class SquashFS(FsBase):
         return inode.getName(), inode.getPath(), inode.isFolder()
 
     @staticmethod
-    def _file_type(mode):
-        return FileType.EXEC_FILE if mode & 0o111 else FileType.NORMAL_FILE
+    def _is_normal_file(name):
+        name_str = str(name, encoding="utf-8")
+        # 没有后缀的无法判断，直接返回 False
+        if name_str.find('.') < 0:
+            return False
+
+        ext_list = ['.html', '.png', '.gif', '.js', '.css', '.php', '.svg', '.conf', '.key', '.pem', '.woff',
+                    '.sh', '.swf', '.py']
+        for ext_name in ext_list:
+            start = 0 - len(ext_name)
+            if name_str[start:] == ext_name:
+                return True
+        return False
+
+    @staticmethod
+    def _file_type(name, mode, content, verify_exec=True):
+        # 过滤文件类型
+        if SquashFS._is_normal_file(name):
+            return FileType.NORMAL_FILE, None
+
+        # 需从 node 中提取文件属性，区分普通文件和可执行文件
+        # mode: 33188 =100644 33261 = 100755
+        if mode & 0o111:
+            # 不做校验时，直接返回可执行文件类型，但没有 arch 等信息
+            if not verify_exec:
+                return FileType.EXEC_FILE, None
+
+            # 疑似可执行文件，再结合 binwalk 和 angr project 检验是否为可执行文件
+            file_path = SquashFS._temp_save_data_to_file(content)
+            file_type, extra_data = FileTypeJudge.scan_file_type(file_path)
+            if file_type == FileType.EXEC_FILE:
+                arch, endianness = ExecFile.parse_exec_arch(file_path, prefer=extra_data)
+                extra_data = {'arch': arch, 'endianness': endianness}
+            else:
+                extra_data = None
+
+            return file_type, extra_data
+        else:
+            return FileType.NORMAL_FILE, None
+
+    @staticmethod
+    def _temp_save_data_to_file(data):
+        file_name = 'squashfs_temp_file'
+        file_path = os.path.join(MyPath.temporary(), file_name)
+        with open(file_path, 'wb') as file:
+            file.write(data)
+
+        return file_path
 
     def extract_files(self, extract_func=None):
         # 导出文件内容，忽略目录，导出方式由 extract_func 来进行
@@ -57,14 +108,13 @@ class SquashFS(FsBase):
         for inode in nodes:
             name, path, folder = self.node_props(inode)
             content = self.node_content(inode)
-            # 属性和数据内容交由 extract_func 回调函数处理
-            # 需从 node 中提取文件属性，区分普通文件和可执行文件
-            # mode: 33188 =100644 33261 = 100755
-            # TODO: 最好用 angr project 检验一下是否为可执行文件
-            file_type = SquashFS._file_type(inode.inode.mode)
+
+            file_type, extra_data = SquashFS._file_type(name, inode.inode.mode, content)
+
             # print(('EXEC_FILE({})' if file_type == 4 else 'NORMAL_FILE({})').format(inode.inode.mode))
+            # 属性和数据内容交由 extract_func 回调函数处理
             if extract_func is not None:
-                extract_func(name, path, file_type, content)
+                extract_func(name, path, file_type, content, extra_data=extra_data)
 
     def check_format(self):
         # 检测加载的镜像，是否为有效的 squash-fs 格式

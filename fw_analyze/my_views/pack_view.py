@@ -48,22 +48,32 @@ def pack_info(request):
 
 
 def pack_exec_files_tree(request):
-    pack_id = ReqParams.one(request, 'pack_id')
+    pack_id, tree_type = ReqParams.many(request, ['pack_id', 'tree_type'])
 
     # 读取所有可执行文件
     exec_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
 
-    # file_path_insert_into_tree 树，初始化为字典
-    # exec_tree = {}
-    # file_path_insert_into_antd_tree 树，初始化为数组
-    exec_tree = []
+    if tree_type is None or len(tree_type) == 0 or tree_type == 'normal':
+        # file_path_insert_into_tree 树，初始化为字典
+        tree_type = 'normal'
+        exec_tree = {}
+    elif tree_type == 'antd':
+        # file_path_insert_into_antd_tree 树，初始化为数组
+        exec_tree = []
+    else:
+        tree_type = 'normal'
+        exec_tree = {}
+
     for exec_file in exec_list:
         # 获取文件路径
         file_path = exec_file['file_path']
         file_id = exec_file['file_id']
         if file_path is None or len(file_path) == 0:
             continue
-        # MyTree.file_path_insert_into_tree(exec_tree, file_path, file_id)
-        MyTree.file_path_insert_into_antd_tree(exec_tree, file_path, file_id)
+
+        if tree_type == 'normal':
+            MyTree.file_path_insert_into_tree(exec_tree, file_path, file_id)
+        elif tree_type == 'antd':
+            MyTree.file_path_insert_into_antd_tree(exec_tree, file_path, file_id)
 
     return sys_app_ok_p(exec_tree)

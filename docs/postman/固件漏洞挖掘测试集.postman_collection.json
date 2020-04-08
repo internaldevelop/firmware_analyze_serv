@@ -665,6 +665,127 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "2.13 检测二进制文件",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/bin_info?access_token={{access_token}}&file_name=bg_login_tit.png&load_options=1",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"bin_info"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_name",
+									"value": "bg_login_tit.png"
+								},
+								{
+									"key": "load_options",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.14 检测常用文件的类型",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/check_file_type?access_token={{access_token}}&category",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"check_file_type"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "category",
+									"value": null,
+									"description": "'1'时，只检测非可执行；'2'时，只检测可执行；为空时，都检测"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.15 读取系统内置的文件类型",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/test/list_file_types?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"test",
+								"list_file_types"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1070,7 +1191,7 @@
 								"id": "27e40f52-1d93-43e8-809b-dca446404d0d",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
-									"pm.environment.set(\"temp_pack_id\", \"06cf4a60-adc2-4e99-974c-5d32401de1fd\");",
+									"pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
 									""
 								],
 								"type": "text/javascript"
@@ -1081,7 +1202,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{temp_pack_id}}",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{temp_pack_id}}&tree_type=antd",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -1098,6 +1219,11 @@
 								{
 									"key": "pack_id",
 									"value": "{{temp_pack_id}}"
+								},
+								{
+									"key": "tree_type",
+									"value": "antd",
+									"description": "normal: 为普通树，antd: 为antd树组件的树"
 								}
 							]
 						}
@@ -1132,13 +1258,13 @@
 	],
 	"variable": [
 		{
-			"id": "58cb7f1f-7123-437d-9965-5039b99494c3",
+			"id": "887dc2e3-89ba-4b3d-923c-bc13c3b3a923",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "f00406bb-dad5-4ed1-a2d6-e415f60ef810",
+			"id": "84ab9612-2536-43d5-aec1-996962742777",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

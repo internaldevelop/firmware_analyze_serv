@@ -7,7 +7,7 @@ from utils.task import MyTask
 class Mydownload:
 
     @staticmethod
-    def fwdownload(downloadurl, savepath, task_id):
+    def fwdownload(downloadurl, savepath, task_id, total_percentage=100):
         try:
             """
             download file from internet
@@ -22,7 +22,8 @@ class Mydownload:
                 elif percentage == 100.0:
                     return 100.0
                 else:
-                    return int(percentage / 5) * 5 + 5
+                    # return int(percentage / 5) * 5 + 5
+                    return int(percentage / 5) * 5
 
             def reporthook(a, b, c):
                 """
@@ -32,17 +33,23 @@ class Mydownload:
                 :param c: 远程文件大小
                 :return: None
                 """
-                percentage = round(a * b * 100.0 / c, 1)
-                # print("\rdownloading: %5.1f%%" % (a * b * 100.0 / c), end="")
-                print("\rdownloading: %5.1f%%" % percentage, end="")
-                #过程数据写入REDIS
+                # 实际下载百分比
+                percentage = round(a * b * 100 / c, 1)
+                percentage_total = round(a * b * total_percentage / c, 1)
+                print("\rdownloading: %5.1f%%" % percentage, "    total downloading: %5.1f%%" % percentage_total, end="")
+
+                # # 总占比百分比
+                # percentage = round(a * b * total_percentage / c, 1)
+                # print("\rdownload_proc: %5.1f%%" % percentage, end="")
+
                 # 只在运行百分比变化时才更新任务状态
-                new_percentage = translate_percent(percentage)
+                new_percentage = translate_percent(percentage_total)
                 exec_info = MyTask.fetch_exec_info(task_id)
-                old_percentage = exec_info['percentage']
+                old_percentage = -1
+                if exec_info is not None:
+                    old_percentage = exec_info['percentage']
                 if new_percentage != old_percentage:
                     MyTask.save_exec_info(task_id, new_percentage)
-
 
             filename = os.path.basename(downloadurl)
             # 判断是否为合法下载文件名 .zip .bin .img .rar .exe ...
@@ -51,7 +58,7 @@ class Mydownload:
             result = file_list[file_list.__len__() - 1] in filetype
             print(result)
             if not result:
-                return 'ERROR_FETCH_FILE_TYPE', {'filetype': file_list[file_list.__len__() - 1]}
+                return 'ERROR_FETCH_FILE_TYPE', {'filetype': file_list[file_list.__len__() - 1]}, None
 
             # 判断文件是否存在，如果不存在则下载
             if not os.path.isfile(os.path.join(savepath, filename)):
@@ -67,15 +74,17 @@ class Mydownload:
 
                 print('\nDownload finished!', result)
             else:
+                #todo 判断文件完整性，是否重新下载
+                # result = urlretrieve(downloadurl, os.path.join(savepath, filename), reporthook=reporthook)
                 print('File already exsits!')
 
-            MyTask.save_exec_info(task_id, 100.0, {'download': result})
+            MyTask.save_exec_info(task_id, total_percentage, {'download': result[0]})
 
             return 'ERROR_OK', filename, file_list
 
         except Exception as e:
             print(e)
             MyTask.save_exec_info(task_id, 100.0, {'download': str(e)})
-            return 'ERROR_EXCEPTION', e
+            return 'ERROR_EXCEPTION', e, None
 
 

@@ -46,6 +46,10 @@ class SystemConfig:
             'debug': {
                 'on': 0, 'alias': '调试日志', 'description': '系统运行时调试信息日志'
             },
+            'download': {
+                'on': 1, 'alias': '固件下载', 'description': '固件下载操作日志'
+            },
+
         }
 
     @staticmethod

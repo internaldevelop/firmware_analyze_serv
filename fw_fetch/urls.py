@@ -25,7 +25,7 @@ urlpatterns = [
     path('async_funcs/download', views.async_fwdownload, name='async_fwdownload'),
 
     # 1.2 查询固件列表
-    path('list', views.list, name='firmware_list'),
+    path('list', views.fwlist, name='firmware_list'),
 
     # 1.3 根据指定ID读取固件  将固件文件进行解压缩操作,提取文件目录到数据库
     path('async_funcs/fetch', views.async_funcs_fetch, name='async_funcs_fetch'),

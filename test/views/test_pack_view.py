@@ -146,7 +146,7 @@ def test_add_single_exec(request):
 
     # 如果没有给定文件名称，则使用默认文件列表
     if len(file_name) == 0:
-        file_name_list = ['1.6.26-libjsound.so', 'ais3_crackme', 'bash', 'datadep_test', 'opkg', 'mysql',
+        file_name_list = ['1.6.26-libjsound.so', 'ais3_crackme', 'bash', 'datadep_test', 'opkg',
                           'regedit.exe', 'true']
     else:
         file_name_list = [file_name]

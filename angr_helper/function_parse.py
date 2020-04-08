@@ -149,6 +149,9 @@ class FunctionParse:
         asm = self.function_asm()
         vex = self.function_vex()
 
+        # 反编译
+        dec = self.decompiler()
+
         return {
             'file_id': self.file_id,
             'file_name': self._file_name(),
@@ -157,5 +160,30 @@ class FunctionParse:
             'asm': str(asm),
             'vex': str(vex),
             'successors_count': len(successors),
-            'successors': successors
+            'successors': successors,
+            'decompiler': dec
         }
+
+    @staticmethod
+    def func_name_from_addr(func_addr, proj=None, cfg=None):
+        func = FunctionParse.func_by_addr(func_addr, proj, cfg)
+        return '' if func is None else func.name
+
+    @staticmethod
+    def func_by_addr(func_addr, proj=None, cfg=None):
+        func = None
+        if proj is not None:
+            func = proj.kb.functions.function(func_addr)
+        if cfg is not None:
+            func = cfg.kb.functions.function(func_addr)
+        return func
+
+    def decompiler(self):
+        cfg = self.angr_proj.cfg
+        func = FunctionParse.func_by_addr(self.func_addr, cfg=cfg)
+        if func is None:
+            return ''
+        else:
+            dec = self.angr_proj.proj.analyses.Decompiler(func, cfg=cfg)
+            print(dec.codegen.text)
+            return dec.codegen.text

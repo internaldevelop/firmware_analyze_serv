@@ -11,6 +11,7 @@ from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.fs.fs_image import FsImage
 from utils.gadget.my_file import MyFile
 from utils.gadget.strutil import StrUtils
+from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok_p
 from utils.http.http_request import req_get_param
 from utils.gadget.download import Mydownload
@@ -41,11 +42,13 @@ def _init_task_info(task_id):
 def async_fwdownload(request):
 
     # 获取下载URL
-    fw_download_url = req_get_param(request, 'url')
+    # fw_download_url = req_get_param(request, 'url')
+    fw_download_url, ftp_user, ftp_password = ReqParams.many(request, ['url', 'user', 'password'])
+
     print(fw_download_url)
 
     # 启动下载任务
-    task = MyTask(_proc_tasks, (fw_download_url, settings.FW_PATH, ))
+    task = MyTask(_proc_tasks, (fw_download_url, settings.FW_PATH, ftp_user, ftp_password))
     task_id = task.get_task_id()
 
     # 保存操作日志
@@ -56,13 +59,19 @@ def async_fwdownload(request):
     return sys_app_ok_p(_init_task_info(task_id))
 
 
-def _proc_tasks(fw_download_url, g_fw_save_path, task_id):
+def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id):
     # 检查本地保存路径 没有则创建
     SysUtils.check_filepath(g_fw_save_path)
 
     # 1 时间消耗总占比30  执行下载操作
     total_percentage = 30.0
-    ret_download_info, fw_filename, file_list = Mydownload.fwdownload(fw_download_url, g_fw_save_path, task_id, total_percentage)
+    ret_download_info=fw_filename=""
+    file_list=[]
+    if 'ftp://' in fw_download_url:
+        ret_download_info, fw_filename, file_list = Mydownload.ftp_download(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id, total_percentage)
+    else:
+        ret_download_info, fw_filename, file_list = Mydownload.http_download(fw_download_url, g_fw_save_path, task_id, total_percentage)
+
     print(ret_download_info, fw_filename)
 
     # 2 时间消耗总占比0 保存到 pack_file to mongodb

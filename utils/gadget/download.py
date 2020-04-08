@@ -1,13 +1,16 @@
 import os
-
+# import urllib
 from urllib.request import urlretrieve
+from urllib.parse import urlparse
+
+from utils.ftp.myftp import Xfer
 from utils.task import MyTask
 
 
 class Mydownload:
 
     @staticmethod
-    def fwdownload(downloadurl, savepath, task_id, total_percentage=100):
+    def http_download(downloadurl, savepath, task_id, total_percentage=100):
         try:
             """
             download file from internet
@@ -86,5 +89,24 @@ class Mydownload:
             print(e)
             MyTask.save_exec_info(task_id, 100.0, {'download': str(e)})
             return 'ERROR_EXCEPTION', e, None
+
+
+    @staticmethod
+    def ftp_download(downloadurl, savepath, ftp_user, ftp_passwrod, task_id, total_percentage=100):
+        url, file_name = os.path.split(downloadurl)
+        file_list = file_name.split('.')
+
+        # 解析IP todo 域名解析IP
+        _url = urlparse(downloadurl)
+        hostname = _url.hostname
+        # port = _url.port
+
+        xfer = Xfer()
+        xfer.setFtpParams(hostname, ftp_user, ftp_passwrod)
+        xfer.initEnv()
+        xfer.downloadFile(file_name, savepath)
+        xfer.clearEnv()
+
+        return 'ERROR_OK', file_name, file_list
 
 

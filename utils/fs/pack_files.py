@@ -42,8 +42,14 @@ class PackFiles:
             self._save_task_percentage(task_id, index, total_count)
 
             # 导出文件
-            file_path = FwFilesStorage.export(file_item['file_id'], file_name=task_id)
+            # if file_item['file_path'] == '/bin/opkg':
+            #     print('11222')
+            # file_path = FwFilesStorage.export(file_item['file_id'], file_name=task_id)
+            # 注意：此处不能export到一个指定文件，即不能指定 file_name=xxx
+            # 否则FsBase.verify_exec_bin_file锁定该文件，造成后续写入文件内容失败
+            file_path = FwFilesStorage.export(file_item['file_id'])
             file_type, extra_props = FsBase.verify_exec_bin_file(file_path)
+            # if
 
             # 修改文件的类型属性，或增加可执行二进制文件的CPU架构
             FwFileDO.update_file_type(file_item['file_id'], file_type, extra_props=extra_props)

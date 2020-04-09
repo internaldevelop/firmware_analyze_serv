@@ -65,8 +65,8 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
 
     # 1 时间消耗总占比30  执行下载操作
     total_percentage = 30.0
-    ret_download_info=fw_filename=""
-    file_list=[]
+    ret_download_info = fw_filename = ""
+    file_list = []
     if 'ftp://' in fw_download_url:
         ret_download_info, fw_filename, file_list = Mydownload.ftp_download(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id, total_percentage)
     else:
@@ -240,6 +240,11 @@ def _proc_compress(file_path, file_name, task_id):
     # sub_path = file_name.split('.')[0]
     # 提取.BIN文件
     bin_file = getfilebytype(list, ".bin")
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.trx')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.img')
+
     return bin_file
     # extract_bin_files = MyBinwalk.binwalk_file_extract(os.path.join(file_path , binfile))
     #

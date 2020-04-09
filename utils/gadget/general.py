@@ -160,12 +160,18 @@ class SysUtils:
 
     # 解压rar压缩包
     @staticmethod
-    def un_rar(filename):
-        rar = rarfile.RarFile(filename)
-        # 判断同名文件夹是否存在，若不存在则创建同名文件夹
-        SysUtils.check_filepath(os.path.splitext(filename)[0])
+    def un_rar(filename, extract_dir):
+        try:
+            rar = rarfile.RarFile(filename)
+            # 判断同名文件夹是否存在，若不存在则创建同名文件夹
+            SysUtils.check_filepath(os.path.splitext(filename)[0])
 
-        rar.extractall(os.path.splitext(filename)[0])
+            rar.extractall(path=extract_dir)
+            return rar.namelist()
+
+        except Exception as e:
+            print(e)
+            return ""
 
     @staticmethod
     def un_zip(filename, extract_dir):
@@ -177,11 +183,14 @@ class SysUtils:
         # ZIP_BZIP2：用的是bzip2压缩算法
         # ZIP_LZMA：用的是lzma压缩算法
         # unzip_files = zipfile.ZipFile(filename, mode='r', compression=zipfile.ZIP_STORED)
-        unzip_files = zipfile.ZipFile(filename, mode='r')
-        unzip_files.extractall(extract_dir)
-        unzip_files.close()
-
-        return unzip_files.namelist()
+        try:
+            unzip_files = zipfile.ZipFile(filename, mode='r')
+            unzip_files.extractall(extract_dir)
+            unzip_files.close()
+            return unzip_files.namelist()
+        except Exception as e:
+            print(e)
+            return ""
 
     @staticmethod
     def un_patool(filename):
@@ -190,10 +199,12 @@ class SysUtils:
 
     @staticmethod
     def uncompress(filename, extract_dir):
-        # 判断文件类型 进一步处理 zip , trx
+        # 判断文件类型 进一步处理 zip , trx ,rar
         list = SysUtils.un_py7zr(filename, extract_dir)  #for http://www.luyoudashi.com/roms/
         if len(list) == 0:
             list = SysUtils.un_zip(filename, extract_dir)  #for http://www.comfast.cn
+        if len(list) == 0:
+            list = SysUtils.un_rar(filename, extract_dir)
 
         return list
 

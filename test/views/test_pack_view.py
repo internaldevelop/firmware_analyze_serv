@@ -135,8 +135,7 @@ def test_pack_extract_bat(request):
                 break
 
         # 提取文件系统
-        fs_image = FsImage(pack_id)
-        fs_image.extract()
+        FsImage.start_fs_image_extract_task(pack_id)
 
     return sys_app_ok_p(pack_id)
 

@@ -15,8 +15,7 @@ def _test_jffs2_fs_file(file_path):
 def test_extract_squash_fs(request):
     pack_id = ReqParams.one(request, 'pack_id')
 
-    fs_image = FsImage(pack_id)
-    fs_image.extract()
+    FsImage.start_fs_image_extract_task(pack_id)
 
     return sys_app_ok_p({})
 

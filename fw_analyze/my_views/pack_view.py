@@ -64,6 +64,7 @@ def pack_exec_files_tree(request):
         tree_type = 'normal'
         exec_tree = {}
 
+    # 对每个文件做树的各级节点定位和创建
     for exec_file in exec_list:
         # 获取文件路径
         file_path = exec_file['file_path']

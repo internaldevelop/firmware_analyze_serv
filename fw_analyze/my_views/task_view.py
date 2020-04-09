@@ -1,6 +1,6 @@
 from utils.http.http_request import req_get_param
 from utils.http.response import sys_app_ok_p
-from utils.task import MyTask
+from utils.task.my_task import MyTask
 from utils.db.mongodb.logs import LogRecords
 
 

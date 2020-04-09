@@ -57,7 +57,7 @@ def test_check_file_type(request):
 
         for file_name in files_list:
             file_path = os.path.join(MyPath.samples(), 'bin', file_name)
-            file_type, extra_data = FileTypeJudge.scan_file_type(file_path, quiet=False)
+            file_type, extra_props = FileTypeJudge.scan_file_type(file_path, quiet=False)
             results.append({'file_name': file_name, 'file_type': file_type, 'type_name': FileType.get_alias(file_type)})
 
     if check_exec:
@@ -67,9 +67,9 @@ def test_check_file_type(request):
 
         for file_name in files_list:
             file_path = os.path.join(MyPath.samples(), 'bin', file_name)
-            file_type, extra_data = FileTypeJudge.scan_file_type(file_path, quiet=False)
+            file_type, extra_props = FileTypeJudge.scan_file_type(file_path, quiet=False)
             if file_type == FileType.EXEC_FILE:
-                arch, endianness = ExecFile.parse_exec_arch(file_path, prefer=extra_data)
+                arch, endianness = ExecFile.parse_exec_arch(file_path, prefer=extra_props)
             else:
                 arch = endianness = ''
             results.append({'file_name': file_name, 'file_type': file_type,

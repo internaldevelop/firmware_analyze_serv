@@ -1,24 +1,12 @@
 from utils.http.http_request import req_post_param
 from utils.http.response import sys_app_ok_p
-from utils.task import MyTask
+from utils.task.my_task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.function_parse import FunctionParse
 from fw_analyze.progress.cfg_progress import CfgProgress
 from utils.db.mongodb.cfg import CfgAnalyzeResultDO
 from utils.db.mongodb.functions import FunctionsResultDO
 from utils.db.mongodb.logs import LogRecords
-
-
-# def _req_params(request):
-#     file_id = req_get_param(request, 'file_id')
-#     func_addr_hex = req_get_param(request, 'func_addr')
-#     func_addr = int(func_addr_hex, 16)
-#     return file_id, func_addr
-
-
-def _init_task_info(task_id):
-    # 初始化缓存的任务信息
-    return MyTask.init_exec_status(task_id)
 
 
 def analyze_cfg(request):
@@ -34,7 +22,7 @@ def analyze_cfg(request):
                     desc='对二进制文件做调用流程图分析')
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(_init_task_info(task_id))
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
 def _proc_analyze_cfg(file_id, task_id):

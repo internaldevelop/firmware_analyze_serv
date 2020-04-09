@@ -17,9 +17,9 @@ class FileTypeJudge:
             return file_type, {}
 
         # 识别可执行文件
-        is_exec, extra_data = ExecFile.is_exec_file(file_path, quiet=quiet)
+        is_exec, extra_props = ExecFile.is_exec_file(file_path, quiet=quiet)
         if is_exec:
-            return FileType.EXEC_FILE, extra_data
+            return FileType.EXEC_FILE, extra_props
 
         return FileType.OTHER_FILE, {}
 

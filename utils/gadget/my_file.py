@@ -3,19 +3,40 @@ import os
 
 class MyFile:
     @staticmethod
-    def read(file_path, read_len=0):
-        with open(file_path, 'rb') as file:
-            if read_len == 0:
-                contents = file.read()
-            else:
-                contents = file.read(read_len)
+    def _join_file_path(file_path, folder=None):
+        if folder is not None:
+            return os.path.join(folder, file_path)
+        else:
+            return file_path
+
+    @staticmethod
+    def read(file_path, folder=None, read_len=0):
+        file_path = MyFile._join_file_path(file_path, folder)
+        try:
+            with open(file_path, 'rb') as file:
+                if read_len == 0:
+                    contents = file.read()
+                else:
+                    contents = file.read(read_len)
+        except IOError as io_err:
+            return None
+
         return contents
 
     @staticmethod
+    def write(file_path, bin_data, folder=None):
+        file_path = MyFile._join_file_path(file_path, folder)
+        try:
+            with open(file_path, 'wb') as file:
+                file.write(bin_data)
+        except IOError as io_err:
+            return None
+
+        return file_path
+
+    @staticmethod
     def exist(file_path, folder=None):
-        if folder is not None:
-            file_path = os.path.join(folder, file_path)
-        return os.path.exists(file_path)
+        return os.path.exists(MyFile._join_file_path(file_path, folder))
 
     # 返回 folders_list 和 file_name
     @staticmethod

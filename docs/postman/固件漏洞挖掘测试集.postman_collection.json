@@ -1258,13 +1258,13 @@
 	],
 	"variable": [
 		{
-			"id": "887dc2e3-89ba-4b3d-923c-bc13c3b3a923",
+			"id": "b5dc0fdf-42ef-45b7-9c50-3e5b1960397b",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "84ab9612-2536-43d5-aec1-996962742777",
+			"id": "7ecff671-15ec-4059-a215-a88561e5173d",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

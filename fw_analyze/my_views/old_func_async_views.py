@@ -1,6 +1,6 @@
 from utils.http.http_request import req_get_param
 from utils.http.response import sys_app_ok_p
-from utils.task import MyTask
+from utils.task.my_task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.old_fw_func_parse import FwFuncParse
 from fw_analyze.progress.cfg_progress import CfgProgress
@@ -14,11 +14,6 @@ def _req_params(request):
     return file_id, func_addr
 
 
-def _init_task_info(task_id):
-    # 初始化缓存的任务信息
-    return MyTask.init_exec_status(task_id)
-
-
 def async_fw_functions_list(request):
     # 从请求中取参数：文件 ID
     file_id = req_get_param(request, 'file_id')
@@ -28,7 +23,7 @@ def async_fw_functions_list(request):
     task_id = task.get_task_id()
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(_init_task_info(task_id))
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
 def async_function_info(request):
@@ -40,7 +35,7 @@ def async_function_info(request):
     task_id = task.get_task_id()
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(_init_task_info(task_id))
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
 def async_function_call_graph(request):
@@ -52,7 +47,7 @@ def async_function_call_graph(request):
     task_id = task.get_task_id()
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(_init_task_info(task_id))
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
 def _proc_func_call_graph(file_id, func_addr, task_id):

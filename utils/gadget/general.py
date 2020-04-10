@@ -199,12 +199,17 @@ class SysUtils:
 
     @staticmethod
     def uncompress(filename, extract_dir):
-        # 判断文件类型 进一步处理 zip , trx ,rar
-        list = SysUtils.un_py7zr(filename, extract_dir)  #for http://www.luyoudashi.com/roms/
-        if len(list) == 0:
-            list = SysUtils.un_zip(filename, extract_dir)  #for http://www.comfast.cn
-        if len(list) == 0:
-            list = SysUtils.un_rar(filename, extract_dir)
+        try:
+            # 判断文件类型 进一步处理 zip , trx ,rar
+            list = SysUtils.un_py7zr(filename, extract_dir)  #for http://www.luyoudashi.com/roms/
+            if len(list) == 0:
+                list = SysUtils.un_zip(filename, extract_dir)  #for http://www.comfast.cn
+            if len(list) == 0:
+                list = SysUtils.un_rar(filename, extract_dir)
+
+        except Exception as e:
+            print(e)
+            return ""
 
         return list
 

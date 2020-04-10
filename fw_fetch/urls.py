@@ -17,6 +17,9 @@ urlpatterns = [
     path('poc/fetch', old_views.poc_fetch, name='firmware_poc_fetch'),
 
     path('testws', old_views.testws, name='testws'),
+
+    path('test_check_file', views.test_check_file, name='test_check_file'),
+
     #
     # 固件获取：异步调用接口
     #

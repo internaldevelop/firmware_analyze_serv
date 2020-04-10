@@ -1,6 +1,8 @@
 # Create your my_views here.
 import time
 import datetime
+
+from utils.http.request import ReqParams
 from utils.http.response import app_ok_p, app_err_p, app_ok, app_err, sys_app_ok_p, sys_app_err_p, sys_app_ok, sys_app_err
 from utils.sys.error_code import Error
 
@@ -50,9 +52,9 @@ def testws(request):
 
 def test(request):
     print("run into test")
-    filename = 'C:\\GIT\\firmware_analyze_serv\\firmware\\_CF-AC101-V2.6.1.bin.extracted\\12F304.squashfs'
-    list = SysUtils.un_py7zr(filename, settings.FW_PATH)
-    list = SysUtils.un_py7zrEx(filename)
+    # filename = 'C:\\GIT\\firmware_analyze_serv\\firmware\\_CF-AC101-V2.6.1.bin.extracted\\12F304.squashfs'
+    # list = SysUtils.un_py7zr(filename, settings.FW_PATH)
+    # list = SysUtils.un_py7zrEx(filename)
 
 
     # SysUtils.un_tgz(filename)

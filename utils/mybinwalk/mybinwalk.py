@@ -75,3 +75,24 @@ class MyBinwalk:
             print("Critical failure:", e)
             return 'ERROR_INTERNAL_ERROR', e
         return list_temp
+
+    # 抽取文件
+    def _binwalk_file_extract(filename, extract_path):
+        try:
+            list_temp = []
+            for module in binwalk.scan(filename, signature=True, quiet=True, extract=True):
+                for result in module.results:
+                    if result.file.path in module.extractor.output:
+                        # These are files that binwalk carved out of the original firmware image, a la dd
+                        if result.offset in module.extractor.output[result.file.path].carved:
+                            list_temp.append(module.extractor.output[result.file.path].carved[result.offset])
+
+                        # These are files/directories created by extraction utilities (gunzip, tar, unsquashfs, etc)
+                        if result.offset in module.extractor.output[result.file.path].extracted:
+                            if len(module.extractor.output[result.file.path].extracted[result.offset].files):
+                                list_temp.append(module.extractor.output[result.file.path].extracted[result.offset].files)
+
+        except binwalk.ModuleException as e:
+            print("Critical failure:", e)
+            return 'ERROR_INTERNAL_ERROR', e
+        return list_temp

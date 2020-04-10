@@ -78,7 +78,7 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
     pack_id, pack_file_id = _save_pack_db(fw_download_url, os.path.join(g_fw_save_path, fw_filename), ret_download_info, task_id)
 
     # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
-    img_filename = _proc_compress(g_fw_save_path, fw_filename, task_id)
+    img_filename = _proc_uncompress(os.path.join(g_fw_save_path, fw_filename), g_fw_save_path, task_id)
 
     # 4 时间消耗总占比0 保存系统镜像文件 to mongodb
     file_id = _save_file_db(os.path.join(g_fw_save_path, img_filename), pack_id)
@@ -122,6 +122,8 @@ def _get_file_type(file_name):
     elif '.squashfs' in file_name:
         return FileType.FS_IMAGE
     elif '.jffs2' in file_name:
+        return FileType.FS_IMAGE
+    elif '.ubi' in file_name:
         return FileType.FS_IMAGE
     elif '.7z' in file_name:
         return FileType.ZIP_FILE
@@ -224,7 +226,7 @@ def _proc_fetch(firmware_id, path, task_id):
     filename = fw_pocs.fetch(firmware_id)
 
     # .zip .trx 解压缩 提取系统文件目录
-    fw_filename = _proc_compress(filename, path, task_id)
+    fw_filename = _proc_uncompress(filename, path, task_id)
 
     # 将解压缩后的固件文件信息存入mongodb firmware_info
     fw_coll = MongoDB(firmware_info_coll)
@@ -234,9 +236,9 @@ def _proc_fetch(firmware_id, path, task_id):
     return 'ERROR_OK'
 
 
-def _proc_compress(file_path, file_name, task_id):
+def _proc_uncompress(path_file_name, uncompress_path, task_id):
     # uncompress zip  .zip .trx 解压缩 提取系统文件目录
-    list = SysUtils.uncompress(os.path.join(file_path, file_name), file_path)
+    list = SysUtils.uncompress(path_file_name, uncompress_path)
     # sub_path = file_name.split('.')[0]
     # 提取.BIN文件
     bin_file = getfilebytype(list, ".bin")
@@ -244,6 +246,8 @@ def _proc_compress(file_path, file_name, task_id):
         bin_file = getfilebytype(list, '.trx')
     if len(bin_file) == 0:
         bin_file = getfilebytype(list, '.img')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.w')
 
     return bin_file
     # extract_bin_files = MyBinwalk.binwalk_file_extract(os.path.join(file_path , binfile))
@@ -259,3 +263,56 @@ def _proc_compress(file_path, file_name, task_id):
     # # item['filelist'] = list
     # # return item
     # return list
+
+
+# test
+def test_check_file(reuqest):
+    task = MyTask(_check_file,)
+    task_id = task.get_task_id()
+    return sys_app_ok_p('ok')
+
+
+def enumfiles(path, dest):
+    files = os.listdir(path)
+    for f in files:
+        subpath = path + '/' + f
+        if (os.path.isfile(subpath)):
+            dest.append(subpath)
+        elif (os.path.isdir(subpath)):
+            if (f[0] == '.'):
+                pass
+            else:
+                enumfiles(subpath, dest)
+
+
+def _check_file(task_id):
+    # 枚举目录 获取文件
+    path = "C:\\GIT\\python\\firmware"
+    uncompress_path = "C:\\GIT\\temp"
+    SysUtils.check_filepath(uncompress_path)
+
+    dest = []
+    enumfiles(path, dest)
+    for file in dest:
+        print(file)
+        # 解压缩固件包->系统镜像文件，提取文件到mongo
+        file_path, file_name = os.path.split(file)
+        img_filename = _proc_uncompress(file, uncompress_path, task_id)
+        # BINWALK 提取文件
+        extract_bin_files = MyBinwalk._binwalk_file_extract(os.path.join(uncompress_path, img_filename), uncompress_path)
+        for f in extract_bin_files:
+            # binwalk解包返回的文件名带全路径 写文件
+            with open('c:\\git\\file_tree_info.txt', 'a+') as fw:
+                # print(b'Saving original ' + path.encode() + i.getPath().encode() + i.getName())
+                if isinstance(f, list):
+                    fw.write(os.path.basename(f[0]) + '\t\t\t' + file)
+                else:
+                    fw.write(os.path.basename(f) + file)
+                fw.write('\r')
+                fw.close()
+
+        os.remove(os.path.join(uncompress_path, img_filename))
+        # os.removedirs(uncompress_path)
+
+    return
+

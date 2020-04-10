@@ -21,7 +21,7 @@ class FsImage:
 
         # 导出镜像文件到临时目录
         self.image_file_path = FwFilesStorage.export(image_file['file_id'])
-
+        
         # 尝试 SquashFS 解析，并验证
         self.image = SquashFS(self.image_file_path)
         if self.image.check_format():

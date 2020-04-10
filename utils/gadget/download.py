@@ -4,7 +4,7 @@ from urllib.request import urlretrieve
 from urllib.parse import urlparse
 
 from utils.ftp.myftp import Xfer
-from utils.task import MyTask
+from utils.task.my_task import MyTask
 
 
 class Mydownload:

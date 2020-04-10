@@ -4,6 +4,7 @@ from utils.db.mongodb.logs import LogRecords
 from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.db.mongodb.sys_config import SystemConfig
+from utils.fs.fs_base import FsBase
 from utils.gadget.file_type_scan.exec_file import ExecFile
 from utils.gadget.file_type_scan.file_type_judge import FileTypeJudge
 from utils.gadget.my_file import MyFile
@@ -57,7 +58,7 @@ def test_check_file_type(request):
 
         for file_name in files_list:
             file_path = os.path.join(MyPath.samples(), 'bin', file_name)
-            file_type, extra_data = FileTypeJudge.scan_file_type(file_path, quiet=False)
+            file_type, extra_props = FileTypeJudge.scan_file_type(file_path, quiet=False)
             results.append({'file_name': file_name, 'file_type': file_type, 'type_name': FileType.get_alias(file_type)})
 
     if check_exec:
@@ -67,9 +68,9 @@ def test_check_file_type(request):
 
         for file_name in files_list:
             file_path = os.path.join(MyPath.samples(), 'bin', file_name)
-            file_type, extra_data = FileTypeJudge.scan_file_type(file_path, quiet=False)
+            file_type, extra_props = FileTypeJudge.scan_file_type(file_path, quiet=False)
             if file_type == FileType.EXEC_FILE:
-                arch, endianness = ExecFile.parse_exec_arch(file_path, prefer=extra_data)
+                arch, endianness = ExecFile.parse_exec_arch(file_path, prefer=extra_props)
             else:
                 arch = endianness = ''
             results.append({'file_name': file_name, 'file_type': file_type,
@@ -84,5 +85,9 @@ def test_list_file_types(request):
     names = FileType.names_list()
     values = FileType.values_list()
     kv_set = FileType.kv_list()
+
+    file_path = os.path.join(MyPath.temporary(), '111')
+    file_path = FwFilesStorage.export('5a499dae-0579-4a21-8f37-63bf8df870c6', file_name='d0dc2c9b-53aa-4b7a-a430-e89d1ffa6caa')
+    FsBase.verify_exec_bin_file(file_path)
 
     return sys_app_ok_p({'names': names, 'values': values, 'dict': kv_set})

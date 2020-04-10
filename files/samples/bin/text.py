@@ -8,7 +8,7 @@ from utils.http.http_request import req_get_param_int, req_get_param, req_post_p
 from utils.gadget.general import SysUtils
 from utils.gadget.strutil import StrUtils
 
-from utils.task import MyTask
+from utils.task.my_task import MyTask
 from fw_fetch.firmware_db import FirmwareDB
 from utils.gadget.download import Mydownload
 
@@ -788,15 +788,6 @@ def get_firmware(url_firmware, savepath):
         print(e)
 
 
-def _init_task_info(task_id):
-    # 初始化缓存的任务信息
-    MyTask.init_exec_status(task_id)
-
-    # 返回任务信息
-    task_info = MyTask.fetch_exec_info(task_id)
-    return task_info
-
-
 # 固件下载
 def async_fwdownload(request):
 
@@ -809,7 +800,7 @@ def async_fwdownload(request):
     task_id = task.get_task_id()
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(_init_task_info(task_id))
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
 def _proc_func_download(downloadurl, g_fw_save_path, task_id):

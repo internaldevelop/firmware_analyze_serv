@@ -10,8 +10,13 @@ fw_files_coll = utils.sys.config.g_fw_files_coll
 class FwFileDO:
 
     @staticmethod
-    def fetch_file():
-        pass
+    def find(file_id):
+        cursor = fw_files_coll.find({'file_id': file_id}, {'_id': 0})
+        if cursor is not None:
+            docs = list(cursor)
+            if len(docs) != 0:
+                return docs[0]
+        return None
 
     @staticmethod
     def search_files_of_pack(pack_id, file_type):
@@ -34,19 +39,28 @@ class FwFileDO:
         fw_files_coll.find({'file_id': file_id}, {'_id': 0})
 
     @staticmethod
-    def save_file_item(pack_id, file_id, file_name, file_type, file_path='', extra_data=None):
+    def save_file_item(pack_id, file_id, file_name, file_type, file_path='', extra_props=None):
         # 如果文件路径未给定，则使用文件名称代替
         if len(file_path) == 0:
             file_path = file_name
 
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
                'file_type': file_type, 'create_time': SysUtils.get_now_time()}
-        if extra_data is not None:
-            doc['extra_data'] = extra_data
+        if extra_props is not None:
+            doc['extra_props'] = extra_props
 
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
         rv = fw_files_coll.update_one({'file_id': file_id, 'file_path': file_path}, {'$set': doc}, True)
-        # print(rv)
+
+    @staticmethod
+    def update_file_type(file_id, file_type, extra_props=None):
+        doc = FwFileDO.find(file_id)
+        if doc is None:
+            return
+        doc['file_type'] = file_type
+        if extra_props is not None:
+            doc['extra_props'] = extra_props
+        rv = fw_files_coll.update_one({'file_id': file_id}, {'$set': doc})
 
     @staticmethod
     def delete(file_id):

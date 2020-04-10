@@ -1,4 +1,4 @@
-from utils.task import MyTask
+from utils.task.my_task import MyTask
 
 
 class CfgProgress:

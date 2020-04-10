@@ -26,16 +26,19 @@ class FwFilesStorage:
         return item
 
     @staticmethod
-    def export(file_id):
+    def export(file_id, file_name=None, folder=None):
         # 在存储桶中读取文件记录
         grid_out = fw_files_storage.find_one({'filename': file_id})
         item = SysUtils.grid_out_to_dict(grid_out)
         if item is None:
             return None
 
-        # 文件导出到临时目录
-        folder_path = MyPath.temporary()
-        file_path = os.path.join(folder_path, item['filename'])
+        # 设置文件路径，默认文件导出到临时目录
+        if file_name is None:
+            file_name = item['filename']
+        if folder is None:
+            folder = MyPath.temporary()
+        file_path = os.path.join(folder, file_name)
 
         # 如果文件已存在，则跳过文件创建和写数据的操作
         if MyFile.exist(file_path):

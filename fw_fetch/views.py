@@ -16,7 +16,7 @@ from utils.http.response import sys_app_ok_p
 from utils.http.http_request import req_get_param
 from utils.gadget.download import Mydownload
 from utils.const.file_type import FileType
-from utils.task import MyTask
+from utils.task.my_task import MyTask
 from utils.db.mongodb.mongo_db import MongoDB
 from utils.db.mongodb.mongo_pocs import MongoPocs
 from utils.gadget.general import SysUtils
@@ -31,11 +31,6 @@ task_info_coll = utils.sys.config.g_task_info_col
 
 # firmware 存储桶
 method_fs = utils.sys.config.g_firmware_method_fs
-
-
-def _init_task_info(task_id):
-    # 初始化缓存的任务信息
-    return MyTask.init_exec_status(task_id)
 
 
 # 固件下载
@@ -56,7 +51,7 @@ def async_fwdownload(request):
                     desc='下载固件入库存储桶并进行文件抽取操作')
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(_init_task_info(task_id))
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
 def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id):
@@ -97,8 +92,7 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
             file_id = _save_file_db(file, pack_id)
 
     # 6 时间消耗总占比30 提取文件系统  (squashfs)
-    fs_image = FsImage(pack_id)
-    fs_image.extract()
+    FsImage.start_fs_image_extract_task(pack_id)
 
     total_percentage = 100.0
     MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
@@ -216,7 +210,7 @@ def async_funcs_fetch(request):
                     desc='存储桶读取固件保存并进行文件抽取')
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(_init_task_info(task_id))
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
 def _proc_fetch(firmware_id, path, task_id):

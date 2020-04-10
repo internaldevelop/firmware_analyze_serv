@@ -1,7 +1,6 @@
 from PySquashfsImage import SquashFsImage
 import os
-from utils.fs.squashfs import SquashFS
-from utils.gadget.strutil import StrUtils
+
 
 class MySquashfs:
     # https://github.com/matteomattei/PySquashfsImage

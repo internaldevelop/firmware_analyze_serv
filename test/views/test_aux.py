@@ -1,3 +1,4 @@
+from test.service.test_modules_service import TestModulesService
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.db.mongodb.logs import LogRecords
@@ -62,7 +63,7 @@ def test_check_file_type(request):
             results.append({'file_name': file_name, 'file_type': file_type, 'type_name': FileType.get_alias(file_type)})
 
     if check_exec:
-        files_list = ['bash', 'regedit.exe', 'opkg', 'polkitd', 'true', 'ais3_crackme',
+        files_list = ['libebt_standard.so', 'bash', 'regedit.exe', 'opkg', 'polkitd', 'true', 'ais3_crackme',
                       'r100', 'AcXtrnal.dll', 'WdNisDrv.sys',
                       ]
 
@@ -77,6 +78,7 @@ def test_check_file_type(request):
                             'type_name': FileType.get_alias(file_type),
                             'arch': arch, 'endianness': endianness,
                             })
+            # break
 
     return sys_app_ok_p(results)
 
@@ -86,8 +88,9 @@ def test_list_file_types(request):
     values = FileType.values_list()
     kv_set = FileType.kv_list()
 
-    file_path = os.path.join(MyPath.temporary(), '111')
-    file_path = FwFilesStorage.export('5a499dae-0579-4a21-8f37-63bf8df870c6', file_name='d0dc2c9b-53aa-4b7a-a430-e89d1ffa6caa')
-    FsBase.verify_exec_bin_file(file_path)
-
     return sys_app_ok_p({'names': names, 'values': values, 'dict': kv_set})
+
+
+def test_modules(request):
+    TestModulesService.test_verify_file_type_and_write_file()
+    return sys_app_ok()

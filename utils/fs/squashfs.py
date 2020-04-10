@@ -73,7 +73,8 @@ class SquashFS(FsBase):
     def extract_files(self, extract_func=None):
         # 导出文件内容，忽略目录，导出方式由 extract_func 来进行
         nodes = self.list_all(exclude_folder=True)
-        for inode in nodes:
+        total_count = len(nodes)
+        for index, inode in enumerate(nodes):
             name, path, folder = self.node_props(inode)
             content = self.node_content(inode)
 
@@ -82,7 +83,11 @@ class SquashFS(FsBase):
             # print(('EXEC_FILE({})' if file_type == 4 else 'NORMAL_FILE({})').format(inode.inode.mode))
             # 属性和数据内容交由 extract_func 回调函数处理
             if extract_func is not None:
-                extract_func(name, path, file_type, content, extra_props=extra_props)
+                ret = extract_func(name, path, file_type, content, index, total_count, extra_props=extra_props)
+                if not ret:
+                    return False
+        # 全部处理完毕后，返回 True 表示正常处理完成。
+        return True
 
     def check_format(self):
         # 检测加载的镜像，是否为有效的 squash-fs 格式

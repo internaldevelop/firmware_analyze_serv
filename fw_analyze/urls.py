@@ -19,7 +19,16 @@ urlpatterns = [
     path('task/analyze_cfg', analyze_cfg_view.analyze_cfg, name='task_analyze_cfg'),
 
     # 读取任务结果
-    path('task_result', task_view.get_task_result, name='get_task_result'),
+    path('task/query', task_view.get_task_result, name='task_query'),
+
+    # 停止任务
+    path('task/stop', task_view.stop_task, name='task_stop'),
+
+    # 读取指定 pack 的任务
+    path('task/search_by_pack', task_view.search_tasks_by_pack, name='search_tasks_by_pack'),
+
+    # 读取指定 文件 的任务
+    path('task/search_by_file', task_view.search_tasks_by_file, name='search_tasks_by_file'),
 
     # 获取函数列表
     path('cfg/func_list', parse_cfg_view.cfg_func_list, name='parse_cfg_func_list'),

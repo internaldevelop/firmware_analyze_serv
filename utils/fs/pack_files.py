@@ -17,15 +17,11 @@ class PackFiles:
                       'task_name': '验证二进制文件',
                       'task_desc': '验证固件包中所有的可执行二进制文件，并检查CPU架构。'}
         task = MyTask(pack_files.verify_all_exec_bin_files, (pack_id,), extra_info=extra_info)
+        return task.get_task_id()
 
     def _save_task_percentage(self, task_id, count, total):
         percent = count * 100.0 / total
-        task_info = MyTask.fetch_exec_info(task_id)
-        if task_info is None:
-            return
-        # 步进 3%
-        if percent - task_info['percentage'] > 3.0:
-            MyTask.save_exec_info(task_id, percent)
+        MyTask.save_task_percentage(task_id, percent, min_step=3.0)
 
     def verify_all_exec_bin_files(self, pack_id, task_id):
         # 获取本固件包所有的二进制可执行文件记录
@@ -41,17 +37,12 @@ class PackFiles:
             # 保存任务执行百分比
             self._save_task_percentage(task_id, index, total_count)
 
-            # 导出文件
-            # if file_item['file_path'] == '/bin/opkg':
-            #     print('11222')
-            # file_path = FwFilesStorage.export(file_item['file_id'], file_name=task_id)
-            # 注意：此处不能export到一个指定文件，即不能指定 file_name=xxx
-            # 否则FsBase.verify_exec_bin_file锁定该文件，造成后续写入文件内容失败
-            file_path = FwFilesStorage.export(file_item['file_id'])
+            # 注意：此处一定要设置覆写，否则判定的是旧文件数据，造成判定结果错误
+            file_path = FwFilesStorage.export(file_item['file_id'], file_name=task_id, override=True)
             file_type, extra_props = FsBase.verify_exec_bin_file(file_path)
-            # if
 
             # 修改文件的类型属性，或增加可执行二进制文件的CPU架构
+            # 暂时不更新存储桶中的“内容类型”
             FwFileDO.update_file_type(file_item['file_id'], file_type, extra_props=extra_props)
 
         # 保存任务完成状态

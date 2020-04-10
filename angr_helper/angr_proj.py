@@ -27,13 +27,30 @@ class AngrProj:
 
         # 保存 文件 ID
         # self.file_id = file_id
-        # 创建 angr project
         # self.proj = angr.Project(file_path, load_options={'auto_load_libs': False})
         # main_opts = {} if len(file_arch) == 0 else {'backend': 'blob', 'base_addr': 0, 'arch': file_arch}
         # main_opts = {} if len(file_arch) == 0 else {'base_addr': 0, }
-        main_opts = {}
+        # main_opts = {}
+        # main_opts = {'base_addr': 0x08044000,
+        #              'arch': 'ARMCortexM',
+        #              'backend': 'blob',
+        #              'entry_point': 0x08049509}
+        # if
+        arch, endianness = self._get_arch(file_id)
+        main_opts = {
+                'backend': 'blob',
+                'base_addr': 0x10000,
+                'entry_point': 0x10000,
+                'arch': arch,
+                # 'arch': 'ARM',
+                # 'arch': 'MIPS32',
+                'offset': 0,
+            }
+        # 创建 angr project
         self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, 'main_opts': main_opts, })
         # self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, })
+        # boyscout = self.proj.analyses.BoyScout()
+        # self.proj.arch.instruction_endness = 'Iend_LE'
 
         # 利用 angr project 对象保存 task_id，以便传递到进程回调函数
         self.proj.my_task_id = task_id
@@ -41,6 +58,14 @@ class AngrProj:
         self.cfg = self.call_cfg(cfg_mode=cfg_mode)
         # cfg_model 保存从序列化的 CFG 数据，加载解析后的对象
         self.cfg_model = None
+
+    def _get_arch(self, file_id):
+        file_item = FwFileDO.find(file_id)
+        # if file_item['extra_props'] is None or file_item['extra_props']['arch'] is None:
+        if file_item.get('extra_props') is None:
+            return 'ARM', None
+        else:
+            return file_item['extra_props'].get('arch'), file_item['extra_props'].get('endianness')
 
     def call_cfg(self, cfg_mode='cfg_emu', start_addr=[0x0], initial_state=None):
         if cfg_mode == 'cfg_emu':

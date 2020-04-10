@@ -258,6 +258,71 @@
 			"name": "2. 模块测试",
 			"item": [
 				{
+					"name": "2.1. 辅助",
+					"item": [
+						{
+							"name": "2.1.1 测试指定功能",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/modules?access_token={{access_token}}",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"modules"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "cbe67be8-e29a-47aa-b106-c4460a66a8de",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4b777f99-6aeb-4828-86ef-9b3b468d3b58",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "2.1 ZIP文件测试",
 					"request": {
 						"method": "GET",
@@ -882,34 +947,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "4.5 读取任务结果",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/task_result?access_token={{access_token}}&task_id={{task_id}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"fw_analyze",
-								"task_result"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								},
-								{
-									"key": "task_id",
-									"value": "{{task_id}}"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			],
 			"event": [
@@ -1232,6 +1269,128 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "8. 任务",
+			"item": [
+				{
+					"name": "8.1 读取任务结果",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/query?access_token={{access_token}}&task_id={{task_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"query"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "task_id",
+									"value": "{{task_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.2 停止任务",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/stop?access_token={{access_token}}&task_id={{task_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"stop"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "task_id",
+									"value": "{{task_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.3 读取固件包的对应任务",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/search_by_pack?access_token={{access_token}}&pack_id={{pack_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"search_by_pack"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "pack_id",
+									"value": "{{pack_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.4 读取文件的对应任务",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/search_by_file?access_token={{access_token}}&file_id={{file_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"search_by_file"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
@@ -1258,13 +1417,13 @@
 	],
 	"variable": [
 		{
-			"id": "b5dc0fdf-42ef-45b7-9c50-3e5b1960397b",
+			"id": "e9922032-e900-43e9-97d2-cd21ada936b9",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "7ecff671-15ec-4059-a215-a88561e5173d",
+			"id": "8d99e586-5b1c-4fa2-87a7-957a21416397",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

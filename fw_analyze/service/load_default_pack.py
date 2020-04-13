@@ -113,7 +113,7 @@ class LoadDefaultPack:
     def load_default_virtual_packs(file_name=''):
         # 如果没有给定文件名称，则使用默认文件列表
         if len(file_name) == 0:
-            file_name_list = ['1.6.26-libjsound.so', 'ais3_crackme', 'bash', 'datadep_test', 'opkg',
+            file_name_list = ['msvc_cfg_0_debug.exe', 'CADET_00002', '1.6.26-libjsound.so', 'ais3_crackme', 'bash', 'datadep_test', 'opkg',
                               'regedit.exe', 'true']
         else:
             file_name_list = [file_name]

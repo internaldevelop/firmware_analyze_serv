@@ -36,7 +36,7 @@ class AngrProj:
         #              'backend': 'blob',
         #              'entry_point': 0x08049509}
 
-        # arch, endianness = self._get_arch(file_id)
+        arch, endianness = self._get_arch(file_id)
         # main_opts = {
         #         'backend': 'blob',
         #         'base_addr': 0x10000,
@@ -45,6 +45,10 @@ class AngrProj:
         #         # 'arch': 'ARM',
         #         # 'arch': 'MIPS32',
         #         'offset': 0,
+        #     }
+        # main_opts = {
+        #         'backend': 'blob',
+        #         'arch': arch,
         #     }
         main_opts = {}
         # 创建 angr project

@@ -7,6 +7,7 @@ from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.fs.fs_image import FsImage
+from utils.fs.pack_files import PackFiles
 from utils.gadget.my_file import MyFile
 from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
@@ -125,6 +126,9 @@ class LoadDefaultPack:
 
             # 添加虚拟包和可执行文件记录及数据存储
             pack_id, exec_file_id = PackProcessService.add_single_exec(file_name, file_data)
+
+            # 验证是否可执行文件，并分析 arch
+            PackFiles.start_exec_bin_verify_task(pack_id)
 
             pack_id_list.append(pack_id)
 

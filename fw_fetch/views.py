@@ -244,19 +244,6 @@ def _proc_uncompress(path_file_name, uncompress_path, task_id):
         bin_file = getfilebytype(list, '.w')
 
     return bin_file
-    # extract_bin_files = MyBinwalk.binwalk_file_extract(os.path.join(file_path , binfile))
-    #
-    # # 提取 squashfs 文件
-    # squashfs_file = getfilebytype(extract_bin_files, ".squashfs")
-    # MySquashfs.squash_fs_file(squashfs_file, file_path, sub_path)
-    #
-    # # 判断系统文件类型 squashfs、jffs2
-    #
-    # # item['firmware_id'] = firmware_id
-    # # item['firmware_path'] = self.FW_PATH
-    # # item['filelist'] = list
-    # # return item
-    # return list
 
 
 # test
@@ -282,31 +269,57 @@ def enumfiles(path, dest):
 def _check_file(task_id):
     # 枚举目录 获取文件
     path = "C:\\GIT\\python\\firmware"
-    uncompress_path = "C:\\GIT\\temp"
-    SysUtils.check_filepath(uncompress_path)
+    # path = "C:\\TEMP"
+    uncompress_path = "C:\\TEMP"
 
     dest = []
     enumfiles(path, dest)
+
+    SysUtils.check_filepath(uncompress_path)
+    os.chdir(uncompress_path)  # 将当前的目录设置为uncompress_path
     for file in dest:
         print(file)
         # 解压缩固件包->系统镜像文件，提取文件到mongo
-        file_path, file_name = os.path.split(file)
+        # file_path, file_name = os.path.split(file)
         img_filename = _proc_uncompress(file, uncompress_path, task_id)
+        if len(img_filename) == 0:
+            continue
         # BINWALK 提取文件
         extract_bin_files = MyBinwalk._binwalk_file_extract(os.path.join(uncompress_path, img_filename), uncompress_path)
-        for f in extract_bin_files:
-            # binwalk解包返回的文件名带全路径 写文件
-            with open('c:\\git\\file_tree_info.txt', 'a+') as fw:
+
+        # binwalk解包返回的文件名带全路径 写文件
+        with open('c:\\git\\file_tree_info.txt', 'a+') as fw:
+            fw.write(file)
+            fw.write('\r')
+            for f in extract_bin_files:
                 # print(b'Saving original ' + path.encode() + i.getPath().encode() + i.getName())
                 if isinstance(f, list):
-                    fw.write(os.path.basename(f[0]) + '\t\t\t' + file)
+                    fw.write(os.path.basename(f[0]))
                 else:
-                    fw.write(os.path.basename(f) + file)
+                    fw.write(os.path.basename(f))
                 fw.write('\r')
-                fw.close()
+            fw.close()
 
-        os.remove(os.path.join(uncompress_path, img_filename))
-        # os.removedirs(uncompress_path)
+        del_file(uncompress_path)
 
     return
 
+
+def del_file(filepath):
+    for root, dirs, files in os.walk(filepath, topdown=False):
+        for name in files:
+            os.remove(os.path.join(root, name))
+        for name in dirs:
+            os.rmdir(os.path.join(root, name))
+    # """
+    # 删除某一目录下的所有文件或文件夹
+    # :param filepath: 路径
+    # :return:
+    # """
+    # del_list = os.listdir(filepath)
+    # for f in del_list:
+    #     file_path = os.path.join(filepath, f)
+    #     if os.path.isfile(file_path):
+    #         os.remove(file_path)
+    #     elif os.path.isdir(file_path):
+    #         shutil.rmtree(file_path)

@@ -20,10 +20,14 @@ class ReqParams:
 
     @staticmethod
     def _transfer(data, type):
-        if type == 'int':
-            return int(data)
-        elif type == 'hex':
-            return int(data, 16)
+        try:
+            if type == 'int':
+                return int(data)
+            elif type == 'hex':
+                return int(data, 16)
+        except ValueError as v_err:
+            return 0
+
         return data
 
     @staticmethod

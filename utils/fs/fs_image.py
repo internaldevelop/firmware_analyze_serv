@@ -44,6 +44,7 @@ class FsImage:
                       'task_name': '文件系统解析',
                       'task_desc': '从文件系统镜像包中提取文件，判断文件类型，并保存文件内容到数据库中。'}
         task = MyTask(fs_image.fs_image_extract, (pack_id,), extra_info=extra_info)
+        return task.get_task_id()
 
     def fs_image_extract(self, pack_id, task_id):
         self.task_id = task_id

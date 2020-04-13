@@ -150,7 +150,10 @@ class FunctionParse:
         vex = self.function_vex()
 
         # 反编译
-        dec = self.decompiler()
+        try:
+            dec = self.decompiler()
+        except AttributeError as attr_err:
+            dec = ''
 
         return {
             'file_id': self.file_id,

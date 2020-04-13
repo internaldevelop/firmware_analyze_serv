@@ -1,3 +1,4 @@
+from fw_analyze.service.cfg_analyze_service import CfgAnalyzeService
 from utils.http.http_request import req_post_param
 from utils.http.response import sys_app_ok_p
 from utils.task.my_task import MyTask
@@ -14,8 +15,11 @@ def analyze_cfg(request):
     file_id = req_post_param(request, 'file_id')
 
     # 启动分析任务
-    task = MyTask(_proc_analyze_cfg, (file_id, ))
-    task_id = task.get_task_id()
+    task_id = CfgAnalyzeService.start_cfg_task(file_id)
+
+    # 启动分析任务
+    # task = MyTask(_proc_analyze_cfg, (file_id, ))
+    # task_id = task.get_task_id()
 
     # 保存操作日志
     LogRecords.save({'task_id': task_id, 'file_id': file_id}, category='analysis', action='分析CFG',

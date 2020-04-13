@@ -18,3 +18,19 @@ class TasksDAO:
             if len(docs) != 0:
                 return docs[0]
         return None
+
+    @staticmethod
+    def search_by_pack(pack_id):
+        cursor = tasks_coll.find({'pack_id': pack_id}, {'_id': 0})
+        if cursor is not None:
+            docs = list(cursor)
+            return docs
+        return None
+
+    @staticmethod
+    def search_by_file(file_id):
+        cursor = tasks_coll.find({'file_id': file_id}, {'_id': 0})
+        if cursor is not None:
+            docs = list(cursor)
+            return docs
+        return None

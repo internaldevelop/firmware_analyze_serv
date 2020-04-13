@@ -63,6 +63,10 @@ class MyTask:
         # 从缓存中取出任务信息，同时删除这条缓存
         task_info = MyTask.fetch_exec_info(task_id, remove=True)
 
+        # 只允许终止正在运行的任务
+        if task_info['task_status'] != TaskStatus.RUNNING:
+            return task_info
+
         # 设置停止状态和 stop_time
         task_info['task_status'] = TaskStatus.STOPPED
         task_info['stop_time'] = SysUtils.get_now_time_str()
@@ -73,10 +77,17 @@ class MyTask:
         # 保存任务详情日志
         LogRecords.save(task_info, category='task', action='任务终止', desc='任务被终止')
 
+        return task_info
+
     @staticmethod
     def is_task_stopped(task_id):
         task_info = MyTask.fetch_exec_info(task_id)
-        return task_info is None
+        if task_info is None:
+            return True
+        elif task_info['task_status'] == TaskStatus.STOPPED:
+            return True
+        else:
+            return False
 
     @staticmethod
     def _calc_exec_time(task_info):
@@ -179,6 +190,16 @@ class MyTask:
         # notify
 
         return
+
+    @staticmethod
+    def save_task_percentage(task_id, percentage, min_step=2.0):
+        task_info = MyTask.fetch_exec_info(task_id)
+        if task_info is None:
+            return
+        # 步进 2%
+        if percentage - task_info['percentage'] > min_step:
+            MyTask.save_exec_info(task_id, percentage)
+
 
 # 传参方式示例
 

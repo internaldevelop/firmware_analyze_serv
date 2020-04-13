@@ -40,6 +40,9 @@ urlpatterns = [
     # 读取系统内置的文件类型
     path('list_file_types', test_aux.test_list_file_types, name='test_list_file_types'),
 
+    # 读取系统内置的文件类型
+    path('modules', test_aux.test_modules, name='test_aux_modules'),
+
     # ===========================================================================
     # 固件包测试部分
 

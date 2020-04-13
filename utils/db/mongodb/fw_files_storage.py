@@ -26,7 +26,7 @@ class FwFilesStorage:
         return item
 
     @staticmethod
-    def export(file_id, file_name=None, folder=None):
+    def export(file_id, file_name=None, folder=None, override=False):
         # 在存储桶中读取文件记录
         grid_out = fw_files_storage.find_one({'filename': file_id})
         item = SysUtils.grid_out_to_dict(grid_out)
@@ -40,8 +40,8 @@ class FwFilesStorage:
             folder = MyPath.temporary()
         file_path = os.path.join(folder, file_name)
 
-        # 如果文件已存在，则跳过文件创建和写数据的操作
-        if MyFile.exist(file_path):
+        # 不设置覆写时，如果文件已存在，则跳过文件创建和写数据的操作
+        if not override and MyFile.exist(file_path):
             return file_path
 
         # 读取文件数据
@@ -64,4 +64,12 @@ class FwFilesStorage:
     def delete_many(file_id_list):
         for file_id in file_id_list:
             FwFilesStorage.delete(file_id)
+
+    @staticmethod
+    def update_content_type(file_id, content_type):
+        # 没有找到单一更新的方式，暂时不考虑的存储桶的仅更新
+        file_item = FwFilesStorage.fetch(file_id)
+        if file_item is None:
+            return False
+        return False
 

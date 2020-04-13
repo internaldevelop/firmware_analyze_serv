@@ -36,8 +36,22 @@ class PackProcessService:
 
         return pack_id, exec_file_id
 
-    """ 移除固件包 """
-    def remove_pack(self, pack_id, task_id):
+    @staticmethod
+    def remove_virtual_pack(pack_id):
+        # 获取该固件包关联的所有文件 ID
+        files_list = FwFileDO.get_files_of_pack(pack_id)
+        file_id_list = [file_item['file_id'] for file_item in files_list]
+        # 移除存储桶中的文件内容
+        FwFilesStorage.delete_many(file_id_list)
+
+        # 移除该固件包关联的所有文件记录
+        FwFileDO.delete_many_of_pack(pack_id)
+
+        # 移除固件包记录
+        PackFileDO.delete(pack_id)
+
+    """ 移除固件包的任务进程 """
+    def remove_pack_proc(self, pack_id, task_id):
         # 获取该固件包关联的所有文件 ID
         files_list = FwFileDO.get_files_of_pack(pack_id)
         file_id_list = [file_item['file_id'] for file_item in files_list]
@@ -94,15 +108,22 @@ class PackProcessService:
             return []
 
         # 固件包 ID 列表
-        pack_id_list = [pack_item['pack_id'] for pack_item in packs_list]
+        # pack_id_list = [pack_item['pack_id'] for pack_item in packs_list]
         tasks_list = []
-        for pack_id in pack_id_list:
+        for pack_item in packs_list:
+            pack_id = pack_item['pack_id']
+            pack_type = pack_item['pack_type']
+
             # 停止所有当前包的运行任务
             PackProcessService.stop_running_tasks_of_pack(pack_id)
 
-            # 启动移除固件包的任务
-            task_id = PackProcessService.start_remove_packs_task(pack_id)
-            tasks_list.append(task_id)
+            if pack_type == PackType.REAL:
+                # 启动移除实体固件包的任务
+                task_id = PackProcessService.start_remove_packs_task(pack_id)
+                tasks_list.append(task_id)
+            elif pack_type == PackType.VIRTUAL:
+                # 虚拟包不需要后台任务
+                PackProcessService.remove_virtual_pack(pack_id)
 
         # 返回所有任务的列表
         return tasks_list
@@ -113,7 +134,7 @@ class PackProcessService:
         extra_info = {'pack_id': pack_id, 'task_type': TaskType.REMOVE_FW_PACKS,
                       'task_name': '清空固件包',
                       'task_desc': '清空指定固件包(ID: {})下的所有文件项，并删除其文件内容。'.format(pack_id)}
-        task = MyTask(pack_proc_serv.remove_pack, (pack_id,), extra_info=extra_info)
+        task = MyTask(pack_proc_serv.remove_pack_proc, (pack_id,), extra_info=extra_info)
         return task.get_task_id()
 
     @staticmethod

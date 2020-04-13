@@ -11,7 +11,7 @@ def _req_pack_types_list(pack_type):
     if pack_type == PackType.REAL or pack_type == PackType.VIRTUAL:
         pack_types_list.append(pack_type)
     elif pack_type == PackType.ALL:
-        pack_types_list.extend([PackType.REAL, PackType.VIRTUAL])
+        pack_types_list.extend([PackType.VIRTUAL, PackType.REAL])
     return pack_types_list
 
 

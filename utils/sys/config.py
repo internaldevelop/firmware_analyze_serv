@@ -25,11 +25,11 @@ g_ws_url = "ws://localhost:10901/websocket/asset_info"
 
 # mongo-db客户端
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.60.5:27017/")
-g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.199.244:27017/")
+g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.26:27017/")
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.182.88:27017/")
 
 # redis 客户端
-g_redis_client = StrictRedis(host='192.168.199.244', port=16379, db=0, password='123456')
+g_redis_client = StrictRedis(host='172.16.113.26', port=16379, db=0, password='123456')
 # g_redis_client = StrictRedis(host='192.168.182.88', port=16379, db=0, password='123456')
 
 # ===========================================================================================

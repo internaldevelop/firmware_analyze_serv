@@ -93,6 +93,7 @@ class Mydownload:
 
     @staticmethod
     def ftp_download(downloadurl, savepath, ftp_user, ftp_passwrod, task_id, total_percentage=100):
+        # TODO 下载带子目录的文件时存在问题，如：ftp://172.16.113.26/huawei/S5720SI-V200R011C10SPC600.zip
         url, file_name = os.path.split(downloadurl)
         file_list = file_name.split('.')
 

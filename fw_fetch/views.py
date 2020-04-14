@@ -242,6 +242,14 @@ def _proc_uncompress(path_file_name, uncompress_path, task_id):
         bin_file = getfilebytype(list, '.img')
     if len(bin_file) == 0:
         bin_file = getfilebytype(list, '.w')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.chk')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.bix')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.Image')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.BootImage')
 
     return bin_file
 
@@ -268,7 +276,9 @@ def enumfiles(path, dest):
 
 def _check_file(task_id):
     # 枚举目录 获取文件
-    path = "C:\\GIT\\python\\firmware"
+    # path = "C:\\GIT\\python\\firmware"
+    path = "C:\\固件下载\\huawei"
+    path = "C:\\固件下载\\ZS7035"
     # path = "C:\\TEMP"
     uncompress_path = "C:\\TEMP"
 
@@ -281,14 +291,19 @@ def _check_file(task_id):
         print(file)
         # 解压缩固件包->系统镜像文件，提取文件到mongo
         # file_path, file_name = os.path.split(file)
-        img_filename = _proc_uncompress(file, uncompress_path, task_id)
+        if '.bin' in file:
+            img_filename = file
+        elif '.trx' in file:
+            img_filename = file
+        else:
+            img_filename = _proc_uncompress(file, uncompress_path, task_id)
         if len(img_filename) == 0:
             continue
         # BINWALK 提取文件
         extract_bin_files = MyBinwalk._binwalk_file_extract(os.path.join(uncompress_path, img_filename), uncompress_path)
 
         # binwalk解包返回的文件名带全路径 写文件
-        with open('c:\\git\\file_tree_info.txt', 'a+') as fw:
+        with open('c:\\git\\file_tree_info0413.txt', 'a+') as fw:
             fw.write(file)
             fw.write('\r')
             for f in extract_bin_files:
@@ -306,20 +321,9 @@ def _check_file(task_id):
 
 
 def del_file(filepath):
+    # 删除某一目录下的所有文件或文件夹
     for root, dirs, files in os.walk(filepath, topdown=False):
         for name in files:
             os.remove(os.path.join(root, name))
         for name in dirs:
             os.rmdir(os.path.join(root, name))
-    # """
-    # 删除某一目录下的所有文件或文件夹
-    # :param filepath: 路径
-    # :return:
-    # """
-    # del_list = os.listdir(filepath)
-    # for f in del_list:
-    #     file_path = os.path.join(filepath, f)
-    #     if os.path.isfile(file_path):
-    #         os.remove(file_path)
-    #     elif os.path.isdir(file_path):
-    #         shutil.rmtree(file_path)

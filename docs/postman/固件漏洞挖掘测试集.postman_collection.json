@@ -634,6 +634,12 @@
 							"script": {
 								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
 								"exec": [
+									"pm.test(\"run XXXXX\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"file_id\", jsonData.payload[0].file_id);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -644,7 +650,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/test/add_single_exec?access_token={{access_token}}&file_name=true",
+							"raw": "{{FW_SERV_URL}}/test/add_single_exec?access_token={{access_token}}&file_name=1.6.26-libjsound.so",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -659,7 +665,7 @@
 								},
 								{
 									"key": "file_name",
-									"value": "true",
+									"value": "1.6.26-libjsound.so",
 									"description": "如果为空，则批量上传默认的几个文件"
 								}
 							]
@@ -1353,13 +1359,13 @@
 	],
 	"variable": [
 		{
-			"id": "4f99c9f8-6b1c-4a3c-8d93-c3b1ca12740f",
+			"id": "b1b363d2-a708-4014-8b4c-086bf47f026d",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "7eac4603-e948-45c4-bccf-76bcaa6592b4",
+			"id": "15aebd13-76f8-426d-a406-b36f79a2fd09",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

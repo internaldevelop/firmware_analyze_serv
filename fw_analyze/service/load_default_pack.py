@@ -118,7 +118,7 @@ class LoadDefaultPack:
         else:
             file_name_list = [file_name]
 
-        pack_id_list = []
+        pack_list = []
         for file_name in file_name_list:
             # 从 samples 文件中读取文件内容
             file_path = os.path.join(MyPath.samples(), file_name)
@@ -130,13 +130,13 @@ class LoadDefaultPack:
             # 验证是否可执行文件，并分析 arch
             PackFiles.start_exec_bin_verify_task(pack_id)
 
-            pack_id_list.append(pack_id)
+            pack_list.append({'pack_id': pack_id, 'file_id': exec_file_id})
 
-        return pack_id_list
+        return pack_list
 
     @staticmethod
     def load_default_real_packs(pack_index_list):
-        pack_id_list = []
+        pack_list = []
 
         for pack_index_int in pack_index_list:
 
@@ -147,6 +147,7 @@ class LoadDefaultPack:
             if pack_id is None:
                 break
 
+            file_id_list = []
             for file_index_int in range(1, 100):
                 file_index = str(file_index_int)
                 # 保存固件镜像文件
@@ -154,9 +155,10 @@ class LoadDefaultPack:
                 # 保存失败时，则已经完成所有的镜像文件保存，退出循环
                 if i_file_id is None:
                     break
+                file_id_list.append(i_file_id)
 
             # 提取文件系统
             FsImage.start_fs_image_extract_task(pack_id)
-            pack_id_list.append(pack_id)
+            pack_list.append({'pack_id': pack_id, 'file_id_list': file_id_list})
 
-        return pack_id_list
+        return pack_list

@@ -35,8 +35,6 @@ urlpatterns = [
 
     # 获取指定函数的 call-graph，分成 A B 两种处理模式
     path('cfg/call_graph_a', parse_cfg_view.call_graph_a, name='parse_cfg_call_graph_a'),
-    # TODO: call_graph_b 未实验成功
-    path('cfg/call_graph_b', parse_cfg_view.call_graph_b, name='parse_cfg_call_graph_b'),
 
     # 获取函数信息，包含诸如：汇编代码、中间代码、后继调用等
     path('cfg/func_info', parse_cfg_view.function_info, name='parse_cfg_function_info'),

@@ -1,6 +1,8 @@
 import utils.sys.config
 
 # 任务集合
+from utils.db.mongodb.cursor_result import CursorResult
+
 tasks_coll = utils.sys.config.g_tasks_coll
 
 
@@ -13,24 +15,14 @@ class TasksDAO:
     @staticmethod
     def find(task_id):
         cursor = tasks_coll.find({'task_id': task_id}, {'_id': 0})
-        if cursor is not None:
-            docs = list(cursor)
-            if len(docs) != 0:
-                return docs[0]
-        return None
+        return CursorResult.one(cursor)
 
     @staticmethod
     def search_by_pack(pack_id):
         cursor = tasks_coll.find({'pack_id': pack_id}, {'_id': 0})
-        if cursor is not None:
-            docs = list(cursor)
-            return docs
-        return None
+        return CursorResult.many(cursor)
 
     @staticmethod
     def search_by_file(file_id):
         cursor = tasks_coll.find({'file_id': file_id}, {'_id': 0})
-        if cursor is not None:
-            docs = list(cursor)
-            return docs
-        return None
+        return CursorResult.many(cursor)

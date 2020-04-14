@@ -43,7 +43,7 @@ class PackFiles:
 
             # 修改文件的类型属性，或增加可执行二进制文件的CPU架构
             # 暂时不更新存储桶中的“内容类型”
-            FwFileDO.update_file_type(file_item['file_id'], file_type, extra_props=extra_props)
+            FwFileDO.update_verified_file_type(file_item['file_id'], file_type, extra_props=extra_props)
 
         # 保存任务完成状态
         MyTask.save_exec_info(task_id, 100.0)

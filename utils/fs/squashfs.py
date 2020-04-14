@@ -76,6 +76,8 @@ class SquashFS(FsBase):
         total_count = len(nodes)
         for index, inode in enumerate(nodes):
             name, path, folder = self.node_props(inode)
+            # name 保存的是字节串，需转换成 string
+            name = str(name, encoding="utf-8")
             content = self.node_content(inode)
 
             file_type, extra_props = SquashFS._file_type(name, inode.inode.mode, content)

@@ -5,8 +5,6 @@ from utils.task.my_task import MyTask
 from angr_helper.angr_proj import AngrProj
 from angr_helper.function_parse import FunctionParse
 from fw_analyze.progress.cfg_progress import CfgProgress
-from utils.db.mongodb.cfg import CfgAnalyzeResultDO
-from utils.db.mongodb.functions import FunctionsResultDO
 from utils.db.mongodb.logs import LogRecords
 
 
@@ -17,35 +15,9 @@ def analyze_cfg(request):
     # 启动分析任务
     task_id = CfgAnalyzeService.start_cfg_task(file_id)
 
-    # 启动分析任务
-    # task = MyTask(_proc_analyze_cfg, (file_id, ))
-    # task_id = task.get_task_id()
-
     # 保存操作日志
     LogRecords.save({'task_id': task_id, 'file_id': file_id}, category='analysis', action='分析CFG',
                     desc='对二进制文件做调用流程图分析')
 
     # 返回响应：任务初始化的信息
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
-
-
-def _proc_analyze_cfg(file_id, task_id):
-    cfg_progress = CfgProgress(task_id=task_id)
-
-    # 通过 project 快速解析文件
-    angr_proj = AngrProj(file_id, progress_callback=cfg_progress.run_percent_cb, task_id=task_id, cfg_mode='cfg_fast')
-
-    # ser = angr_proj.proj.serialize()
-    # proj = angr_proj.proj.parse(ser)
-
-    # 序列化 cfg
-    cfg_result = angr_proj.cfg.model.serialize()
-
-    # 保存 cfg 分析结果到数据库
-    CfgAnalyzeResultDO.save(file_id, task_id, cfg_result)
-
-    # 从 project 中提取函数列表
-    functions = FunctionParse.functions_extract(angr_proj.proj)
-
-    # 保存 函数列表到数据库
-    FunctionsResultDO.save(file_id, task_id, functions)

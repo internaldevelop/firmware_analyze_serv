@@ -1,8 +1,8 @@
 from angr_helper.angr_proj import AngrProj
 from angr_helper.function_parse import FunctionParse
 from fw_analyze.progress.cfg_progress import CfgProgress
-from utils.db.mongodb.cfg import CfgAnalyzeResultDO
-from utils.db.mongodb.functions import FunctionsResultDO
+from utils.db.mongodb.cfg_dao import CfgAnalyzeResultDAO
+from utils.db.mongodb.fw_file import FwFileDO
 from utils.task.my_task import MyTask
 from utils.task.task_type import TaskType
 
@@ -29,20 +29,14 @@ class CfgAnalyzeService:
         angr_proj = AngrProj(file_id, progress_callback=self.run_percent_cb, task_id=task_id,
                              cfg_mode='cfg_fast')
 
-        # ser = angr_proj.proj.serialize()
-        # proj = angr_proj.proj.parse(ser)
-
-        # 序列化 cfg
-        cfg_result = angr_proj.cfg.model.serialize()
-
-        # 保存 cfg 分析结果到数据库
-        CfgAnalyzeResultDO.save(file_id, task_id, cfg_result)
-
         # 从 project 中提取函数列表
         functions = FunctionParse.functions_extract(angr_proj.proj)
 
         # 保存 函数列表到数据库
-        FunctionsResultDO.save(file_id, task_id, functions)
+        CfgAnalyzeResultDAO.save(file_id, task_id, {'functions': functions})
+
+        # 设置文件已完成 CFG 分析的标记
+        FwFileDO.set_cfg_analyzed(file_id)
 
     def run_percent_cb(self, percentage, **kwargs):
         if self.task_id is None:
@@ -57,3 +51,8 @@ class CfgAnalyzeService:
 
         # 只在运行百分比变化时才更新任务状态
         MyTask.save_task_percentage(task_id, percentage)
+
+    @staticmethod
+    def has_cfg_analyze(file_id):
+        item = FwFileDO.find(file_id)
+        return item['cfg_analyze'] == 1

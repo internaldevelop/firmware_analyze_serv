@@ -409,6 +409,237 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "2.2 angr",
+					"item": [
+						{
+							"name": "2.2.1 BIN 函数列表",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/angr/functions?access_token={{access_token}}&file_name=i2c_master_read-nucleol152re.elf",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"angr",
+										"functions"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_name",
+											"value": "i2c_master_read-nucleol152re.elf",
+											"description": "'1'时，只检测非可执行；'2'时，只检测可执行；为空时，都检测"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.2.1 测试angr CFG",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/angr/cfg?access_token={{access_token}}&file_name=libc.so.6",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"angr",
+										"cfg"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_name",
+											"value": "libc.so.6"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "2.3 固件包测试",
+					"item": [
+						{
+							"name": "2.3.1 验证固件包关联文件的类型",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/pack/verify_file_type?access_token={{access_token}}&pack_id={{pack_id}}",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"pack",
+										"verify_file_type"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "pack_id",
+											"value": "{{pack_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.3.2 包文件提取批处理",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											"pm.test(\"test\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.id).to.eql(0);",
+											"    ",
+											"    pm.environment.set(\"pack_id\", jsonData.payload.pack_id);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/pack_extract_bat?access_token={{access_token}}&pack_index=2",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"pack_extract_bat"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "pack_index",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.3.3 用指定文件创建虚拟包",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											"pm.test(\"run XXXXX\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.id).to.eql(0);",
+											"    ",
+											"    pm.environment.set(\"file_id\", jsonData.payload[0].file_id);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/add_single_exec?access_token={{access_token}}&file_name=1.6.26-libjsound.so",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"add_single_exec"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_name",
+											"value": "1.6.26-libjsound.so",
+											"description": "如果为空，则批量上传默认的几个文件"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "2.1 ZIP文件测试",
 					"request": {
 						"method": "GET",
@@ -574,99 +805,6 @@
 								{
 									"key": "access_token",
 									"value": "{{access_token}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "2.9 包文件提取批处理",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
-								"exec": [
-									"pm.test(\"test\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"pack_id\", jsonData.payload.pack_id);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/test/pack_extract_bat?access_token={{access_token}}&pack_index=2",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"test",
-								"pack_extract_bat"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								},
-								{
-									"key": "pack_index",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "2.10 用指定文件创建虚拟包",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
-								"exec": [
-									"pm.test(\"run XXXXX\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"file_id\", jsonData.payload[0].file_id);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/test/add_single_exec?access_token={{access_token}}&file_name=1.6.26-libjsound.so",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"test",
-								"add_single_exec"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								},
-								{
-									"key": "file_name",
-									"value": "1.6.26-libjsound.so",
-									"description": "如果为空，则批量上传默认的几个文件"
 								}
 							]
 						}
@@ -1359,13 +1497,13 @@
 	],
 	"variable": [
 		{
-			"id": "b1b363d2-a708-4014-8b4c-086bf47f026d",
+			"id": "bd4f41ff-881f-44a0-8a57-287cdb9c278d",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "15aebd13-76f8-426d-a406-b36f79a2fd09",
+			"id": "2b8d2a79-86d4-4bc4-b997-672191f9250c",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

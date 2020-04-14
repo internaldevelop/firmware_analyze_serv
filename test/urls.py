@@ -52,11 +52,20 @@ urlpatterns = [
     # 保存单个可执行文件
     path('add_single_exec', test_pack_view.test_add_single_exec, name='test_add_single_exec'),
 
+    # 保存单个可执行文件
+    path('pack/verify_file_type', test_pack_view.test_pack_verify_file_type, name='test_pack_verify_file_type'),
+
     # ===========================================================================
     # angr 功能测试部分
 
-    # 保存包文件
+    # 测试 bin
     path('bin_info', test_angr_view.test_bin_info, name='test_angr_bin_info'),
+
+    # 测试 cfg
+    path('angr/cfg', test_angr_view.test_angr_cfg, name='test_angr_cfg'),
+
+    # 测试 angr functions
+    path('angr/functions', test_angr_view.test_angr_functions, name='test_angr_functions'),
 
     #
     # # 初步检验文件 -- 多用于测试

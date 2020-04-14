@@ -1,4 +1,5 @@
 import utils.sys.config
+from utils.db.mongodb.cursor_result import CursorResult
 from utils.gadget.general import SysUtils
 from utils.const.file_source import FileSource
 from utils.const.file_type import FileType
@@ -27,25 +28,17 @@ class PackFileDO:
     @staticmethod
     def fetch_pack(pack_id):
         cursor = pack_files_coll.find({'pack_id': pack_id}, {'_id': 0})
-        if cursor is not None:
-            docs = list(cursor)
-            if len(docs) != 0:
-                return docs[0]
-        return None
+        return CursorResult.one(cursor)
 
     @staticmethod
     def all_packs():
         cursor = pack_files_coll.find({}, {'_id': 0})
-        if cursor is not None:
-            return list(cursor)
-        return []
+        return CursorResult.many(cursor)
 
     @staticmethod
     def all_packs_type(pack_type):
         cursor = pack_files_coll.find({'pack_type': pack_type}, {'_id': 0})
-        if cursor is not None:
-            return list(cursor)
-        return []
+        return CursorResult.many(cursor)
 
     @staticmethod
     def delete(pack_id):

@@ -36,7 +36,7 @@ class AngrProj:
         #              'backend': 'blob',
         #              'entry_point': 0x08049509}
 
-        arch, endianness = self._get_arch(file_id)
+        # arch, endianness = self._get_arch(file_id)
         # main_opts = {
         #         'backend': 'blob',
         #         'base_addr': 0x10000,
@@ -50,10 +50,10 @@ class AngrProj:
         #         'backend': 'blob',
         #         'arch': arch,
         #     }
-        main_opts = {}
+        # main_opts = {}
         # 创建 angr project
-        self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, 'main_opts': main_opts, })
-        # self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, })
+        # self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, 'main_opts': main_opts, })
+        self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, })
         # boyscout = self.proj.analyses.BoyScout()
         # self.proj.arch.instruction_endness = 'Iend_LE'
 
@@ -86,7 +86,10 @@ class AngrProj:
     def _cfg_fast(self):
         # 快速模式生成 CFG
         cfg = self.proj.analyses.CFGFast(show_progressbar=self.inline_progress_bar,
-                                         progress_callback=self.progress_cb)
+                                         progress_callback=self.progress_cb,
+                                         resolve_indirect_jumps=True,
+                                         force_complete_scan=False,
+                                         normalize=True)
         return cfg
 
     def _cfg_emulated(self, start_addr=[0x0], initial_state=None):

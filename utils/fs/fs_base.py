@@ -38,8 +38,8 @@ class FsBase(object):
     # 通用函数，不需要继承类重载
 
     @staticmethod
-    def is_normal_file(name):
-        name_str = str(name, encoding="utf-8")
+    def is_normal_file(name_str):
+        # name_str = str(name, encoding="utf-8")
         # 没有后缀的无法判断，直接返回 False
         if name_str.find('.') < 0:
             return False

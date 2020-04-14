@@ -46,23 +46,11 @@ urlpatterns = [
     # ===========================================================================
     # 固件包测试部分
 
-    # 保存包文件
-    path('save_pack', test_pack_view.test_save_pack, name='test_save_pack'),
-
-    # 保存镜像文件
-    path('save_image', test_pack_view.test_save_image, name='test_save_image'),
-
     # 包文件提取批处理
     path('pack_extract_bat', test_pack_view.test_pack_extract_bat, name='test_pack_extract_bat'),
 
     # 保存单个可执行文件
     path('add_single_exec', test_pack_view.test_add_single_exec, name='test_add_single_exec'),
-
-    # 清空虚拟包及其文件
-    path('clear_virtual_packs', test_pack_view.test_clear_virtual_packs, name='test_clear_virtual_packs'),
-
-    # 清空实体包及其文件
-    path('clear_real_packs', test_pack_view.test_clear_real_packs, name='test_clear_real_packs'),
 
     # ===========================================================================
     # angr 功能测试部分

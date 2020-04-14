@@ -211,7 +211,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/system/check_file?file_id={{file_id}}",
+							"raw": "{{FW_SERV_URL}}/system/check_file?access_token={{access_token}}&file_id={{file_id}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -221,8 +221,94 @@
 							],
 							"query": [
 								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
 									"key": "file_id",
 									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.6 清除固件包",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/system/clear_packs?access_token={{access_token}}&pack_type=",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"system",
+								"clear_packs"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "pack_type",
+									"value": "",
+									"description": "1=实体包；2=虚拟包；不填或无此参数表示1+2，其它值不处理。"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.7 加载缺省固件包",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/system/load_default_packs?access_token={{access_token}}&pack_type=",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"system",
+								"load_default_packs"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "pack_type",
+									"value": "",
+									"description": "1=实体包；2=虚拟包；不填或无此参数表示1+2，其它值不处理。"
 								}
 							]
 						}
@@ -431,88 +517,6 @@
 					"response": []
 				},
 				{
-					"name": "2.5 保存 pack 文件",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
-								"exec": [
-									"pm.test(\"test\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"pack_id\", jsonData.payload.pack_id);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/test/save_pack?access_token={{access_token}}&virtual_id=1&pack_name=1",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"test",
-								"save_pack"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								},
-								{
-									"key": "virtual_id",
-									"value": "1"
-								},
-								{
-									"key": "pack_name",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "2.6 保存 镜像 文件",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/test/save_image?access_token={{access_token}}&virtual_id=1&pack_id={{pack_id}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"test",
-								"save_image"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								},
-								{
-									"key": "virtual_id",
-									"value": "1"
-								},
-								{
-									"key": "pack_id",
-									"value": "{{pack_id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "2.7 squashfs 枚举",
 					"request": {
 						"method": "GET",
@@ -577,7 +581,7 @@
 					"response": []
 				},
 				{
-					"name": "2.9 创建实体包",
+					"name": "2.9 包文件提取批处理",
 					"event": [
 						{
 							"listen": "test",
@@ -600,7 +604,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/test/pack_extract_bat?access_token={{access_token}}",
+							"raw": "{{FW_SERV_URL}}/test/pack_extract_bat?access_token={{access_token}}&pack_index=2",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -612,6 +616,10 @@
 								{
 									"key": "access_token",
 									"value": "{{access_token}}"
+								},
+								{
+									"key": "pack_index",
+									"value": "2"
 								}
 							]
 						}
@@ -619,13 +627,19 @@
 					"response": []
 				},
 				{
-					"name": "2.10 创建虚拟包",
+					"name": "2.10 用指定文件创建虚拟包",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
 								"exec": [
+									"pm.test(\"run XXXXX\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"file_id\", jsonData.payload[0].file_id);",
+									"});",
 									""
 								],
 								"type": "text/javascript"
@@ -636,7 +650,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/test/add_single_exec?access_token={{access_token}}&file_name=true",
+							"raw": "{{FW_SERV_URL}}/test/add_single_exec?access_token={{access_token}}&file_name=1.6.26-libjsound.so",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -651,80 +665,8 @@
 								},
 								{
 									"key": "file_name",
-									"value": "true",
+									"value": "1.6.26-libjsound.so",
 									"description": "如果为空，则批量上传默认的几个文件"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "2.11 清空虚拟包",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/test/clear_virtual_packs?access_token={{access_token}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"test",
-								"clear_virtual_packs"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "2.12 清空实体包",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/test/clear_real_packs?access_token={{access_token}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"test",
-								"clear_real_packs"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
 								}
 							]
 						}
@@ -1417,13 +1359,13 @@
 	],
 	"variable": [
 		{
-			"id": "e9922032-e900-43e9-97d2-cd21ada936b9",
+			"id": "b1b363d2-a708-4014-8b4c-086bf47f026d",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "8d99e586-5b1c-4fa2-87a7-957a21416397",
+			"id": "15aebd13-76f8-426d-a406-b36f79a2fd09",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

@@ -12,6 +12,8 @@
 3. 约束
     参考：https://xz.aliyun.com/t/7199
 
+4. 单独测试 1.6.26-libjsound.so 的 arch 分析
+
 7. 清空固件包==》启动任务处理
 
 9. 实际固件代码解析失败，比如 /bin/opkg，报错：Decoding error occurred at address

@@ -3,6 +3,7 @@ from utils.http.http_request import req_get_param
 from utils.http.response import sys_app_ok_p
 from utils.task.my_task import MyTask
 from utils.db.mongodb.logs import LogRecords
+from utils.task.task_status import TaskStatus
 
 
 def get_task_result(request):
@@ -34,8 +35,14 @@ def search_tasks_by_pack(request):
         return sys_app_ok_p([])
 
     tasks_list = TasksDAO.search_by_pack(pack_id)
+    task_info_list = []
+    for task_info in tasks_list:
+        # 没有执行完成的任务状态，用缓存中任务信息代替
+        if task_info['task_status'] != TaskStatus.COMPLETE:
+            task_info = MyTask.fetch_exec_info(task_info['task_id'])
+        task_info_list.append(task_info)
 
-    return sys_app_ok_p(tasks_list)
+    return sys_app_ok_p(task_info_list)
 
 
 def search_tasks_by_file(request):

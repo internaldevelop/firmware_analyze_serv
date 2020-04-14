@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import info_view
 from .views import sys_config_view
+from .views import system_view
 
 urlpatterns = [
     # 系统信息
@@ -19,4 +20,9 @@ urlpatterns = [
     # 读取系统配置
     path('read_config', sys_config_view.read_sys_config, name='read_sys_config'),
 
+    # 清空固件包及其文件（pack_type：1=实体包；2=虚拟包；不填或无此参数表示1+2，其它值不处理。）
+    path('clear_packs', system_view.system_clear_packs, name='system_clear_packs'),
+
+    # 加载缺省固件包（pack_type：1=实体包；2=虚拟包；不填或无此参数表示1+2，其它值不处理。）
+    path('load_default_packs', system_view.system_load_default_packs, name='system_load_default_packs'),
 ]

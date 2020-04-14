@@ -35,17 +35,22 @@ class AngrProj:
         #              'arch': 'ARMCortexM',
         #              'backend': 'blob',
         #              'entry_point': 0x08049509}
-        # if
+
         arch, endianness = self._get_arch(file_id)
-        main_opts = {
-                'backend': 'blob',
-                'base_addr': 0x10000,
-                'entry_point': 0x10000,
-                'arch': arch,
-                # 'arch': 'ARM',
-                # 'arch': 'MIPS32',
-                'offset': 0,
-            }
+        # main_opts = {
+        #         'backend': 'blob',
+        #         'base_addr': 0x10000,
+        #         'entry_point': 0x10000,
+        #         'arch': arch,
+        #         # 'arch': 'ARM',
+        #         # 'arch': 'MIPS32',
+        #         'offset': 0,
+        #     }
+        # main_opts = {
+        #         'backend': 'blob',
+        #         'arch': arch,
+        #     }
+        main_opts = {}
         # 创建 angr project
         self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, 'main_opts': main_opts, })
         # self.proj = angr.Project(file_path, load_options={'auto_load_libs': False, })

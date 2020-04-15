@@ -28,8 +28,10 @@ class FsImage:
         # 导出镜像文件到临时目录
         image_file_path = FwFilesStorage.export(image_file['file_id'])
 
+        # 解析镜像文件
+        image = self.parse_image_file(image_file, image_file_path)
         # 尝试 SquashFS 解析，并验证
-        image = SquashFS(image_file_path)
+        # image = SquashFS(image_file_path)
         # if image.check_format():
         #     pass
         return image
@@ -78,3 +80,18 @@ class FsImage:
         image = self.open_image()
         image.extract_files()
 
+    @staticmethod
+    def parse_image_file(image_file, image_file_path):
+        # 判断镜像文件类型 squashfs/jffs2/ubi...
+        if '.jffs2' in image_file['file_name']:
+
+            pass
+        elif '.ubi' in image_file['file_name']:
+            pass
+        elif '.squashfs' in image_file['file_name']:
+            # 尝试 SquashFS 解析，并验证
+            image = SquashFS(image_file_path)
+
+            return image
+
+        return None

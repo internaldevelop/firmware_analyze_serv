@@ -29,6 +29,7 @@
     官网：http://angr.io/
     docs: https://docs.angr.io/core-concepts/loading
         https://angr.io/api-doc/
+        （中文）https://github.com/angr/angr-doc/pull/169/files
     github: https://github.com/angr/angr
     angr学习(1--4)：https://www.cnblogs.com/fancystar/p/7851736.html
     angr使用[3]--使用技巧: https://blog.csdn.net/qq_38204481/article/details/103829549

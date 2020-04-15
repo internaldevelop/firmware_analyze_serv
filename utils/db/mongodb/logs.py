@@ -13,7 +13,7 @@ class LogRecords:
         return
 
     @staticmethod
-    def save(log, category='debug', action='普通操作', desc='操作日志', user='guest'):
+    def save(log_contents, category='debug', action='普通操作', desc='操作日志', user='guest'):
         # 根据系统配置，不在配置参数中的日志类型，不做日志记录
         if not SystemConfig.is_log_on(category):
             return
@@ -26,7 +26,7 @@ class LogRecords:
                                  'category': category,
                                  'action': action,
                                  'description': desc,
-                                 'content': log,
+                                 'content': log_contents,
                                  'user_account': user,
                                  'create_time': create_time
                              }}, True)

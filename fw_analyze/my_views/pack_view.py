@@ -42,7 +42,7 @@ def pack_info(request):
 
     # 保存操作日志
     LogRecords.save('', category='statistics', action='查询包信息',
-                    desc='查询指定固件包的信息，统计其文件数量，查询任务信息')
+                    desc='查询指定固件包（ID=%s）的信息，统计其文件数量，查询任务信息' % pack_id)
 
     return sys_app_ok_p(info)
 
@@ -76,5 +76,9 @@ def pack_exec_files_tree(request):
             MyTree.file_path_insert_into_tree(exec_tree, file_path, file_id)
         elif tree_type == 'antd':
             MyTree.file_path_insert_into_antd_tree(exec_tree, file_path, file_id)
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='读取固件包文件结构',
+                    desc='获取指定固件包（ID=%s）的文件结构（模式为：%s）' % (pack_id, tree_type))
 
     return sys_app_ok_p(exec_tree)

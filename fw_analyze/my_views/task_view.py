@@ -14,8 +14,8 @@ def get_task_result(request):
     task_info = MyTask.fetch_exec_info(task_id)
 
     # 保存操作日志
-    LogRecords.save({'task_id': task_id, 'task_info': task_info}, category='query_task', action='任务状态',
-                    desc='读取任务当前执行状态及结果信息')
+    LogRecords.save(task_info, category='query_task', action='查询任务状态',
+                    desc='读取任务（ID=%s）当前执行状态及结果信息' % task_id)
 
     return sys_app_ok_p(task_info)
 
@@ -25,6 +25,11 @@ def stop_task(request):
     task_id = req_get_param(request, 'task_id')
 
     task_info = MyTask.stop_task(task_id)
+
+    # 保存操作日志
+    LogRecords.save(task_info, category='task', action='停止任务',
+                    desc='停止指定的任务（ID=%s）' % task_id)
+
     return sys_app_ok_p(task_info)
 
 
@@ -42,6 +47,10 @@ def search_tasks_by_pack(request):
             task_info = MyTask.fetch_exec_info(task_info['task_id'])
         task_info_list.append(task_info)
 
+    # 保存查询日志
+    LogRecords.save(task_info_list, category='query_task', action='查询固件包任务',
+                    desc='查询指定的固件包（ID=%s）所有的任务信息' % pack_id)
+
     return sys_app_ok_p(task_info_list)
 
 
@@ -52,6 +61,10 @@ def search_tasks_by_file(request):
         return sys_app_ok_p([])
 
     tasks_list = TasksDAO.search_by_file(file_id)
+
+    # 保存查询日志
+    LogRecords.save(tasks_list, category='query_task', action='查询文件任务',
+                    desc='查询指定的文件（ID=%s）所有的任务信息' % file_id)
 
     return sys_app_ok_p(tasks_list)
 

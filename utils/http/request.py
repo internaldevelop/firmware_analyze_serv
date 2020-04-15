@@ -27,6 +27,8 @@ class ReqParams:
                 return int(data, 16)
         except ValueError as v_err:
             return 0
+        except TypeError as t_err:
+            return 0
 
         return data
 

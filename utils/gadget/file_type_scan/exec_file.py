@@ -35,6 +35,7 @@ class ExecFile:
             ['0', 'ELF, 32-bit LSB MIPS64 shared object, MIPS', 'MIPS32'],
             ['0', 'ELF, 32-bit LSB executable, MIPS', 'MIPS32'],
             ['0', 'ELF, 32-bit LSB shared object, MIPS', 'MIPS32'],
+            ['0', 'ELF, 32-bit MSB MIPS-I executable, MIPS', 'MIPS32'],
             ['0', 'ELF, 32-bit LSB executable, ARM', 'ARM'],
             # ['n', 'MIPS instructions', 'MIPS32'],
             # ['n', 'MIPSEL instructions', 'MIPS32'],

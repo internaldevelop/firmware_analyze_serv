@@ -15,23 +15,34 @@ from utils.gadget.strutil import StrUtils
 
 class LoadDefaultPack:
     default_file_list = {
-        '1': {'file_name': 'CF-AC101-V2.6.1.zip', 'file_type': FileType.PACK, 'paths': ['CF-AC101-V2.6.1'], 'pack_name': 'CF-AC101-V2.6.1'},
-        '11': {'file_name': 'CF-AC101-V2.6.1.bin', 'file_type': FileType.FW_BIN, 'paths': ['CF-AC101-V2.6.1']},
-        '12': {'file_name': '12F304.squashfs', 'file_type': FileType.FS_IMAGE,
-               'paths': ['CF-AC101-V2.6.1', '_CF-AC101-V2.6.1.bin.extracted']},
-        '13': {'file_name': '40.7z', 'file_type': FileType.ZIP_FILE,
-               'paths': ['CF-AC101-V2.6.1', '_CF-AC101-V2.6.1.bin.extracted']},
-        '14': {'file_name': '40', 'file_type': FileType.SYS_IMAGE,
-               'paths': ['CF-AC101-V2.6.1', '_CF-AC101-V2.6.1.bin.extracted']},
-        '2': {'file_name': 'R1CL_2.7.81.zip', 'file_type': FileType.PACK, 'paths': ['R1CL_2.7.81'], 'pack_name': 'R1CL_2.7.81'},
-        '21': {'file_name': 'miwifi_r1cl_firmware_82b5c_2.7.81.bin', 'file_type': FileType.FW_BIN,
+        '1': {'file_name': 'R1CL_2.7.81.zip', 'file_type': FileType.PACK, 'paths': ['R1CL_2.7.81'], 'pack_name': 'R1CL_2.7.81'},
+        '11': {'file_name': 'miwifi_r1cl_firmware_82b5c_2.7.81.bin', 'file_type': FileType.FW_BIN,
                'paths': ['R1CL_2.7.81']},
-        '22': {'file_name': '1702A0.squashfs', 'file_type': FileType.FS_IMAGE,
+        '12': {'file_name': '1702A0.squashfs', 'file_type': FileType.FS_IMAGE,
                'paths': ['R1CL_2.7.81', '_miwifi_r1cl_firmware_82b5c_2.7.81.bin.extracted']},
-        '23': {'file_name': '2E0.7z', 'file_type': FileType.ZIP_FILE,
+        '13': {'file_name': '2E0.7z', 'file_type': FileType.ZIP_FILE,
                'paths': ['R1CL_2.7.81', '_miwifi_r1cl_firmware_82b5c_2.7.81.bin.extracted']},
-        '24': {'file_name': '2E0', 'file_type': FileType.SYS_IMAGE,
+        '14': {'file_name': '2E0', 'file_type': FileType.SYS_IMAGE,
                'paths': ['R1CL_2.7.81', '_miwifi_r1cl_firmware_82b5c_2.7.81.bin.extracted']},
+
+        # SquashFS 镜像低于 4.0 版本，支撑库 PySquashfsImage 提示该镜像不是 SquashFS 4.0 版本
+        # '2': {'file_name': 'WPN824N_V1.0.0.28.zip', 'file_type': FileType.PACK, 'paths': ['WPN824N_V1.0.0.28'],
+        #       'pack_name': 'WPN824N_V1.0.0.28'},
+        # '21': {'file_name': 'WPN824N-V1.0.0.28.img', 'file_type': FileType.FW_BIN,
+        #        'paths': ['WPN824N_V1.0.0.28']},
+        # '22': {'file_name': 'C0.squashfs', 'file_type': FileType.FS_IMAGE,
+        #        'paths': ['WPN824N_V1.0.0.28', '_WPN824N-V1.0.0.28.img.extracted']},
+
+        # ARM 16位系统，解析/分析问题多，排除此类固件
+        # '1': {'file_name': 'CF-AC101-V2.6.1.zip', 'file_type': FileType.PACK, 'paths': ['CF-AC101-V2.6.1'],
+        #       'pack_name': 'CF-AC101-V2.6.1'},
+        # '11': {'file_name': 'CF-AC101-V2.6.1.bin', 'file_type': FileType.FW_BIN, 'paths': ['CF-AC101-V2.6.1']},
+        # '12': {'file_name': '12F304.squashfs', 'file_type': FileType.FS_IMAGE,
+        #        'paths': ['CF-AC101-V2.6.1', '_CF-AC101-V2.6.1.bin.extracted']},
+        # '13': {'file_name': '40.7z', 'file_type': FileType.ZIP_FILE,
+        #        'paths': ['CF-AC101-V2.6.1', '_CF-AC101-V2.6.1.bin.extracted']},
+        # '14': {'file_name': '40', 'file_type': FileType.SYS_IMAGE,
+        #        'paths': ['CF-AC101-V2.6.1', '_CF-AC101-V2.6.1.bin.extracted']},
     }
 
     @staticmethod

@@ -31,8 +31,11 @@ class ExecFile:
             ['0', 'ELF, 64-bit LSB shared object, AMD x86-64', 'AMD64'],
             ['0', 'ELF, 64-bit LSB executable, AMD x86-64', 'AMD64'],
             ['0', 'Microsoft executable, portable (PE)', 'X86'],
-            ['0', 'ELF, 32-bit LSB MIPS64 shared object, MIPS', 'MIPS32'],
             ['0', 'ELF, 32-bit LSB shared object, Intel 80386', 'X86'],
+            ['0', 'ELF, 32-bit LSB MIPS64 shared object, MIPS', 'MIPS32'],
+            ['0', 'ELF, 32-bit LSB executable, MIPS', 'MIPS32'],
+            ['0', 'ELF, 32-bit LSB shared object, MIPS', 'MIPS32'],
+            ['0', 'ELF, 32-bit LSB executable, ARM', 'ARM'],
             # ['n', 'MIPS instructions', 'MIPS32'],
             # ['n', 'MIPSEL instructions', 'MIPS32'],
         ]

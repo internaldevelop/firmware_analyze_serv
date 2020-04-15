@@ -49,6 +49,9 @@ class SystemConfig:
             'download': {
                 'on': 1, 'alias': '固件下载', 'description': '固件下载操作日志'
             },
+            'sys_admin': {
+                'on': 1, 'alias': '系统管理', 'description': '系统管理行为记录及其日志'
+            },
 
         }
 

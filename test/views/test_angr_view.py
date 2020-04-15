@@ -1,11 +1,14 @@
 import os
 import angr
 import binwalk
+from angrutils import hook0, plot_cfg
 
+from angr_helper.function_parse import FunctionParse
 from utils.const.file_type import FileType
 from utils.gadget.my_path import MyPath
+from utils.gadget.strutil import StrUtils
 from utils.http.request import ReqParams
-from utils.http.response import sys_app_ok, sys_app_ok_p
+from utils.http.response import sys_app_ok, sys_app_ok_p, sys_app_err_p
 
 
 def test_bin_info(request):
@@ -65,7 +68,24 @@ def test_angr_cfg(request):
 def test_angr_functions(request):
     file_name = ReqParams.one(request, 'file_name')
     file_path = os.path.join(MyPath.samples(), file_name)
+    # --disasm
+    # bw_result = binwalk.scan('--signature', file_path)
+    # bw_result = binwalk.scan('--signature', '--opcodes', file_path)
+    # bw_result = binwalk.scan('--signature', '--opcodes', '--disasm', file_path)
+    # bw_result = binwalk.scan('--signature', '--disasm', file_path)
+    # bw_result = binwalk.scan('--signature', '--opcodes', '--disasm', '--verbose', file_path)
+
     project = angr.Project(file_path, load_options={'auto_load_libs': False})
+    # project = angr.Project(file_path, load_options={
+    #     'auto_load_libs': False,
+    #     'main_opts': {
+    #         'backend': 'blob',
+    #         'base_addr': 0x10000,
+    #         'entry_point': 0x10000,
+    #         'arch': 'MIPS32',
+    #         'offset': 0,
+    #     }
+    # })
 
     cfg = project.analyses.CFGFast(resolve_indirect_jumps=True, force_complete_scan=False, normalize=True,
                                    # context_sensitivity_level=1,
@@ -82,6 +102,28 @@ def test_angr_functions(request):
         functions.append({'address': hex(addr), 'name': func.name})
 
     return sys_app_ok_p({'count': len(functions), 'functions': functions})
+
+
+def test_angr_plot_graph(request):
+    file_id, file_name, func_addr = ReqParams.many(request, ['file_id', 'file_name', 'func_addr.hex'])
+    if len(file_id) == 0:
+        if len(file_name) == 0:
+            return sys_app_err_p('INVALID_REQ_PARAM', 'file_id 或 file_name 必填其一')
+        file_path = os.path.join(MyPath.samples(), file_name)
+        project = angr.Project(file_path, load_options={'auto_load_libs': False})
+        start_state = project.factory.blank_state(addr=func_addr)
+        start_state.stack_push(0x0)
+        with hook0(project):
+            cfg = project.analyses.CFGEmulated(fail_fast=True, starts=[func_addr], initial_state=start_state,
+                                         context_sensitivity_level=2, keep_state=True, call_depth=100, normalize=True)
+        graph_file = os.path.join(MyPath.temporary(), StrUtils.uuid_str())
+        plot_cfg(cfg, graph_file, asminst=True, vexinst=False, func_addr={func_addr: True},
+                 debug_info=False, remove_imports=True, remove_path_terminator=True)
+    else:
+        func_parse = FunctionParse(file_id, func_addr)
+        content = func_parse.cfg_graph()
+
+    return sys_app_ok()
 
     # idfer = project.analyses.Identifier()
     # functions = []

@@ -1,3 +1,4 @@
+import base64
 import os
 
 
@@ -22,6 +23,14 @@ class MyFile:
             return None
 
         return contents
+
+    # 从文件中读取二进制数据后，采用base64编码后，返回编码结果
+    @staticmethod
+    def read_and_b64encode(file_path, folder=None, read_len=0):
+        contents = MyFile.read(file_path, folder, read_len)
+        if contents is None:
+            return None
+        return base64.b64encode(contents).decode()
 
     @staticmethod
     def write(file_path, bin_data, folder=None):

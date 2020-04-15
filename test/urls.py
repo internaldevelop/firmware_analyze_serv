@@ -67,6 +67,9 @@ urlpatterns = [
     # 测试 angr functions
     path('angr/functions', test_angr_view.test_angr_functions, name='test_angr_functions'),
 
+    # 测试画图
+    path('angr/plot_graph', test_angr_view.test_angr_plot_graph, name='test_angr_plot_graph'),
+
     #
     # # 初步检验文件 -- 多用于测试
     # path('check_file', info_view.check_file, name='check_file'),

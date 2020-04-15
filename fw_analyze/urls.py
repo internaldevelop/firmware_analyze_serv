@@ -33,8 +33,14 @@ urlpatterns = [
     # 获取函数列表
     path('cfg/func_list', parse_cfg_view.cfg_func_list, name='parse_cfg_func_list'),
 
-    # 获取指定函数的 call-graph，分成 A B 两种处理模式
+    # 获取指定函数的 call-graph
     path('cfg/call_graph_a', parse_cfg_view.call_graph_a, name='parse_cfg_call_graph_a'),
+
+    # 获取指定函数的 control_flow_graph
+    path('cfg/cfg_graph', parse_cfg_view.control_flow_graph, name='parse_cfg_control_flow_graph'),
+
+    # 获取指定函数的 control_dependence_graph
+    path('cfg/cdg_graph', parse_cfg_view.control_dependence_graph, name='parse_cfg_control_dependence_graph'),
 
     # 获取函数信息，包含诸如：汇编代码、中间代码、后继调用等
     path('cfg/func_info', parse_cfg_view.function_info, name='parse_cfg_function_info'),

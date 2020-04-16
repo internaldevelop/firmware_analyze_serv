@@ -1565,6 +1565,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "6.7 函数属性",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_props?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x8524",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"cfg",
+								"func_props"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								},
+								{
+									"key": "func_addr",
+									"value": "0x8524",
+									"description": "fauxware函数authenticate地址0x8524"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -1846,13 +1902,13 @@
 	],
 	"variable": [
 		{
-			"id": "0a0b1ab5-ec67-4669-90ac-bd72c32e37a7",
+			"id": "de45e54e-efa3-414a-bb02-f51be648c19e",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "6f534ee0-0e18-4c57-ba5a-ed9571329474",
+			"id": "96356f22-b911-4a01-88fd-d59cc59ffe77",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

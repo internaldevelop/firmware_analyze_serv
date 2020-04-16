@@ -45,6 +45,9 @@ urlpatterns = [
     # 获取函数信息，包含诸如：汇编代码、中间代码、后继调用等
     path('cfg/func_info', parse_cfg_view.function_info, name='parse_cfg_function_info'),
 
+    # 获取函数属性，包含：参数、返回、地址等
+    path('cfg/func_props', parse_cfg_view.function_props, name='parse_cfg_function_props'),
+
     # 查询所有固件包信息
     path('pack/all', pack_view.all_packs_info, name='query_all_packs_info'),
 

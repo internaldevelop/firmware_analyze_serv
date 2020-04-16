@@ -28,6 +28,8 @@
 9. 实际固件代码解析失败，比如 /bin/opkg，报错：Decoding error occurred at address
     可能是跟加密加扰有关，boyscout 选举出来的是 MIPS32，设置架构为 MIPS32 和 ARM 都不能正常解析
 
+10. 参考dirtyhelper 相关源码
+
 已完成
 1. (已完成) 把 SquashFS 的 _file_type 优化，对特定后缀的文件做过滤，直接判定为普通文件
 2. (已完成) 抽取文件时，只做文件类型的快速判定；完成抽取文件后，启动新任务在后台逐个文件的再次判定。

@@ -180,6 +180,39 @@ class FunctionParse:
             func = cfg.kb.functions.function(func_addr)
         return func
 
+    # calling_convention: SimCCSystemVAMD64
+    # alignment
+    # code_constants
+    # has_return
+    # local_runtime_values
+    # name
+    # arguments
+    # num_arguments
+    # ret_sites
+    # returning
+    # size
+    def get_props(self):
+        func = self.func
+        if len(func.ret_sites) > 0:
+            ret_addr = hex(func.ret_sites[0].addr)
+        else:
+            ret_addr = 'None'
+        return {'name': func.name,
+                'addr': hex(func.addr),
+                'size': func.size,
+                'calling_convention': func.calling_convention,
+                'arguments': func.arguments,
+                'num_arguments': func.num_arguments,
+                'alignment': func.alignment,
+                # 'code_constants': func.code_constants,
+                # local_runtime_values 是 set，不能直接进行 JSON 序列化
+                # 'local_runtime_values': func.local_runtime_values,
+                'has_return': func.has_return,
+                # 'ret_sites': func.ret_sites,
+                'ret_addr': ret_addr,
+                'returning': func.returning,
+                }
+
     def decompiler(self):
         cfg = self.cfg
         func = self.func

@@ -167,12 +167,19 @@ def test_angr_vars(request):
     file_id, file_name, func_addr = ReqParams.many(request, ['file_id', 'file_name', 'func_addr.hex'])
     file_path = os.path.join(MyPath.samples(), 'armel', file_name)
 
-    vr = VarsRecovery(file_id, func_addr)
-    vars_list = vr.vars()
-    return sys_app_ok_p(vars_list)
+    # vr = VarsRecovery(file_id, func_addr)
+    # vars_list = vr.vars()
+    # return sys_app_ok_p(vars_list)
 
     # # project = angr.Project(file_path, arch=angr.SimARM(endness="Iend_LE"))
     # project = angr.Project(file_path)
+    # project.analyses.CFGEmulated()
+    # func = FunctionParse.func_by_addr(func_addr, proj=project)
+
+    func_parse = FunctionParse(file_id, func_addr)
+    props = func_parse.get_props()
+
+    return sys_app_ok_p(props)
     # cfg = project.analyses.CFG(normalize=True)
     #
     # func = cfg.kb.functions.function(addr=func_addr)

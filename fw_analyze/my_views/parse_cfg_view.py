@@ -1,3 +1,4 @@
+from fw_analyze.service.functions_service import FunctionsService
 from utils.db.mongodb.cfg_dao import CfgAnalyzeResultDAO
 from utils.db.mongodb.logs import LogRecords
 from utils.http.request import ReqParams
@@ -52,6 +53,13 @@ def function_info(request):
                     desc='查询代码分析后的函数信息，文件ID=%s，函数地址=0x%x' % (file_id, func_addr))
 
     return sys_app_ok_p(func_infos)
+
+
+def function_props(request):
+    # 从请求中取参数：文件 ID、函数地址
+    file_id, func_addr = ReqParams.many(request, ['file_id', 'func_addr.hex'])
+    func_props = FunctionsService.func_props(file_id, func_addr)
+    return sys_app_ok_p(func_props)
 
 
 def control_flow_graph(request):

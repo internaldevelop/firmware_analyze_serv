@@ -8,7 +8,7 @@ class VarsService:
         # 查找是否已有缓存结果，如有，不再做重复解析，直接返回缓存结果
         vars_dict = FuncCacheDAO.fetch_vars(file_id, func_addr)
         if vars_dict is not None:
-            return {'memory_vars': vars_dict['memory_vars'], 'register_vars': vars_dict['register_vars']}
+            return vars_dict
 
         # 解析恢复变量
         vr = VarsRecovery(file_id, func_addr)

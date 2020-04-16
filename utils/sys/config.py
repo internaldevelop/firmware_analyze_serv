@@ -25,12 +25,12 @@ g_ws_url = "ws://localhost:10901/websocket/asset_info"
 
 # mongo-db客户端
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.60.5:27017/")
-g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.26:27017/")
-# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.182.88:27017/")
+# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.113.26:27017/")
+g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.182.88:27017/")
 
 # redis 客户端
-g_redis_client = StrictRedis(host='172.16.113.26', port=16379, db=0, password='123456')
-# g_redis_client = StrictRedis(host='192.168.182.88', port=16379, db=0, password='123456')
+# g_redis_client = StrictRedis(host='172.16.113.26', port=16379, db=0, password='123456')
+g_redis_client = StrictRedis(host='192.168.182.88', port=16379, db=0, password='123456')
 
 # ===========================================================================================
 # 全局引用、全局对象定义
@@ -51,8 +51,8 @@ g_firmware_method_fs_full = GridFS(g_firmware_db_full, collection='firmware_meth
 g_sys_dict_coll = g_firmware_db_full["sys_dictionary"]
 # CFG 分析结果集合
 g_cfg_result_coll = g_firmware_db_full["cfg_result"]
-# 函数分析结果集合
-g_func_result_coll = g_firmware_db_full["func_result"]
+# 基于函数的分析结果的缓存
+g_func_cache_coll = g_firmware_db_full["function_cache"]
 # 日志集合
 g_logs_coll = g_firmware_db_full["logs"]
 # 任务集合

@@ -624,6 +624,110 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "2.2.4 测试 backward slice",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/angr/bw_slice?access_token={{access_token}}&file_name=ais3_crackme&func_addr=0x400520",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"angr",
+										"bw_slice"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_id",
+											"value": "1d5909e5-9154-4890-96c6-8fe848eabb7d",
+											"description": "优先使用文件ID号",
+											"disabled": true
+										},
+										{
+											"key": "file_name",
+											"value": "ais3_crackme",
+											"description": "文件ID为空时，采用文件名（samples目录下）"
+										},
+										{
+											"key": "func_addr",
+											"value": "0x400520",
+											"description": "ais3_crackme的verify函数地址0x400520"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.2.5 测试 变量恢复",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/angr/vars?access_token={{access_token}}&file_id={{file_id}}&file_name=fauxware&func_addr=0x8524",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"angr",
+										"vars"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_id",
+											"value": "{{file_id}}",
+											"description": "优先使用文件ID号"
+										},
+										{
+											"key": "file_name",
+											"value": "fauxware"
+										},
+										{
+											"key": "func_addr",
+											"value": "0x8524",
+											"description": "fauxware函数authenticate地址0x8524"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -1405,6 +1509,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "6.6 解析变量",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/vars/extract?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x8524",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"vars",
+								"extract"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								},
+								{
+									"key": "func_addr",
+									"value": "0x8524",
+									"description": "fauxware函数authenticate地址0x8524"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -1686,13 +1846,13 @@
 	],
 	"variable": [
 		{
-			"id": "09cd5da4-d262-4ba1-a318-147b36269858",
+			"id": "0a0b1ab5-ec67-4669-90ac-bd72c32e37a7",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "840a5336-73a3-4bfc-8c54-1b90713280d7",
+			"id": "6f534ee0-0e18-4c57-ba5a-ed9571329474",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

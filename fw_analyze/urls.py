@@ -54,6 +54,9 @@ urlpatterns = [
     # 查询指定固件包中所含的执行文件目录树
     path('pack/exec_files_tree', pack_view.pack_exec_files_tree, name='query_pack_exec_files_tree'),
 
+    # 提取解析变量
+    path('vars/extract', variable_views.analyze_extract_vars, name='query_analyze_extract_vars'),
+
     # =========================================================================
     # 以下部分均为测试指令
 

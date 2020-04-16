@@ -1,9 +1,11 @@
 import os
 import angr
 import binwalk
+from angr.knowledge_plugins.variables import VariableType
 from angrutils import hook0, plot_cfg
 
 from angr_helper.function_parse import FunctionParse
+from angr_helper.vars_recovery import VarsRecovery
 from utils.const.file_type import FileType
 from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
@@ -124,6 +126,72 @@ def test_angr_plot_graph(request):
         content = func_parse.cfg_graph()
 
     return sys_app_ok()
+
+
+# A program slice is a subset of statements that is obtained from the original program,
+# usually by removing zero or more statements.
+def test_angr_backward_slice(request):
+    file_name, func_addr = ReqParams.many(request, ['file_name', 'func_addr.hex'])
+    file_path = os.path.join(MyPath.samples(), file_name)
+
+    project = angr.Project(file_path, load_options={"auto_load_libs": False})
+
+    cfg = project.analyses.CFGEmulated(keep_state=True, state_add_options=angr.sim_options.refs,
+                                       context_sensitivity_level=2)
+
+    cdg = project.analyses.CDG(cfg)
+
+    ddg = project.analyses.DDG(cfg)
+
+    target_node = cfg.get_any_node(func_addr)
+    bs = project.analyses.BackwardSlice(cfg, cdg=cdg, ddg=ddg, targets=[(target_node, -1)])
+    # bs.dbg_repr()
+
+    node_has_type = False
+    for node in bs.taint_graph.nodes():
+        # param taint_type: Type of the taint, might be one of the following: 'reg', 'tmp', 'mem'.
+        # print(node.stmt_idx)
+        if hasattr(node, 'type'):
+            print(node.type)
+            node_has_type = True
+        # if n.type == taint_type and n.addr == simrun_addr and n.stmt_id == stmt_idx:
+        #     taint = n
+    print('node type %s found' % ('' if node_has_type else 'not'))
+
+    # VSA_DDG
+    # vsa_ddg = project.analyses.VSA_DDG()
+    return sys_app_ok()
+
+
+def test_angr_vars(request):
+    file_id, file_name, func_addr = ReqParams.many(request, ['file_id', 'file_name', 'func_addr.hex'])
+    file_path = os.path.join(MyPath.samples(), 'armel', file_name)
+
+    vr = VarsRecovery(file_id, func_addr)
+    vars_list = vr.vars()
+    return sys_app_ok_p(vars_list)
+
+    # # project = angr.Project(file_path, arch=angr.SimARM(endness="Iend_LE"))
+    # project = angr.Project(file_path)
+    # cfg = project.analyses.CFG(normalize=True)
+    #
+    # func = cfg.kb.functions.function(addr=func_addr)
+    #
+    # tmp_kb = angr.KnowledgeBase(project)
+    #
+    # print("Running VariableRecovery on function %r." % func)
+    # # vr = project.analyses.VariableRecoveryFast(func, kb=tmp_kb)
+    # vr = project.analyses.VariableRecovery(func, kb=tmp_kb)
+    #
+    # variable_manager = vr.variable_manager[func.addr]
+    #
+    # for var_sort in [VariableType.MEMORY, VariableType.REGISTER]:
+    #     vars_and_offset = variable_manager.find_variables_by_insn(func.addr, var_sort)
+    #     for the_var, _ in vars_and_offset:
+    #         print(the_var)
+    #         print(the_var.name)
+
+    # return sys_app_ok()
 
     # idfer = project.analyses.Identifier()
     # functions = []

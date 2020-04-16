@@ -1,8 +1,8 @@
 import utils.sys.config
 
-# 任务集合
 from utils.db.mongodb.cursor_result import CursorResult
 
+# 任务集合
 tasks_coll = utils.sys.config.g_tasks_coll
 
 

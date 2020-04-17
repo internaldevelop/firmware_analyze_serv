@@ -5,7 +5,7 @@ from utils.db.mongodb.sys_config import SystemConfig
 
 
 # 日志记录集合
-logs_coll = utils.sys.config.g_logs_coll
+logs_coll = utils.sys.config.g_firmware_db_full["logs"]
 
 
 class LogRecords:

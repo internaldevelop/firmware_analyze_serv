@@ -6,8 +6,8 @@ from utils.const.file_type import FileType
 from utils.const.pack_type import PackType
 
 
-# 解包出来的文件 信息集合
-pack_files_coll = utils.sys.config.g_pack_files_coll
+# 固件包记录集合
+pack_files_coll = utils.sys.config.g_firmware_db_full["pack_files"]
 
 
 class PackFileDO:

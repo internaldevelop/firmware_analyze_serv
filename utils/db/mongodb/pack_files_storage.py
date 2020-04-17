@@ -1,8 +1,10 @@
+from gridfs import GridFS
+
 import utils.sys.config
 from utils.gadget.general import SysUtils
 
-# 解包出来的文件 信息集合
-pack_files_storage = utils.sys.config.g_pack_files_storage
+# 固件包存储桶集合
+pack_files_storage = GridFS(utils.sys.config.g_firmware_db_full, collection='pack_files_storage')
 
 
 class PackFilesStorage:

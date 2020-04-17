@@ -1,11 +1,10 @@
 import utils.sys.config
 
 from utils.db.mongodb.cursor_result import CursorResult
-
-# 任务集合
 from utils.gadget.general import SysUtils
 
-func_cache_coll = utils.sys.config.g_func_cache_coll
+# 基于函数的分析结果的缓存
+func_cache_coll = utils.sys.config.g_firmware_db_full["function_cache"]
 
 
 class FuncCacheDAO:

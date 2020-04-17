@@ -47,25 +47,6 @@ g_firmware_info_col_full = g_firmware_db_full["firmware_info"]
 # 固件操作方法文件存储桶
 g_firmware_method_fs_full = GridFS(g_firmware_db_full, collection='firmware_methods')
 
-# 系统配置集合
-g_sys_dict_coll = g_firmware_db_full["sys_dictionary"]
-# CFG 分析结果集合
-g_cfg_result_coll = g_firmware_db_full["cfg_result"]
-# 基于函数的分析结果的缓存
-g_func_cache_coll = g_firmware_db_full["function_cache"]
-# 日志集合
-g_logs_coll = g_firmware_db_full["logs"]
-# 任务集合
-g_tasks_coll = g_firmware_db_full["tasks"]
-# 固件文件记录集合
-g_fw_files_coll = g_firmware_db_full["fw_files"]
-# 固件文件存储桶集合
-g_fw_files_storage = GridFS(g_firmware_db_full, collection='fw_files_storage')
-# 固件包记录集合
-g_pack_files_coll = g_firmware_db_full["pack_files"]
-# 固件包存储桶集合
-g_pack_files_storage = GridFS(g_firmware_db_full, collection='pack_files_storage')
-
 # 任务表 下载、提取、分析
 g_task_info_col_full = g_firmware_db_full["task_info"]
 

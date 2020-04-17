@@ -163,21 +163,35 @@ def test_angr_backward_slice(request):
     return sys_app_ok()
 
 
+def _test_func(file_name):
+    file_path = os.path.join(MyPath.samples(), file_name)
+    p = angr.Project(file_path)
+    p.analyses.CFGEmulated()
+
+    # f_arg1 = p.kb.functions['arg1']
+    # # SimCCSystemVAMD64
+    # print(type(f_arg1.calling_convention))
+    # print(len(f_arg1.arguments))
+    # print(f_arg1.arguments[0].reg_name)
+    #
+    # f_arg7 = p.kb.functions['arg7']
+    # print(type(f_arg7.calling_convention))
+    # print(len(f_arg7.arguments))
+    # print(f_arg7.arguments[1].reg_name)
+
+    f_arg9 = p.kb.functions['arg9']
+    print(type(f_arg9.calling_convention))
+    print(len(f_arg9.arguments))
+    print(f_arg9.arguments[8].stack_offset)
+
+
 def test_angr_vars(request):
     file_id, file_name, func_addr = ReqParams.many(request, ['file_id', 'file_name', 'func_addr.hex'])
-    file_path = os.path.join(MyPath.samples(), 'armel', file_name)
-
-    # vr = VarsRecovery(file_id, func_addr)
-    # vars_list = vr.vars()
-    # return sys_app_ok_p(vars_list)
-
-    # # project = angr.Project(file_path, arch=angr.SimARM(endness="Iend_LE"))
-    # project = angr.Project(file_path)
-    # project.analyses.CFGEmulated()
-    # func = FunctionParse.func_by_addr(func_addr, proj=project)
 
     func_parse = FunctionParse(file_id, func_addr)
     props = func_parse.get_props()
+
+    # _test_func(file_name)
 
     return sys_app_ok_p(props)
     # cfg = project.analyses.CFG(normalize=True)

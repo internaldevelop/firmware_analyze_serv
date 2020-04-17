@@ -1366,7 +1366,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_info?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_info?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930&extra_info=props,vars",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -1387,6 +1387,11 @@
 								{
 									"key": "func_addr",
 									"value": "0x407930"
+								},
+								{
+									"key": "extra_info",
+									"value": "props,vars",
+									"description": "附加props,vars（逗号分隔）等信息。无或空时，只返回函数代码信息。"
 								}
 							]
 						}
@@ -1902,13 +1907,13 @@
 	],
 	"variable": [
 		{
-			"id": "de45e54e-efa3-414a-bb02-f51be648c19e",
+			"id": "0a7a15a3-cf5f-4181-8fec-e4ec7cb1333e",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "96356f22-b911-4a01-88fd-d59cc59ffe77",
+			"id": "bdad8323-39e2-4583-a8e4-e4c54152a440",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

@@ -140,7 +140,7 @@ class FunctionParse:
         #     return ''
         # return node.name
 
-    def function_infos(self):
+    def function_codes(self):
         # 获取函数的后继调用函数
         successors = self.func_successors()
 

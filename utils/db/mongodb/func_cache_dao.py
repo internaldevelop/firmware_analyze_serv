@@ -49,3 +49,13 @@ class FuncCacheDAO:
     def fetch_props(file_id, func_addr):
         return FuncCacheDAO.fetch_record(file_id, func_addr, 'props')
 
+    @staticmethod
+    def save_codes(file_id, func_addr, props_dict):
+        props_doc = FuncCacheDAO._build_common_keys(file_id, func_addr, 'codes', props_dict)
+        result = func_cache_coll.update_one({'file_id': file_id, 'func_addr': func_addr},
+                                            {'$set': props_doc}, True)
+
+    @staticmethod
+    def fetch_codes(file_id, func_addr):
+        return FuncCacheDAO.fetch_record(file_id, func_addr, 'codes')
+

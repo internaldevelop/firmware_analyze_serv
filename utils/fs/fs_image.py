@@ -1,7 +1,10 @@
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
+from utils.fs.img_romfs import IMG_RomFS
 from utils.fs.pack_files import PackFiles
 from utils.fs.squashfs import SquashFS
+from utils.fs.img_jffs2 import IMG_JFFS2
+# from utils.fs.img_ubifs import IMG_UBI
 from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
 from utils.const.file_type import FileType
@@ -84,14 +87,20 @@ class FsImage:
     def parse_image_file(image_file, image_file_path):
         # 判断镜像文件类型 squashfs/jffs2/ubi...
         if '.jffs2' in image_file['file_name']:
-
-            pass
+            image = IMG_JFFS2(image_file_path)
         elif '.ubi' in image_file['file_name']:
+            # image = IMG_UBI(image_file_path)
             pass
+        elif '.img' in image_file['file_name']:
+            image = IMG_RomFS(image_file_path)
+        elif '.romfs' in image_file['file_name']:
+            image = IMG_RomFS(image_file_path)
+
         elif '.squashfs' in image_file['file_name']:
             # 尝试 SquashFS 解析，并验证
             image = SquashFS(image_file_path)
 
+        if image:
             return image
 
         return None

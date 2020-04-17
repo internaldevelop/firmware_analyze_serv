@@ -117,6 +117,10 @@ def _get_file_type(file_name):
         return FileType.FS_IMAGE
     elif '.jffs2' in file_name:
         return FileType.FS_IMAGE
+    elif '.img' in file_name: #romfs
+        return FileType.FS_IMAGE
+    elif '.romfs' in file_name:
+        return FileType.FS_IMAGE
     elif '.ubi' in file_name:
         return FileType.FS_IMAGE
     elif '.7z' in file_name:

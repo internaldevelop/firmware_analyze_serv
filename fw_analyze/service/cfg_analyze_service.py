@@ -2,6 +2,7 @@ from angr_helper.angr_proj import AngrProj
 from angr_helper.function_parse import FunctionParse
 from fw_analyze.progress.cfg_progress import CfgProgress
 from utils.db.mongodb.cfg_dao import CfgAnalyzeResultDAO
+from utils.db.mongodb.file_cache_dao import FileCacheDAO
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.task.my_task import MyTask
 from utils.task.task_type import TaskType
@@ -33,7 +34,7 @@ class CfgAnalyzeService:
         functions = FunctionParse.functions_extract(angr_proj.proj)
 
         # 保存 函数列表到数据库
-        CfgAnalyzeResultDAO.save(file_id, task_id, {'functions': functions})
+        FileCacheDAO.save_functions(file_id, functions)
 
         # 设置文件已完成 CFG 分析的标记
         FwFileDO.set_cfg_analyzed(file_id)

@@ -1,9 +1,10 @@
+from fw_analyze.service.files_service import FilesService
 from fw_analyze.service.functions_service import FunctionsService
 from fw_analyze.service.vars_service import VarsService
 from utils.db.mongodb.cfg_dao import CfgAnalyzeResultDAO
 from utils.db.mongodb.logs import LogRecords
 from utils.http.request import ReqParams
-from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p
+from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p, sys_app_err
 from utils.sys.error_code import Error
 from angr_helper.function_parse import FunctionParse
 from angr_helper.angr_proj import AngrProj
@@ -14,10 +15,11 @@ def cfg_func_list(request):
     # 从请求中取参数：文件 ID
     file_id = ReqParams.one(request, 'file_id')
 
+    functions = FilesService.functions_list(file_id)
     # 查找函数列表分析结果
-    functions = CfgAnalyzeResultDAO.get_functions(file_id)
+    # functions = CfgAnalyzeResultDAO.get_functions(file_id)
     if len(functions) == 0:
-        app_err(Error.FW_FILE_NO_CFG_ANALYZE)
+        return sys_app_err(Error.FW_FILE_NO_CFG_ANALYZE)
 
     # 保存操作日志
     LogRecords.save('', category='query', action='查询函数列表',

@@ -29,7 +29,6 @@
 
 11. 系统配置做多个备份和选择备份恢复
 
-12. entry_state_info 修改成数据库缓存模式
 
 已完成
 1. (已完成) 把 SquashFS 的 _file_type 优化，对特定后缀的文件做过滤，直接判定为普通文件
@@ -42,5 +41,7 @@
 8. (已完成) 单独测试 1.6.26-libjsound.so 的 arch 分析
 9. (已关闭) 实际固件代码解析失败，比如 /bin/opkg，报错：Decoding error occurred at address
     可能是跟加密加扰有关，boyscout 选举出来的是 MIPS32，设置架构为 MIPS32 和 ARM 都不能正常解析
+12. (已完成) entry_state_info 修改成数据库缓存模式
+13. (已完成) 函数列表缓存转移到 files_cache 中
 
 

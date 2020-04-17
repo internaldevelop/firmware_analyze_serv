@@ -1,3 +1,4 @@
+from fw_analyze.service.files_service import FilesService
 from utils.http.http_request import req_get_param
 from utils.http.response import sys_app_ok_p
 from angr_helper.angr_proj import AngrProj
@@ -9,14 +10,7 @@ def entry_state_info(request):
     # 从请求中取参数：文件 ID
     file_id = req_get_param(request, 'file_id')
 
-    # 通过 project 快速解析文件
-    angr_proj = AngrProj(file_id)
-
-    # 从 project 中取 entry 对象
-    entry_state = FwEntryState(angr_proj)
-
-    # 读取状态机信息
-    info = entry_state.entry_info()
+    info = FilesService.bin_state_info(file_id)
 
     # 保存操作日志
     LogRecords.save(info, category='analysis', action='入口状态机',

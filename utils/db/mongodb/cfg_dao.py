@@ -2,8 +2,8 @@ import utils.sys.config
 from utils.db.mongodb.cursor_result import CursorResult
 from utils.gadget.general import SysUtils
 
-# firmware 信息集合
-cfg_result_col = utils.sys.config.g_cfg_result_coll
+# CFG 分析结果集合
+cfg_result_col = utils.sys.config.g_firmware_db_full["cfg_result"]
 
 
 class CfgAnalyzeResultDAO:

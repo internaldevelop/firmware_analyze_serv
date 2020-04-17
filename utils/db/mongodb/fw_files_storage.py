@@ -1,4 +1,7 @@
 import os
+
+from gridfs import GridFS
+
 import utils.sys.config
 
 from utils.gadget.general import SysUtils
@@ -7,7 +10,8 @@ from utils.gadget.general import SysUtils
 from utils.gadget.my_file import MyFile
 from utils.gadget.my_path import MyPath
 
-fw_files_storage = utils.sys.config.g_fw_files_storage
+# 固件文件存储桶集合
+fw_files_storage = GridFS(utils.sys.config.g_firmware_db_full, collection='fw_files_storage')
 
 
 class FwFilesStorage:

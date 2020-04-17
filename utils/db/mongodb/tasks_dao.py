@@ -1,9 +1,9 @@
 import utils.sys.config
 
-# 任务集合
 from utils.db.mongodb.cursor_result import CursorResult
 
-tasks_coll = utils.sys.config.g_tasks_coll
+# 任务集合
+tasks_coll = utils.sys.config.g_firmware_db_full["tasks"]
 
 
 class TasksDAO:

@@ -3,7 +3,7 @@ import utils.sys.config
 
 
 # 系统字典集合
-sys_dict_coll = utils.sys.config.g_sys_dict_coll
+sys_dict_coll = utils.sys.config.g_firmware_db_full["sys_dictionary"]
 
 
 class SystemConfig:

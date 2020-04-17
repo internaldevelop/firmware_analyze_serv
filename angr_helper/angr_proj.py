@@ -111,3 +111,14 @@ class AngrProj:
 
     def _progress_print(self, percentage, **kwargs):
         print('Analysis progress: ' + str(percentage) + '%')
+
+    @staticmethod
+    def project_start_state(project, func_addr):
+        start_state = project.factory.blank_state(addr=func_addr)
+        start_state.stack_push(0x0)
+        project.factory.full_init_state(add_options={angr.options.STRICT_PAGE_ACCESS, angr.options.ENABLE_NX,
+                                                     angr.options.ZERO_FILL_UNCONSTRAINED_MEMORY,
+                                                     angr.options.USE_SYSTEM_TIMES})
+        return start_state
+
+

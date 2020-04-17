@@ -70,6 +70,12 @@ urlpatterns = [
     # 测试画图
     path('angr/plot_graph', test_angr_view.test_angr_plot_graph, name='test_angr_plot_graph'),
 
+    # 测试 backward slice
+    path('angr/bw_slice', test_angr_view.test_angr_backward_slice, name='test_angr_backward_slice'),
+
+    # 测试 vfg
+    path('angr/vars', test_angr_view.test_angr_vars, name='test_angr_vars'),
+
     #
     # # 初步检验文件 -- 多用于测试
     # path('check_file', info_view.check_file, name='check_file'),

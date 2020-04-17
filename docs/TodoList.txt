@@ -12,11 +12,23 @@
 3. 约束
     参考：https://xz.aliyun.com/t/7199
 
-4. 单独测试 1.6.26-libjsound.so 的 arch 分析
+4. 变量
+    参考 test_ddg_memvar_addresses.py 等文件
 
+5. Backward Slicing
+    试验 BackwardSlice.dbg_repr()
+    参考：https://docs.angr.io/built-in-analyses/backward_slice
 
-9. 实际固件代码解析失败，比如 /bin/opkg，报错：Decoding error occurred at address
-    可能是跟加密加扰有关，boyscout 选举出来的是 MIPS32，设置架构为 MIPS32 和 ARM 都不能正常解析
+6. 试验 BackwardSlice 的 taint_graph 的用法
+
+7. 试验 BackwardSlice 的 chosen_statements 的用法
+
+8. 弄清楚 statement 的确切含义
+
+10. 参考 dirtyhelper 相关源码
+
+11. 系统配置做多个备份和选择备份恢复
+
 
 已完成
 1. (已完成) 把 SquashFS 的 _file_type 优化，对特定后缀的文件做过滤，直接判定为普通文件
@@ -26,4 +38,10 @@
 5. (已完成) 获取包处理、文件处理对应的所有任务
 6. (已完成) 按照新的任务增强功能，参考 PackFiles start_exec_bin_verify_task ，改造 CFG 分析任务
 7. (已完成) 清空固件包==》启动任务处理
+8. (已完成) 单独测试 1.6.26-libjsound.so 的 arch 分析
+9. (已关闭) 实际固件代码解析失败，比如 /bin/opkg，报错：Decoding error occurred at address
+    可能是跟加密加扰有关，boyscout 选举出来的是 MIPS32，设置架构为 MIPS32 和 ARM 都不能正常解析
+12. (已完成) entry_state_info 修改成数据库缓存模式
+13. (已完成) 函数列表缓存转移到 files_cache 中
+
 

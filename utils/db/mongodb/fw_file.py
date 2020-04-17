@@ -4,8 +4,8 @@ from utils.db.mongodb.cursor_result import CursorResult
 
 from utils.gadget.general import SysUtils
 
-# 解包出来的文件 信息集合
-fw_files_coll = utils.sys.config.g_fw_files_coll
+# 固件文件记录集合
+fw_files_coll = utils.sys.config.g_firmware_db_full["fw_files"]
 
 
 class FwFileDO:

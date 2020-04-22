@@ -76,6 +76,15 @@ urlpatterns = [
     # 测试 vfg
     path('angr/vars', test_angr_view.test_angr_vars, name='test_angr_vars'),
 
+    # 测试 constraints
+    path('angr/constraints', test_angr_view.test_angr_constraints, name='test_angr_constraints'),
+
+    # 测试 Identifier
+    path('angr/identifier', test_angr_view.test_angr_identifier, name='test_angr_identifier'),
+
+    # 测试 ReachingDefinitions
+    path('angr/reaching_definitions', test_angr_view.test_angr_reaching_definitions, name='test_angr_reaching_definitions'),
+
     #
     # # 初步检验文件 -- 多用于测试
     # path('check_file', info_view.check_file, name='check_file'),

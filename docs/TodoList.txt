@@ -1,36 +1,9 @@
-1. 做 CFG 分析时，有的固件文件出现异常：angr got SimZeroDivisionException: divide by zero!
-    angr 8.20版本修复，该版本尚无windows平台的轮子
-    参见官方链接：
-    https://github.com/angr/angr/issues/1696
-    https://github.com/angr/angr/issues/1856
-    https://github.com/angr/cle/pull/216
-
-2. 污点数据源
-    project.analyses.ReachingDefinitions
-    参考：test_reachingdefinitions.py
-
-3. 约束
-    参考：https://xz.aliyun.com/t/7199
-
-4. 变量
-    参考 test_ddg_memvar_addresses.py 等文件
-
-5. Backward Slicing
-    试验 BackwardSlice.dbg_repr()
-    参考：https://docs.angr.io/built-in-analyses/backward_slice
-
-6. 试验 BackwardSlice 的 taint_graph 的用法
-
-7. 试验 BackwardSlice 的 chosen_statements 的用法
-
-8. 弄清楚 statement 的确切含义
-
-10. 参考 dirtyhelper 相关源码
+1. 测试 taint_analyze.py 和 sim_static_taint.py
 
 11. 系统配置做多个备份和选择备份恢复
 
 
-已完成
+【--- 已完成 ---】
 1. (已完成) 把 SquashFS 的 _file_type 优化，对特定后缀的文件做过滤，直接判定为普通文件
 2. (已完成) 抽取文件时，只做文件类型的快速判定；完成抽取文件后，启动新任务在后台逐个文件的再次判定。
 3. (已完成) fs_image_extract self.save_proc 增加参数，增加任务执行百分比
@@ -43,5 +16,27 @@
     可能是跟加密加扰有关，boyscout 选举出来的是 MIPS32，设置架构为 MIPS32 和 ARM 都不能正常解析
 12. (已完成) entry_state_info 修改成数据库缓存模式
 13. (已完成) 函数列表缓存转移到 files_cache 中
+14. (已解决) 弄清楚 statement 的确切含义
+15. (已完成) 在 state 中研究 constraints
+    约束，state.solver.constraints，参考：https://xz.aliyun.com/t/7199
+16. (已关闭) 参考 dirtyhelper 相关源码
+17. (已关闭) project.analyses.ReachingDefinitions
+    待新版 (>=8.20) 以上跨平台可用(Windows + Linux)
+    老版本没有 Subject、def_use_graph 等
+    参考：test_reachingdefinitions.py
+18. (已关闭) 做 CFG 分析时，有的固件文件出现异常：angr got SimZeroDivisionException: divide by zero!
+    angr 8.20版本修复，该版本尚无windows平台的轮子
+    参见官方链接：
+    https://github.com/angr/angr/issues/1696
+    https://github.com/angr/angr/issues/1856
+    https://github.com/angr/cle/pull/216
+19. (已完成) 变量，参考 test_ddg_memvar_addresses.py 等文件
+20. (已关闭) Backward Slicing
+    试验 BackwardSlice.dbg_repr()
+    参考：https://docs.angr.io/built-in-analyses/backward_slice
+21. (已关闭) 试验 BackwardSlice 的 taint_graph 的用法
+22. (已关闭) 试验 BackwardSlice 的 chosen_statements 的用法
+
+
 
 

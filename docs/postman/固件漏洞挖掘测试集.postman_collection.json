@@ -728,6 +728,159 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "2.2.6 测试 identifier",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/angr/identifier?access_token={{access_token}}&file_id={{file_id}}&file_name=identifiable&func_addr=0x8524",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"angr",
+										"identifier"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_id",
+											"value": "{{file_id}}",
+											"description": "优先使用文件ID号"
+										},
+										{
+											"key": "file_name",
+											"value": "identifiable"
+										},
+										{
+											"key": "func_addr",
+											"value": "0x8524",
+											"description": "fauxware函数authenticate地址0x8524"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.2.7 测试 constraints",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/angr/constraints?access_token={{access_token}}&file_id={{file_id}}&file_name=identifiable&func_addr=0x8524",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"angr",
+										"constraints"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_id",
+											"value": "{{file_id}}",
+											"description": "优先使用文件ID号"
+										},
+										{
+											"key": "file_name",
+											"value": "identifiable"
+										},
+										{
+											"key": "func_addr",
+											"value": "0x8524",
+											"description": "fauxware函数authenticate地址0x8524"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.2.8 测试 reaching_definitions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{FW_SERV_URL}}/test/angr/reaching_definitions?access_token={{access_token}}&file_id={{file_id}}&file_name=fauxware&func_addr=0x8524",
+									"host": [
+										"{{FW_SERV_URL}}"
+									],
+									"path": [
+										"test",
+										"angr",
+										"reaching_definitions"
+									],
+									"query": [
+										{
+											"key": "access_token",
+											"value": "{{access_token}}"
+										},
+										{
+											"key": "file_id",
+											"value": "{{file_id}}",
+											"description": "优先使用文件ID号"
+										},
+										{
+											"key": "file_name",
+											"value": "fauxware"
+										},
+										{
+											"key": "func_addr",
+											"value": "0x8524",
+											"description": "fauxware函数authenticate地址0x8524"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -1114,7 +1267,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/state?access_token={{access_token}}&file_id=111",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/state?access_token={{access_token}}&file_id={{file_id}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -1129,7 +1282,7 @@
 								},
 								{
 									"key": "file_id",
-									"value": "111"
+									"value": "{{file_id}}"
 								}
 							]
 						}
@@ -1907,13 +2060,13 @@
 	],
 	"variable": [
 		{
-			"id": "0a7a15a3-cf5f-4181-8fec-e4ec7cb1333e",
+			"id": "3a9fbda6-ecd7-4984-b57c-cd6d41df522e",
 			"key": "base_url",
 			"value": "http://localhost:10901",
 			"type": "string"
 		},
 		{
-			"id": "bdad8323-39e2-4583-a8e4-e4c54152a440",
+			"id": "d489c6dd-c48e-470d-9035-c0df09f611b7",
 			"key": "FW_SERV_URL",
 			"value": "http://localhost:10112",
 			"type": "string"

@@ -1,6 +1,7 @@
 import os
 import angr
 import binwalk
+import nose
 from angr.knowledge_plugins.variables import VariableType
 from angrutils import hook0, plot_cfg
 
@@ -168,11 +169,11 @@ def _test_func(file_name):
     p = angr.Project(file_path)
     p.analyses.CFGEmulated()
 
-    # f_arg1 = p.kb.functions['arg1']
-    # # SimCCSystemVAMD64
-    # print(type(f_arg1.calling_convention))
-    # print(len(f_arg1.arguments))
-    # print(f_arg1.arguments[0].reg_name)
+    f_arg1 = p.kb.functions['arg1']
+    # SimCCSystemVAMD64
+    print(type(f_arg1.calling_convention))
+    print(len(f_arg1.arguments))
+    print(f_arg1.arguments[0].reg_name)
     #
     # f_arg7 = p.kb.functions['arg7']
     # print(type(f_arg7.calling_convention))
@@ -220,3 +221,66 @@ def test_angr_vars(request):
     #     functions.append({'addr': hex(func.addr), 'name': func.name})
     #
     # return sys_app_ok_p({'count': len(functions), 'functions': functions})
+
+
+# TODO: 试验 constraints 的用法
+def test_angr_constraints(request):
+    # state 的 constraints
+    file_id, file_name, func_addr = ReqParams.many(request, ['file_id', 'file_name', 'func_addr.hex'])
+    file_path = os.path.join(MyPath.samples(), file_name)
+
+    project = angr.Project(file_path, load_options={"auto_load_libs": False})
+    cfg = project.analyses.CFG()
+
+    return sys_app_ok()
+
+
+# TODO: 试验 Identifier 的用法
+def test_angr_identifier(request):
+    file_id, file_name, func_addr = ReqParams.many(request, ['file_id', 'file_name', 'func_addr.hex'])
+    file_path = os.path.join(MyPath.samples(), file_name)
+
+    project = angr.Project(file_path, load_options={"auto_load_libs": False})
+    # p = angr.Project(os.path.join(bin_location, "tests", "i386", "identifiable"))
+    idfer = project.analyses.Identifier(require_predecessors=False)
+    seen = dict()
+    for addr, symbol in idfer.run():
+        seen[addr] = symbol
+
+    return sys_app_ok()
+
+
+def test_angr_reaching_definitions(request):
+    file_id, file_name, func_addr = ReqParams.many(request, ['file_id', 'file_name', 'func_addr.hex'])
+    file_path = os.path.join(MyPath.samples(), file_name)
+
+    project = angr.Project(file_path, load_options={'auto_load_libs': False})
+    # cfg = project.analyses.CFGFast()
+    cfg = project.analyses.CFGEmulated()
+
+    function = FunctionParse.func_by_addr(func_addr, cfg=cfg)
+
+    tmp_kb = angr.KnowledgeBase(project)
+    reaching_definition = project.analyses.ReachingDefinitions(
+        subject=function, kb=tmp_kb, observe_all=True
+    )
+
+    # nose.tools.assert_equal(reaching_definition.subject.__class__ is Subject, True)
+
+    def _result_extractor(rda):
+        unsorted_result = map(
+            lambda x: {'key': x[0],
+                       'register_definitions': x[1].register_definitions._storage,
+                       'stack_definitions': x[1].stack_definitions._storage,
+                       'memory_definitions': x[1].memory_definitions._storage},
+            rda.observed_results.items()
+        )
+        return list(sorted(
+            unsorted_result,
+            key=lambda x: x['key']
+        ))
+
+    result = _result_extractor(reaching_definition)
+
+    pass
+

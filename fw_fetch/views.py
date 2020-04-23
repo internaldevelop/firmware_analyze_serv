@@ -254,6 +254,8 @@ def _proc_uncompress(path_file_name, uncompress_path, task_id):
         bin_file = getfilebytype(list, '.Image')
     if len(bin_file) == 0:
         bin_file = getfilebytype(list, '.BootImage')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.jffs2')
 
     return bin_file
 

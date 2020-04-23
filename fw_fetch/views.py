@@ -21,7 +21,6 @@ from utils.db.mongodb.mongo_db import MongoDB
 from utils.db.mongodb.mongo_pocs import MongoPocs
 from utils.gadget.general import SysUtils
 from utils.mybinwalk.mybinwalk import MyBinwalk
-from utils.squashfs.squashfs import MySquashfs
 
 
 # firmware 信息集合

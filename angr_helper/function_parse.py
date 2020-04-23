@@ -180,37 +180,76 @@ class FunctionParse:
             func = cfg.kb.functions.function(func_addr)
         return func
 
-    # calling_convention: SimCCSystemVAMD64
+    def _get_prototype(self):
+        func = self.func
+        project = self.angr_proj.proj
+
+        # 设置 CC
+        func.calling_convention = angr.calling_conventions.DEFAULT_CC[project.arch.name](project.arch)
+        # 匹配函数定义，取得原型，并用函数定义更新 CC
+        func.find_declaration()
+        # 调用 arg_locs，获取模拟函数参数列表
+        if func.calling_convention.func_ty is not None:
+            # 暂时不用，参数list，名称形如：rdi、rsi；size为：4或8或...
+            arg_locs = func.calling_convention.arg_locs()
+
+        # 函数原型
+        pt_result = None
+        if func.prototype is not None:
+            pt = func.prototype
+            pt_result = {'format': pt.name,
+                         'arguments': list(map(lambda arg: {'type': arg.name}, pt.args)),
+                         'return_type': pt.returnty.name}
+
+        # 调用规则
+        cc_result = None
+        if func.calling_convention is not None:
+            cc = func.calling_convention
+            cc_result = {'argument_regs': {'name': '参数寄存器', 'list': cc.ARG_REGS},
+                         'fp_argument_regs': {'name': '浮点参数寄存器', 'list': cc.FP_ARG_REGS},
+                         'stack_arg_buff': {'name': '保留缓冲字节数', 'size': cc.STACKARG_SP_BUFF},
+                         'call_saved_regs': {'name': '保存调用寄存器', 'list': cc.CALLER_SAVED_REGS},
+                         'return_addr': {'name': '返回地址', 'offset': cc.RETURN_ADDR.stack_offset,
+                                         'size': cc.RETURN_ADDR.size},
+                         'return_val': {'name': '返回值寄存器', 'reg': cc.RETURN_VAL.reg_name,
+                                        'size': cc.RETURN_VAL.size},
+                         }
+        return pt_result, cc_result
+
+    # calling_convention: SimCCSystemVAMD64, maybe available in V8.20
     # alignment
     # code_constants
     # has_return
     # local_runtime_values
     # name
-    # arguments
-    # num_arguments
+    # arguments: maybe available in V8.20
+    # num_arguments: maybe available in V8.20
     # ret_sites
     # returning
     # size
     def get_props(self):
         func = self.func
-        if len(func.ret_sites) > 0:
-            ret_addr = hex(func.ret_sites[0].addr)
-        else:
-            ret_addr = 'None'
+
+        # if len(func.ret_sites) > 0:
+        #     ret_addr = hex(func.ret_sites[0].addr)
+        # else:
+        #     ret_addr = 'None'
+        pt_result, cc_result = self._get_prototype()
         return {'name': func.name,
                 'addr': hex(func.addr),
                 'size': func.size,
-                'calling_convention': func.calling_convention,
-                'arguments': func.arguments,
-                'num_arguments': func.num_arguments,
-                'alignment': func.alignment,
+                'calling_convention': cc_result,
+                'prototype': pt_result,
+                # 'arguments': func.arguments,
+                # 'num_arguments': func.num_arguments,
+                # 'alignment': func.alignment,
                 # 'code_constants': func.code_constants,
                 # local_runtime_values 是 set，不能直接进行 JSON 序列化
                 # 'local_runtime_values': func.local_runtime_values,
-                'has_return': func.has_return,
+                # 'has_return': func.has_return,
                 # 'ret_sites': func.ret_sites,
-                'ret_addr': ret_addr,
-                'returning': func.returning,
+                # 'ret_addr': ret_addr,
+                # 'returning': func.returning,
                 }
 
     def decompiler(self):

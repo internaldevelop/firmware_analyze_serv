@@ -116,6 +116,8 @@ def _get_file_type(file_name):
         return FileType.FS_IMAGE
     elif '.jffs2' in file_name:
         return FileType.FS_IMAGE
+    elif '.yaffs2' in file_name:
+        return FileType.FS_IMAGE
     elif '.img' in file_name: #romfs
         return FileType.FS_IMAGE
     elif '.romfs' in file_name:
@@ -255,6 +257,8 @@ def _proc_uncompress(path_file_name, uncompress_path, task_id):
         bin_file = getfilebytype(list, '.BootImage')
     if len(bin_file) == 0:
         bin_file = getfilebytype(list, '.jffs2')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.yaffs2')
 
     return bin_file
 

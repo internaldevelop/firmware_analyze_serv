@@ -1,6 +1,7 @@
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.fs.img_romfs import IMG_RomFS
+from utils.fs.img_yaffs import IMG_YAFFS
 from utils.fs.pack_files import PackFiles
 from utils.fs.squashfs import SquashFS
 from utils.fs.img_jffs2 import IMG_JFFS2
@@ -95,7 +96,10 @@ class FsImage:
             image = IMG_RomFS(image_file_path)
         elif '.romfs' in image_file['file_name']:
             image = IMG_RomFS(image_file_path)
-
+        elif '.yaffs' in image_file['file_name']:
+            image = IMG_YAFFS(image_file_path)
+        elif '.yaffs2' in image_file['file_name']:
+            image = IMG_YAFFS(image_file_path)
         elif '.squashfs' in image_file['file_name']:
             # 尝试 SquashFS 解析，并验证
             image = SquashFS(image_file_path)

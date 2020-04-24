@@ -53,6 +53,7 @@ def main():
         # print("system-log:" + syslog)
         settings.FW_PATH = MyPath.firmware()
         SysUtils.check_filepath(settings.FW_PATH)
+        SysUtils.check_filepath(MyPath.temporary())
 
 
 

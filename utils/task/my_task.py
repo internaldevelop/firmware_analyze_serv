@@ -7,6 +7,7 @@ from utils.gadget.strutil import StrUtils
 from utils.db.mongodb.logs import LogRecords
 
 # 定义 redis 中键值的 category
+from utils.http.task_feedback import task_feedback
 from utils.task.task_status import TaskStatus
 
 task_cat = 'task'
@@ -148,6 +149,9 @@ class MyTask:
 
         # 保存处理进程的历史记录
         MyTask._save_progress_history(task_info)
+
+        # 调用 websocket task_feedback
+        task_feedback(task_id, task_info)
 
         # 运行100%时，设置任务完成状态，并更新数据库，清理缓存
         if percent == 100.0:

@@ -31,6 +31,10 @@ from utils.db.mongodb.mongo_db import MongoDB
 
 # firmware 信息集合
 import utils.sys.config
+import json
+# import urllib.parse
+# import urllib.request
+
 firmware_info_coll = utils.sys.config.g_firmware_info_col
 task_info_coll = utils.sys.config.g_task_info_col
 
@@ -43,11 +47,60 @@ def index(request):
     return HttpResponse("Hello firmware fetch.")
 
 
-def testws(request):
-    # firmware_id = req_get_param(request, 'firmware_id')
+def test_http_get():
+
+
+    url = "http://127.0.0.1:10901/firmware/setdata"
+
+    v1= {}
+    v1['1'] = "123"
+    v1['2'] = "234"
+    v1['3'] = "345"
+    data = json.dumps(v1)
+
+    # 定义请求数据，并且对数据进行赋值
+    values = {}
+    values['task_uuid'] = StrUtils.uuid_str()
+    values['datas'] = data
+
+    # # 对请求数据进行编码
+    # data = urllib.parse.urlencode(values).encode('utf-8')
+    # print(type(data))  # 打印<class 'bytes'>
+    # print(data)  # 打印b'status=hq&token=C6AD7DAA24BAA29AE14465DDC0E48ED9'
+
+    # 若为post请求以下方式会报错TypeError: POST data should be bytes, an iterable of bytes, or a file object. It cannot be of type str.
+    # Post的数据必须是bytes或者iterable of bytes,不能是str,如果是str需要进行encode()编码
+    data = urllib.parse.urlencode(values)
+    print(type(data))  # 打印<class 'str'>
+    print(data)  # 打印status=hq&token=C6AD7DAA24BAA29AE14465DDC0E48ED9
+
+    # 将数据与url进行拼接
+    req = url + '?' + data
+    # 打开请求，获取对象
+    response = urllib.request.urlopen(req)
+
+    print("get complate")
+    # print(type(response))  # 打印<class 'http.client.HTTPResponse'>
+    # # 打印Http状态码
+    # print(response.status)  # 打印200
+    # # 读取服务器返回的数据,对HTTPResponse类型数据进行读取操作
+    # the_page = response.read()
+    # # 中文编码格式打印数据
+    # print(the_page.decode("unicode_escape"))
+
+def test1():
     ws = MyWebsocket()
     ws.sendmsg("hello00000000")
+    ws.sendmsg("task_uuid:1234321,data:xxxxxx")
     # MyWebsocket.sendmsg("testhello")
+
+
+def testws(request):
+    # test1()
+
+    # http get
+    test_http_get()
+    return sys_app_ok_p('test ok')
 
 
 def test(request):

@@ -21,7 +21,8 @@ your_rest_server_port = 10112
 # 各服务地址
 
 # Websocket 配置
-g_ws_url = "ws://localhost:10901/websocket/asset_info"
+g_ws_url = "ws://localhost:10901/websocket/firmware"
+# g_ws_url = "http://localhost:10901/websocket/firmware"
 
 # mongo-db客户端
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.60.5:27017/")

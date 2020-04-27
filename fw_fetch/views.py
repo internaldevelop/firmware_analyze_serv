@@ -16,6 +16,7 @@ from utils.http.response import sys_app_ok_p
 from utils.http.http_request import req_get_param
 from utils.gadget.download import Mydownload
 from utils.const.file_type import FileType
+from utils.http.task_feedback import task_feedback
 from utils.task.my_task import MyTask
 from utils.db.mongodb.mongo_db import MongoDB
 from utils.db.mongodb.mongo_pocs import MongoPocs
@@ -96,6 +97,8 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
     total_percentage = 100.0
     MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
 
+    # # 7 call task_feedback
+    # task_feedback(task_id, total_percentage)
     return 'ERROR_OK'
 
     # websocket通知页面

@@ -1,7 +1,7 @@
 import os
-from PySquashfsImage import SquashFsImage
+# from PySquashfsImage import SquashFsImage
 
-from jefferson import jffs2_lzma, rtime
+# from jefferson import jffs2_lzma, rtime
 from .jffs2 import JFFS2
 from utils.fs.fs_base import FsBase
 from utils.const.file_type import FileType

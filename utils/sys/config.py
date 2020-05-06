@@ -10,27 +10,26 @@ from redis import StrictRedis
 
 # EUREKA 配置信息
 # eureka_server
-eureka_server_list = "http://localhost:10100/eureka/"
-# eureka_server_list = "http://172.16.60.5:10100/eureka/"
+# eureka_server_list = "http://localhost:10100/eureka/"
+eureka_server_list = "http://192.168.1.100:10100/eureka/"
 # eureka_server_list = "http://192.168.43.139:10100/eureka/"
 # 本地服务
-your_rest_server_host = "localhost"
+your_rest_server_host = "192.168.1.100"
 your_rest_server_port = 10112
 
 # ===========================================================================================
 # 各服务地址
 
 # Websocket 配置
-g_ws_url = "ws://localhost:10901/websocket/firmware"
+g_ws_url = "ws://192.168.1.100:10901/websocket/firmware"
 # g_ws_url = "http://localhost:10901/websocket/firmware"
 
 # mongo-db客户端
-# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@172.16.60.5:27017/")
-g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.43.214:27017/")
+g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.1.100:27017/")
 # g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.182.88:27017/")
 
 # redis 客户端
-g_redis_client = StrictRedis(host='192.168.43.214', port=16379, db=0, password='123456')
+g_redis_client = StrictRedis(host='192.168.1.100', port=16379, db=0, password='123456')
 # g_redis_client = StrictRedis(host='192.168.182.88', port=16379, db=0, password='123456')
 
 # ===========================================================================================

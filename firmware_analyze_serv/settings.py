@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#+)mr+s3qizk5jjh&o3u(p79)50e$hi$@1=vj$(#%a*+3ro94r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,23 +56,23 @@ MIDDLEWARE = [
 ]
 # WEBSOCKET_ACCEPT_ALL = True   # 可以允许每一个单独的视图实用websockets
 
-# # 跨域增加忽略
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_HEADERS = (
-#     'XMLHttpRequest',
-#     'X_FILENAME',
-#     'accept-encoding',
-#     'authorization',
-#     'content-type',
-#     'dnt',
-#     'origin',
-#     'user-agent',
-#     'x-csrftoken',
-#     'x-requested-with',
-# )
-# # 部署到云服务上必备
-# ALLOWED_HOSTS = ['*']
+# 跨域增加忽略
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+# 部署到云服务上必备
+ALLOWED_HOSTS = ['*']
 
 ROOT_URLCONF = 'firmware_analyze_serv.urls'
 

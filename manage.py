@@ -27,7 +27,11 @@ def main():
         eureka_client.init_registry_client(eureka_server=eureka_server_list,
                                            app_name="firmware-analyze",
                                            instance_host=your_rest_server_host,
-                                           instance_port=your_rest_server_port)
+                                           instance_port=your_rest_server_port,
+
+                                           # 测试阶段建议添加以下两个参数
+                                           renewal_interval_in_secs=20,# Eureka客户端向服务端发送心跳的时间间隔，单位为秒（客户端告诉服务端自己会按照该规则），默认30
+                                           duration_in_secs=20)# Eureka服务端在收到最后一次心跳之后等待的时间上限，单位为秒，超过则剔除（客户端告诉服务端按照此规则等待自己），默认90
         # 发现服务
         # you can reuse the eureka_server_list which you used in registry client
         listservice = eureka_client.init_discovery_client(eureka_server_list)
@@ -60,6 +64,7 @@ def main():
 
     except ZeroDivisionError as e:
         print('except:', e)
+        eureka_client.stop()
 
     try:
         from django.core.management import execute_from_command_line
@@ -74,4 +79,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    eureka_client.stop()
 

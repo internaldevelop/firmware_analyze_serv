@@ -216,14 +216,17 @@ class SysUtils:
     @staticmethod
     def un_py7zr(filename, extract_dir):
         list = []
-        is7z = py7zr.is_7zfile(filename)
-        if is7z:
-            ret = py7zr.unpack_7zarchive(filename, extract_dir)
-            arc = py7zr.SevenZipFile(filename)
-            list = arc.getnames()
-            # print(list)
-        else:
-            print('unknow file type')
+        try:
+            is7z = py7zr.is_7zfile(filename)
+            if is7z:
+                ret = py7zr.unpack_7zarchive(filename, extract_dir)
+                arc = py7zr.SevenZipFile(filename)
+                list = arc.getnames()
+                # print(list)
+            else:
+                print('unknow file type')
+        except Exception as e:
+            print(e)
         return list
 
     @staticmethod

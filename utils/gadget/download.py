@@ -88,7 +88,7 @@ class Mydownload:
         except Exception as e:
             print(e)
             MyTask.save_exec_info(task_id, 100.0, {'download': str(e)})
-            return 'ERROR_EXCEPTION', e, None
+            return 'ERROR_EXCEPTION', None, None
 
 
     @staticmethod

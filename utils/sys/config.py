@@ -2,35 +2,33 @@ import pymongo
 from gridfs import GridFS
 from redis import StrictRedis
 
-# edb采用标准数据库还是小数据库
-# 1：标准数据库；2：小数据库；
-# EDB_TYPE = 2
-#
+# g_server_ip = "localhost"
+# g_java_service_ip = "localhost"
+# g_docker_service_ip = "localhost"
 
+g_server_ip = "192.168.1.100"
+g_java_service_ip = "192.168.1.100"
+g_docker_service_ip = "192.168.1.100"
 
 # EUREKA 配置信息
 # eureka_server
-# eureka_server_list = "http://localhost:10100/eureka/"
-eureka_server_list = "http://192.168.1.100:10100/eureka/"
-# eureka_server_list = "http://192.168.43.139:10100/eureka/"
+eureka_server_list = "http://" + g_java_service_ip + ":10100/eureka/"
 # 本地服务
-your_rest_server_host = "192.168.1.100"
+your_rest_server_host = g_server_ip
 your_rest_server_port = 10112
 
 # ===========================================================================================
 # 各服务地址
 
 # Websocket 配置
-g_ws_url = "ws://192.168.1.100:10901/websocket/firmware"
-# g_ws_url = "http://localhost:10901/websocket/firmware"
+g_ws_url = "ws://" + g_java_service_ip + ":10901/websocket/firmware"
 
 # mongo-db客户端
-g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.1.100:27017/")
-# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@192.168.182.88:27017/")
-
+# g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@" + g_docker_service_ip + ":27017/")
+g_mongo_client = pymongo.MongoClient("mongodb://admin:123456@" + g_docker_service_ip + ":27017/", connect=False)
+print(g_mongo_client)
 # redis 客户端
-g_redis_client = StrictRedis(host='192.168.1.100', port=16379, db=0, password='123456')
-# g_redis_client = StrictRedis(host='192.168.182.88', port=16379, db=0, password='123456')
+g_redis_client = StrictRedis(host=g_docker_service_ip, port=16379, db=0, password='123456')
 
 # ===========================================================================================
 # 全局引用、全局对象定义

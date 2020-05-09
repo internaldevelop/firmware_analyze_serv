@@ -50,7 +50,7 @@ def index(request):
 def test_http_get():
 
 
-    url = "http://127.0.0.1:10901/firmware/setdata"
+    url = "http://" + utils.g_java_service_ip + ":10901/firmware/setdata"
 
     v1= {}
     v1['1'] = "123"
@@ -121,7 +121,6 @@ def fwdownload(request):
     print("run into fwdownload")
     homepage = req_get_param(request, 'url')
     print(homepage)
-    # http://127.0.0.1:8000/firmwarefetch/fwdownload/?url=http://www.luyoudashi.com/roms
 
     # 爬取下载固件
     # firmware = Firmware()

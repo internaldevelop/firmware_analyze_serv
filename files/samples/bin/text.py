@@ -66,7 +66,6 @@ def fwdownload(request):
     print("run into fwdownload")
     homepage = req_get_param(request, 'url')
     print(homepage)
-    # http://127.0.0.1:8000/firmwarefetch/fwdownload/?url=http://www.luyoudashi.com/roms
 
     # 爬取下载固件
     # firmware = Firmware()

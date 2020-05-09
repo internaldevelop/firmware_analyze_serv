@@ -74,6 +74,9 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
 
     # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
     img_filename = _proc_uncompress(os.path.join(g_fw_save_path, fw_filename), g_fw_save_path, task_id)
+    if len(img_filename) == 0:
+        print("package uncompress error")
+        return "package uncompress error"
 
     # 4 时间消耗总占比0 保存系统镜像文件 to mongodb
     file_id = _save_file_db(os.path.join(g_fw_save_path, img_filename), pack_id)

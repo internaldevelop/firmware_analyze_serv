@@ -123,7 +123,7 @@ progressbar2==3.47.0
 prompt-toolkit==3.0.2
 Protego==0.1.15
 protobuf==3.11.2
-psutil==5.6.3
+psutil==5.6.6
 py-eureka-client==0.7.4
 py7zr==0.4.4
 pyasn1==0.4.8

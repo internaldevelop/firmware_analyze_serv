@@ -2,13 +2,17 @@ import pymongo
 from gridfs import GridFS
 from redis import StrictRedis
 
-# g_server_ip = "localhost"
-# g_java_service_ip = "localhost"
+g_server_ip = "localhost"
+g_java_service_ip = "localhost"
 # g_docker_service_ip = "localhost"
 
-g_server_ip = "192.168.1.100"
-g_java_service_ip = "192.168.1.100"
-g_docker_service_ip = "192.168.1.100"
+# g_server_ip = "192.168.43.72"
+# g_java_service_ip = "192.168.43.214"
+g_docker_service_ip = "192.168.43.214"
+
+# g_server_ip = "192.168.1.105"
+# g_java_service_ip = "192.168.1.100"
+# g_docker_service_ip = "192.168.1.100"
 
 # EUREKA 配置信息
 # eureka_server

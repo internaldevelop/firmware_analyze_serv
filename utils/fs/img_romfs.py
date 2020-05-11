@@ -80,9 +80,9 @@ class IMG_RomFS(FsBase):
         for inode in root.findAll():
             index += 1
             content = root.read(inode)
-            # name = os.path.basename(inode)
-            name = str(inode)
-            path = os.path.splitext(inode)
+            inode_dir = str(inode).replace("b'", '')
+            name = os.path.basename(inode_dir).replace("'", '')
+            path = inode_dir.replace("'", '')
             mode = 0o111
 
             file_type, extra_props = IMG_RomFS._file_type(name, mode, content, True)

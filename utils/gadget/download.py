@@ -73,15 +73,14 @@ class Mydownload:
                 # homepage = homepage.encode()
                 print(downloadurl)
 
-                result = urlretrieve(downloadurl, os.path.join(savepath, filename), reporthook=reporthook)
+                result_urlretrieve = urlretrieve(downloadurl, os.path.join(savepath, filename), reporthook=reporthook)
 
-                print('\nDownload finished!', result)
+                print('\nDownload finished!', result_urlretrieve)
             else:
                 #todo 判断文件完整性，是否重新下载
                 # result = urlretrieve(downloadurl, os.path.join(savepath, filename), reporthook=reporthook)
                 print('File already exsits!')
-
-            MyTask.save_exec_info(task_id, total_percentage, {'download': result[0]})
+            MyTask.save_exec_info(task_id, total_percentage, {'download': os.path.join(savepath, filename)})
 
             return 'ERROR_OK', filename, file_list
 

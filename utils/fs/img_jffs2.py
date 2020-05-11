@@ -99,18 +99,19 @@ class IMG_JFFS2(FsBase):
 
         for index in self.image.dirents:
             dirent = self.image.dirents[index]
-            name, ntype = self.image.resolve_dirent(index)
+            path_name, ntype = self.image.resolve_dirent(index)
             # mode = self.image.fd.mode
             mode = 0o111
 
             if ntype == DT_REG:
                 # image.dump_file(os.path.join(target, name), i)
-                content = self.image.get_file_content(name, index)
-                file_type, extra_props = IMG_JFFS2._file_type(name, mode, content, True)
+                content = self.image.get_file_content(path_name, index)
+                file_type, extra_props = IMG_JFFS2._file_type(path_name, mode, content, True)
 
                 # 属性和数据内容交由 extract_func 回调函数处理
                 if extract_func is not None:
-                    path = os.path.splitext(name)
+                    name = os.path.basename(path_name)
+                    path = path_name
                     ret = extract_func(name, path, file_type, content, index, total_count, extra_props=extra_props)
                     if not ret:
                         return False

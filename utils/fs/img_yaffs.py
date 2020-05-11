@@ -106,7 +106,7 @@ class IMG_YAFFS(FsBase):
                 if int(entry.yaffs_obj_type) == self.image.YAFFS_OBJECT_TYPE_FILE:
                     try:
                         index += 1
-                        name = str(file_path, encoding="utf-8")
+                        name = os.path.basename(str(file_path, encoding="utf-8"))
                         path = str(file_path, encoding="utf-8")
                         content = self.image.file_entries[entry_id].file_data
 

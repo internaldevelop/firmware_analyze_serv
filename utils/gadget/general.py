@@ -224,7 +224,7 @@ class SysUtils:
                 list = arc.getnames()
                 # print(list)
             else:
-                print('unknow file type')
+                print('un_py7zr: unknow file type')
         except Exception as e:
             print(e)
         return list

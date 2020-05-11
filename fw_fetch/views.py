@@ -13,7 +13,7 @@ from utils.gadget.my_file import MyFile
 from utils.gadget.strutil import StrUtils
 from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok_p
-from utils.http.http_request import req_get_param
+from utils.http.http_request import req_get_param, req_post_param
 from utils.gadget.download import Mydownload
 from utils.const.file_type import FileType
 from utils.http.task_feedback import task_feedback
@@ -37,7 +37,8 @@ method_fs = utils.sys.config.g_firmware_method_fs
 def async_fwdownload(request):
 
     # 获取下载URL
-    # fw_download_url = req_get_param(request, 'url')
+    # # fw_download_url = req_get_param(request, 'url')
+
     fw_download_url, ftp_user, ftp_password = ReqParams.many(request, ['url', 'user', 'password'])
 
     print(fw_download_url)
@@ -164,6 +165,9 @@ def _save_file_db(path_file_name, pack_id):
     file_id = StrUtils.uuid_str()
     # 读取文件内容
     contents = MyFile.read(path_file_name)
+
+    if contents is None:  #linux 系统下 BINWALK会提取出空目录，读目录文件为None
+        return None
     # 保存文件记录
     FwFileDO.save_file_item(pack_id, file_id, file_name, file_type, file_path)
     # 保存文件内容

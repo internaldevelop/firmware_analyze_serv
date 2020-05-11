@@ -1,7 +1,7 @@
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.fs.fs_image import FsImage
-from utils.fs.squashfs import SquashFS
+from utils.fs.img_squashfs import SquashFS
 from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok_p, sys_app_err
 

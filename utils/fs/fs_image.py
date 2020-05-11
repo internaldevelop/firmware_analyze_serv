@@ -3,7 +3,7 @@ from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.fs.img_romfs import IMG_RomFS
 from utils.fs.img_yaffs import IMG_YAFFS
 from utils.fs.pack_files import PackFiles
-from utils.fs.squashfs import SquashFS
+from utils.fs.img_squashfs import SquashFS
 from utils.fs.img_jffs2 import IMG_JFFS2
 # from utils.fs.img_ubifs import IMG_UBI
 from utils.gadget.my_path import MyPath

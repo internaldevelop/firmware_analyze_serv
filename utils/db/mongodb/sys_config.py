@@ -70,17 +70,40 @@ class SystemConfig:
         sys_dict_coll.update_one({'key': 'sys_config'},  {'$set': cfg_doc}, True)
 
     @staticmethod
-    def read_db():
+    def read_db(read_all=0, config_key='sys_config'):
         if sys_dict_coll is None:
             cfg = SystemConfig._default_config()
         else:
-            cfg_doc = sys_dict_coll.find({'key': 'sys_config'}, {'_id': 0, 'value': 1})
-            cfg_list = list(cfg_doc)
-            if len(cfg_list) == 0:
-                cfg = SystemConfig._default_config()
+            if read_all == 1:
+                cfg_doc = sys_dict_coll.find({}, {'_id': 0})
+                cfg_list = list(cfg_doc)
+                if len(cfg_list) == 0:
+                    cfg = SystemConfig._default_config()
+                else:
+                    cfg = cfg_list
+
             else:
-                cfg = cfg_list[0]['value']
+                cfg_doc = sys_dict_coll.find({'key': config_key}, {'_id': 0, 'value': 1})
+                cfg_list = list(cfg_doc)
+                if len(cfg_list) == 0:
+                    cfg = SystemConfig._default_config()
+                else:
+                    cfg = cfg_list[0]['value']
         return cfg
+
+    @staticmethod
+    def backup_db(config_key, config):
+        # cfg = SystemConfig.read_db()
+
+        cfg_doc = {'key': config_key, 'value': config}
+        sys_dict_coll.update_one({'key': config_key},  {'$set': cfg_doc}, True)
+
+    @staticmethod
+    def recover_db(config_key):
+        cfg = SystemConfig.read_db(config_key)
+
+        cfg_doc = {'key': 'sys_config', 'value': cfg}
+        sys_dict_coll.update_one({'key': 'sys_config'},  {'$set': cfg_doc}, True)
 
     @staticmethod
     def cache_load():

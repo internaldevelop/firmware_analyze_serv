@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "977692eb-2882-45d2-a201-ed2d781988b4",
+		"_postman_id": "5450bd3a-8231-4ced-9c46-6c4d2c3b5343",
 		"name": "固件漏洞挖掘测试集",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -38,7 +38,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"id": "1e081930-2119-4d80-9fcb-517ff96dadd7",
 								"exec": [
 									""
 								],
@@ -48,7 +48,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"id": "16c8877c-9748-4f32-85c6-96fbed1f0876",
 								"exec": [
 									""
 								],
@@ -91,7 +91,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"id": "199f21b7-d6a1-4d2f-9bf7-3a468a701fb4",
 								"exec": [
 									""
 								],
@@ -101,7 +101,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"id": "11223ac6-a55c-46d3-9696-af98dba59d7a",
 								"exec": [
 									""
 								],
@@ -123,6 +123,12 @@
 								{
 									"key": "sys_config",
 									"value": "{\n\"log_configs\": {\n\"analysis\": {\n\"on\": false,\n\"alias\": \"分析日志\",\n\"description\": \"固件代码分析操作日志\"\n},\n\"system_config\": {\n\"on\": true,\n\"alias\": \"系统配置日志\",\n\"description\": \"系统配置参数操作日志\"\n},\n\"task\": {\n\"on\": false,\n\"alias\": \"任务运行日志\",\n\"description\": \"后台任务运行信息日志\"\n},\n\"query_task\": {\n\"on\": true,\n\"alias\": \"任务查看日志\",\n\"description\": \"后台任务信息查看操作日志\"\n},\n\"query\": {\n\"on\": true,\n\"alias\": \"业务查询日志\",\n\"description\": \"系统业务数据查询日志\"\n},\n\"search\": {\n\"on\": true,\n\"alias\": \"数据搜索日志\",\n\"description\": \"系统业务数据搜索日志\"\n},\n\"statistics\": {\n\"on\": true,\n\"alias\": \"统计日志\",\n\"description\": \"系统数据统计操作日志\"\n},\n\"debug\": {\n\"on\": true,\n\"alias\": \"调试日志\",\n\"description\": \"系统运行时调试信息日志\"\n}\n}\n}",
+									"type": "text"
+								},
+								{
+									"key": "config_key",
+									"value": "",
+									"description": "config_key为空时更新sys_config ，",
 									"type": "text"
 								}
 							]
@@ -146,7 +152,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"id": "f3bee64a-6c40-4208-8317-6a4c4cc6ca6b",
 								"exec": [
 									""
 								],
@@ -156,7 +162,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"id": "ad7a275d-8a85-465c-a4c6-d44a2e0385f1",
 								"exec": [
 									""
 								],
@@ -175,13 +181,79 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "{{FW_SERV_URL}}/system/read_config?access_token={{access_token}}",
+							"raw": "{{FW_SERV_URL}}/system/read_config?access_token={{access_token}}&all_config=",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
 								"system",
 								"read_config"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "all_config",
+									"value": "",
+									"description": "1 读取所有配置，空或其他值读取sys_config配置"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.8 备份系统配置",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a16dbbd4-728e-4848-9fb4-9c23988c6398",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "1120e200-2bb8-480b-acdd-d07fd9be5389",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "config_key",
+									"value": "mybackup2",
+									"type": "text"
+								},
+								{
+									"key": "sys_config",
+									"value": "{\n\"log_configs\": {\n\"analysis\": {\n\"on\": false,\n\"alias\": \"分析日志\",\n\"description\": \"固件代码分析操作日志\"\n},\n\"system_config\": {\n\"on\": true,\n\"alias\": \"系统配置日志\",\n\"description\": \"系统配置参数操作日志\"\n},\n\"task\": {\n\"on\": false,\n\"alias\": \"任务运行日志\",\n\"description\": \"后台任务运行信息日志\"\n},\n\"query_task\": {\n\"on\": true,\n\"alias\": \"任务查看日志\",\n\"description\": \"后台任务信息查看操作日志\"\n},\n\"query\": {\n\"on\": true,\n\"alias\": \"业务查询日志\",\n\"description\": \"系统业务数据查询日志\"\n},\n\"search\": {\n\"on\": true,\n\"alias\": \"数据搜索日志\",\n\"description\": \"系统业务数据搜索日志\"\n},\n\"statistics\": {\n\"on\": true,\n\"alias\": \"统计日志\",\n\"description\": \"系统数据统计操作日志\"\n},\n\"debug\": {\n\"on\": true,\n\"alias\": \"调试日志\",\n\"description\": \"系统运行时调试信息日志\"\n}\n}\n}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{FW_SERV_URL}}/system/backup_config?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"system",
+								"backup_config"
 							],
 							"query": [
 								{
@@ -194,12 +266,69 @@
 					"response": []
 				},
 				{
+					"name": "1.8 恢复系统配置",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8cbd0e0e-9eb2-4f2e-8b27-8af418ac71a0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9097b207-8901-410a-a3d0-bd1692d38951",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{FW_SERV_URL}}/system/recover_config?access_token={{access_token}}&config_key=mybackup1",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"system",
+								"recover_config"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "config_key",
+									"value": "mybackup1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "1.5 检查 file_id",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
+								"id": "dcecbe2b-94f2-4534-87ab-8f930eacfbc3",
 								"exec": [
 									"pm.environment.set(\"file_id\", \"1\");"
 								],
@@ -239,7 +368,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
+								"id": "3b7f9e0b-21a3-4ac3-a8ea-7d04194b6e44",
 								"exec": [
 									""
 								],
@@ -280,7 +409,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "440cad96-bd3e-43f0-9407-ca4c24d0a111",
+								"id": "fd9564f2-5729-4742-8895-32b1e81a8a7c",
 								"exec": [
 									""
 								],
@@ -320,7 +449,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "196825a2-46a5-4a64-88ba-584a16a46f70",
+						"id": "6fb33950-9332-447d-a7e5-a2111e54a767",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -330,7 +459,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "2b9aefb5-eae7-44fa-a6c8-ad15c5c2afc5",
+						"id": "301a3745-0ff3-47ea-8a7d-f66ff31144f9",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -352,7 +481,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "2078a4cc-6501-4030-9d59-62b5d3681b5c",
 										"exec": [
 											""
 										],
@@ -467,7 +596,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cbe67be8-e29a-47aa-b106-c4460a66a8de",
+								"id": "9cb8c503-8f75-45a7-9fb3-9d3bc7040457",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -477,7 +606,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4b777f99-6aeb-4828-86ef-9b3b468d3b58",
+								"id": "7ed1e417-86fc-4ac2-9716-c643537df6b3",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -497,7 +626,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "d3ad47a7-6c76-4f0d-97bf-3257ad851eca",
 										"exec": [
 											""
 										],
@@ -539,7 +668,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "746f0ef0-8242-4773-97b3-0e584bf50ee6",
 										"exec": [
 											""
 										],
@@ -580,7 +709,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "35cc12c2-33bc-45ac-8371-60c9e4f4b4aa",
 										"exec": [
 											""
 										],
@@ -631,7 +760,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "52336676-baef-45c4-bda6-ec84d1704ea0",
 										"exec": [
 											""
 										],
@@ -684,7 +813,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "9575cc16-d12d-4efd-8549-7098a629b982",
 										"exec": [
 											""
 										],
@@ -735,7 +864,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "9fa5b483-da18-4173-9698-6022b90c7f34",
 										"exec": [
 											""
 										],
@@ -786,7 +915,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "af56b311-8f49-46e0-aa48-ab04294c9050",
 										"exec": [
 											""
 										],
@@ -837,7 +966,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "f7b9a994-1465-478e-81e5-34cd7cc7384e",
 										"exec": [
 											""
 										],
@@ -895,7 +1024,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "4cca2e66-02c7-443c-a617-c19b9b113ad5",
 										"exec": [
 											""
 										],
@@ -936,7 +1065,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "14bab845-99d1-4b49-9384-4bca06c376e2",
 										"exec": [
 											"pm.test(\"test\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -983,7 +1112,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "d59344d7-b906-41e0-873d-d81168f6695a",
 										"exec": [
 											"pm.test(\"run XXXXX\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -1037,7 +1166,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "53517bf9-89c9-4d17-bf91-d8b99e39a31a",
 										"exec": [
 											""
 										],
@@ -1081,7 +1210,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "15feb1f1-0397-4103-bf96-2624cd024355",
 										"exec": [
 											""
 										],
@@ -1122,7 +1251,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "c8d8f5af-e0f3-4895-b4ff-c9f8fbc5b36d",
 										"exec": [
 											""
 										],
@@ -1221,7 +1350,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "baa7a6b4-cad8-44d9-970d-da638ab1ac99",
+										"id": "fd8d609d-197a-4e0d-bef7-b6af22569a10",
 										"exec": [
 											""
 										],
@@ -1254,6 +1383,406 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "3. 固件下载",
+			"item": [
+				{
+					"name": "1.1 指定URL下载固件",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d01e9155-4aeb-406c-95e2-d6bdfad90a29",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://192.168.43.214/CF-EW71-V2.6.0.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://192.168.43.214/CF-EW71-V2.6.0.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 JFFS2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=https://dlsvr04.asus.com/pub/ASUS/wireless/GT-AC5300/FW_GT_AC5300_300438445149.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "https://dlsvr04.asus.com/pub/ASUS/wireless/GT-AC5300/FW_GT_AC5300_300438445149.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://192.168.43.214/testSquashfs.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://192.168.43.214/testSquashfs.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件-FTP romfs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c269db73-e442-4430-a51d-8a437baef4f6",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.43.214/testromfs.zip&user=ftpuser&password=Pass4ftp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "ftp://192.168.43.214/testromfs.zip"
+								},
+								{
+									"key": "user",
+									"value": "ftpuser"
+								},
+								{
+									"key": "password",
+									"value": "Pass4ftp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件-FTP yaffs2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9894cf1f-c8a3-44b3-a8ea-9904f3de1ad0",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.43.214/testYaffs2.zip&user=ftpuser&password=Pass4ftp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "ftp://192.168.43.214/testYaffs2.zip"
+								},
+								{
+									"key": "user",
+									"value": "ftpuser"
+								},
+								{
+									"key": "password",
+									"value": "Pass4ftp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件-FTP rar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.43.214/CF-WA800V3-V2.6.0.rar&user=ftpuser&password=Pass4ftp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "ftp://192.168.43.214/CF-WA800V3-V2.6.0.rar"
+								},
+								{
+									"key": "user",
+									"value": "ftpuser"
+								},
+								{
+									"key": "password",
+									"value": "Pass4ftp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件-FTP zip/img",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://172.16.113.26/DSL-2740EL_C1_C1.zip&user=ftpuser&password=Pass4ftp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "ftp://172.16.113.26/DSL-2740EL_C1_C1.zip"
+								},
+								{
+									"key": "user",
+									"value": "ftpuser"
+								},
+								{
+									"key": "password",
+									"value": "Pass4ftp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件-FTP jffs2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.1.100/testjffs2.zip&user=ftpuser&password=Pass4ftp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "ftp://192.168.1.100/testjffs2.zip"
+								},
+								{
+									"key": "user",
+									"value": "ftpuser"
+								},
+								{
+									"key": "password",
+									"value": "Pass4ftp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 指定URL下载固件 带中文下载URL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-WR635AC-V1.0.0.zip",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"download"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-WR635AC-V1.0.0.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 查询固件列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/all?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"pack",
+								"all"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.4 检测文件类型",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/test_check_file",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"test_check_file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 根据指定ID读取固件",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/fetch?firmware_id=900001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "firmware_id",
+									"value": "900001"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1295,7 +1824,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "7239ced7-66dc-487d-bf69-b58ef408b0d9",
+								"id": "066eeaab-e90c-4f72-8324-97a4bf5e3c8e",
 								"exec": [
 									""
 								],
@@ -1305,7 +1834,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e26f03f5-e47a-42a6-9493-93eb79ade39b",
+								"id": "6288d7c0-fa9b-4642-92a5-8f3f8e910c71",
 								"exec": [
 									"pm.test(\"run cfg analyze\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1356,7 +1885,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "04fda363-99b5-4da1-81e7-77938ac29443",
+						"id": "0f186bd0-4254-4983-b0ae-9ef7f5961c6c",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1366,7 +1895,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "28690c9e-65e6-4d50-a91e-079f7e7f0b6d",
+						"id": "51155c28-a8bf-4818-afd2-ae54106a8cd3",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1385,7 +1914,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"id": "009615fe-fc06-4a0c-bb0e-1e9f7eec3bcb",
 								"exec": [
 									""
 								],
@@ -1395,7 +1924,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"id": "8c1034d4-6ec8-4ca1-9384-36a6db60463a",
 								"exec": [
 									""
 								],
@@ -1436,7 +1965,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"id": "b77f59f4-81dd-4fc2-b622-7dfcfba7e96a",
 								"exec": [
 									""
 								],
@@ -1446,7 +1975,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"id": "78a2b1b1-85f2-4d7e-97f0-7a12c5daef1f",
 								"exec": [
 									""
 								],
@@ -1497,7 +2026,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"id": "7d755853-7089-4fca-8a04-39683cca7533",
 								"exec": [
 									""
 								],
@@ -1507,7 +2036,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"id": "5f36ae65-4e4c-4c22-b387-1238162ab4e8",
 								"exec": [
 									""
 								],
@@ -1557,7 +2086,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"id": "222a82b0-c5f4-482a-bf87-7ffcc4117d11",
 								"exec": [
 									""
 								],
@@ -1567,7 +2096,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"id": "09886349-01f1-4ab3-ae7c-5c11a955ec06",
 								"exec": [
 									""
 								],
@@ -1618,7 +2147,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"id": "41adf7a2-0738-46f8-9cf4-12700d11b464",
 								"exec": [
 									""
 								],
@@ -1628,7 +2157,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"id": "15d6c9a5-e344-4e7e-8fa6-8889c9ec7b97",
 								"exec": [
 									""
 								],
@@ -1674,7 +2203,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"id": "85664edd-d8cc-48dd-b4b6-9a80a72965e4",
 								"exec": [
 									""
 								],
@@ -1684,7 +2213,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"id": "bdb2e628-b4d5-4477-985a-89b65429bb7b",
 								"exec": [
 									""
 								],
@@ -1730,7 +2259,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cc0adb6a-57a6-4153-99b8-fc1f87efbce6",
+								"id": "2fe2e7dc-6bfd-4347-84ef-6d339fcf9d3c",
 								"exec": [
 									""
 								],
@@ -1740,7 +2269,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "920bda1d-583d-4e08-8bb3-f1887463e849",
+								"id": "85f1eb50-be1f-4e4e-94bc-186eeaf57a24",
 								"exec": [
 									""
 								],
@@ -1785,7 +2314,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "000c722c-20c9-4f91-9623-deb6f438c3ae",
+						"id": "ef9ea4d8-8dd2-412f-9fe5-843940932096",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1795,7 +2324,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "739ce504-c86e-406e-bc20-124252cb3072",
+						"id": "f96a8bee-f739-4bdd-ac93-c950b7b988e3",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1810,6 +2339,22 @@
 			"item": [
 				{
 					"name": "7.1 枚举固件包",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8669d538-e47d-4ccf-a94b-0e697b5aea28",
+								"exec": [
+									"pm.test(\"run pack all\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    pm.environment.set(\"pack_id\", jsonData.payload[0].pack_id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -1839,7 +2384,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/info?access_token={{access_token}}&pack_id=a211a793-c57d-4452-af46-2704686c6c7c",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/info?access_token={{access_token}}&pack_id={{pack_id}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -1855,7 +2400,7 @@
 								},
 								{
 									"key": "pack_id",
-									"value": "a211a793-c57d-4452-af46-2704686c6c7c"
+									"value": "{{pack_id}}"
 								}
 							]
 						}
@@ -1868,11 +2413,12 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "27e40f52-1d93-43e8-809b-dca446404d0d",
+								"id": "14ac564f-5e04-40c9-a20a-29800f53eef2",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
-									"pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
-									""
+									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
+									"//579e1250-3000-4208-a9b2-dcd9d9c3322c",
+									"//5152c5c5-23cd-48c6-9f50-c7d742ebafe6"
 								],
 								"type": "text/javascript"
 							}
@@ -1882,7 +2428,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{temp_pack_id}}&tree_type=antd",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{temp_pack_id}}&tree_type=normal",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -1902,7 +2448,7 @@
 								},
 								{
 									"key": "tree_type",
-									"value": "antd",
+									"value": "normal",
 									"description": "normal: 为普通树，antd: 为antd树组件的树"
 								}
 							]
@@ -2040,7 +2586,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "5d70914f-9f49-46ff-b415-d147d82488b6",
+				"id": "f84ed436-8adc-4835-8795-a99f3800f3a3",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2050,7 +2596,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "ee57ee31-35ed-40d1-b755-30f4459926ca",
+				"id": "a30081a9-91c9-4dc6-9bf9-743d9826ab31",
 				"type": "text/javascript",
 				"exec": [
 					""

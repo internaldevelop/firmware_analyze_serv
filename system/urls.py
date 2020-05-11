@@ -20,6 +20,12 @@ urlpatterns = [
     # 读取系统配置
     path('read_config', sys_config_view.read_sys_config, name='read_sys_config'),
 
+    # 备份新的系统配置
+    path('backup_config', sys_config_view.backup_config, name='backup_config'),
+
+    # 恢复新的系统配置
+    path('recover_config', sys_config_view.recover_config, name='recover_config'),
+
     # 清空固件包及其文件（pack_type：1=实体包；2=虚拟包；不填或无此参数表示1+2，其它值不处理。）
     path('clear_packs', system_view.system_clear_packs, name='system_clear_packs'),
 

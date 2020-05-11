@@ -100,7 +100,7 @@ class SystemConfig:
 
     @staticmethod
     def recover_db(config_key):
-        cfg = SystemConfig.read_db(config_key)
+        cfg = SystemConfig.read_db(config_key=config_key)
 
         cfg_doc = {'key': 'sys_config', 'value': cfg}
         sys_dict_coll.update_one({'key': 'sys_config'},  {'$set': cfg_doc}, True)

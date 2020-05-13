@@ -1,5 +1,4 @@
 import os
-# import urllib
 from urllib.request import urlretrieve
 from urllib.parse import urlparse
 
@@ -39,7 +38,8 @@ class Mydownload:
                 # 实际下载百分比
                 percentage = round(a * b * 100 / c, 1)
                 percentage_total = round(a * b * total_percentage / c, 1)
-                print("\rdownloading: %5.1f%%" % percentage, "    total downloading: %5.1f%%" % percentage_total, end="")
+                print("\rdownloading: %5.1f%%" % percentage, "    total downloading: %5.1f%%" % percentage_total,
+                      end="")
 
                 # # 总占比百分比
                 # percentage = round(a * b * total_percentage / c, 1)
@@ -59,7 +59,7 @@ class Mydownload:
             filetype = 'zip,bin,img,rar,exe,trx'
             file_list = filename.split('.')
             result = file_list[file_list.__len__() - 1] in filetype
-            print(result)
+            # print(result)
             if not result:
                 return 'ERROR_FETCH_FILE_TYPE', {'filetype': file_list[file_list.__len__() - 1]}, None
 
@@ -77,7 +77,7 @@ class Mydownload:
 
                 print('\nDownload finished!', result_urlretrieve)
             else:
-                #todo 判断文件完整性，是否重新下载
+                # todo 判断文件完整性，是否重新下载
                 # result = urlretrieve(downloadurl, os.path.join(savepath, filename), reporthook=reporthook)
                 print('File already exsits!')
             MyTask.save_exec_info(task_id, total_percentage, {'download': os.path.join(savepath, filename)})
@@ -88,7 +88,6 @@ class Mydownload:
             print(e)
             MyTask.save_exec_info(task_id, 100.0, {'download': str(e)})
             return 'ERROR_EXCEPTION', None, None
-
 
     @staticmethod
     def ftp_download(downloadurl, savepath, ftp_user, ftp_passwrod, task_id, total_percentage=100):
@@ -108,5 +107,3 @@ class Mydownload:
         xfer.clearEnv()
 
         return 'ERROR_OK', file_name, file_list
-
-

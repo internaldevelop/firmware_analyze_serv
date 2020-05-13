@@ -285,15 +285,6 @@ class JFFS2:
                 except OSError:
                     logger.critical("Failed to created directory for {name}".format(name=name))
 
-    # def getName(self):
-    #     name = ""
-    #     return name
-    #
-    # def isFolder(self):
-    #     if self.parent == None:
-    #         return True
-    #     # return self.hasAttribute(stat.S_IFDIR)
-
     def list_all(self, exclude_folder=False, exclude_file=False):
         # 无效镜像，返回空列表
         if self.image is None:
@@ -372,18 +363,3 @@ class JFFS2:
         # os.utime(name, (ts, ts))
 
         return content
-
-
-#
-# def main():
-#     logging.basicConfig(format=("%(asctime)s:%(name)s:%(levelname)s:"
-#                                 "%(message)s"),
-#                         level=logging.DEBUG)
-#
-#     jffs = JFFS2(sys.argv[1])
-#     jffs.scan()
-#     jffs.dump(sys.argv[2])
-#
-#
-# if __name__ == '__main__':
-#     main()

@@ -1,7 +1,7 @@
 rm -rf testSquashfs.zip
-mksquashfs mk_fs_basedir testSquashfs.bin -noappend -all-root
-zip -r testSquashfs.zip testSquashfs.bin
-rm -rf test.squashfs testSquashfs.bin
-rm -rf /ftpfile/testSquashfs.zip
-cp testSquashfs.zip /ftpfile
+mkfs.jffs2 -r mk_fs_basedir -o testjffs2.jffs2
+zip -r testjffs2.zip testjffs2.jffs2
+#rm -rf testjffs2.jffs2
+rm -rf /ftpfile/testjffs2.zip
+cp testjffs2.zip /ftpfile
 

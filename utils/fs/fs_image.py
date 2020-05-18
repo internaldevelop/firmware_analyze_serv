@@ -6,6 +6,7 @@ from utils.fs.pack_files import PackFiles
 from utils.fs.img_squashfs import SquashFS
 from utils.fs.img_jffs2 import IMG_JFFS2
 from utils.fs.img_ubifs import IMG_UBI
+from utils.fs.img_cramfs import IMG_CramFS
 from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
 from utils.const.file_type import FileType
@@ -104,6 +105,9 @@ class FsImage:
         elif '.squashfs' in image_file['file_name']:
             # 尝试 SquashFS 解析，并验证
             image = SquashFS(image_file_path)
+        elif '.cramfs' in image_file['file_name']:
+            # 尝试 SquashFS 解析，并验证
+            image = IMG_CramFS(image_file_path)
 
         if image:
             return image

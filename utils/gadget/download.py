@@ -55,6 +55,8 @@ class Mydownload:
                     MyTask.save_exec_info(task_id, new_percentage)
 
             filename = os.path.basename(downloadurl)
+            MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
+
             # 判断是否为合法下载文件名 .zip .bin .img .rar .exe ...
             filetype = 'zip,bin,img,rar,exe,trx'
             file_list = filename.split('.')

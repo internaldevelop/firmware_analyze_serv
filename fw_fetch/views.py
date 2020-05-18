@@ -25,6 +25,8 @@ from utils.mybinwalk.mybinwalk import MyBinwalk
 
 
 # firmware 信息集合
+from utils.task.task_type import TaskType
+
 firmware_info_coll = utils.sys.config.g_firmware_info_col
 # 任务集合
 task_info_coll = utils.sys.config.g_task_info_col
@@ -63,6 +65,14 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
     total_percentage = 30.0
     ret_download_info = fw_filename = ""
     file_list = []
+
+    # extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
+    #               'task_name': '文件下载',
+    #               'task_desc': '固件文件下载，并保存文件内容到数据库中。'}
+    # task = MyTask(fs_image.fs_image_extract, (pack_id,), extra_info=extra_info)
+    #
+    # MyTask.save_exec_info_name(task_id, filename)
+
     if 'ftp://' in fw_download_url:
         ret_download_info, fw_filename, file_list = Mydownload.ftp_download(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id, total_percentage)
     else:
@@ -103,6 +113,8 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
 
     # # 7 call task_feedback
     # task_feedback(task_id, total_percentage)
+
+    # 8 clear temp files
     return 'ERROR_OK'
 
     # websocket通知页面
@@ -128,6 +140,8 @@ def _get_file_type(file_name):
     elif '.img' in file_name: #romfs
         return FileType.FS_IMAGE
     elif '.romfs' in file_name:
+        return FileType.FS_IMAGE
+    elif '.cramfs' in file_name:
         return FileType.FS_IMAGE
     elif '.ubi' in file_name:
         return FileType.FS_IMAGE
@@ -271,6 +285,8 @@ def _proc_uncompress(path_file_name, uncompress_path, task_id):
         bin_file = getfilebytype(list, '.yaffs2')
     if len(bin_file) == 0:
         bin_file = getfilebytype(list, '.ubifs')
+    if len(bin_file) == 0:
+        bin_file = getfilebytype(list, '.cramfs')
 
     return bin_file
 

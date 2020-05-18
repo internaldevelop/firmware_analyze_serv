@@ -127,6 +127,18 @@ class MyTask:
         return
 
     @staticmethod
+    def save_exec_info_name(task_id, process_file_name=None):
+        # 从缓存或数据库中读取该任务的记录
+        task_info = MyTask.fetch_exec_info(task_id)
+        # 没有该任务信息记录时，返回失败
+        if task_info is None:
+            return False
+        # 增加当前任务处理的文件名（考虑任务出发点是文件）
+        if process_file_name is not None:
+            task_info['process_file_name'] = process_file_name
+            TasksDAO.save(task_info)
+
+    @staticmethod
     def save_exec_info(task_id, percent, result=None, notify=True):
         # 从缓存或数据库中读取该任务的记录
         task_info = MyTask.fetch_exec_info(task_id)

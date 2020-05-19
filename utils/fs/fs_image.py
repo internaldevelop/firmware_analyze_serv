@@ -26,9 +26,11 @@ class FsImage:
         # 查找指定包的 FS 镜像文件
         file_docs = FwFileDO.search_files_of_pack(self.pack_id, FileType.FS_IMAGE)
         if len(file_docs) == 0:
+            print("find nothing file_docs")
             return
         # 只取第一个镜像文件
         image_file = file_docs[0]
+
 
         # 导出镜像文件到临时目录
         image_file_path = FwFilesStorage.export(image_file['file_id'])

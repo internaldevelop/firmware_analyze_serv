@@ -82,7 +82,7 @@ class IMG_CramFS(FsBase):
             name, path, folder = self.node_props(inode)
             content = self.node_content(inode)
 
-            file_type, extra_props = IMG_CramFS._file_type(name, mode, content)
+            file_type, extra_props = IMG_CramFS._file_type(name, mode, content, True)
 
             # print(('EXEC_FILE({})' if file_type == 4 else 'NORMAL_FILE({})').format(inode.inode.mode))
             # 属性和数据内容交由 extract_func 回调函数处理
@@ -101,6 +101,7 @@ class IMG_CramFS(FsBase):
         try:
             folder = MyPath.temporary()
             self.file_extract_dir = os.path.join(folder, "cramfs")
+            print(self.file_extract_dir)
 
             # cramfsck only for linux
             cmds = "cramfsck -x " + self.file_extract_dir + " " + file_path
@@ -110,6 +111,7 @@ class IMG_CramFS(FsBase):
         except OSError as e:
             # 格式错误时，镜像对象设置为无效
             self.image = None
+            print("cramfsck error", e)
 
     def close(self):
         # 操作完 SquashFS 实例后，一定要调用 close

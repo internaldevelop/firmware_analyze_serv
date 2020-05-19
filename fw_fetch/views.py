@@ -41,7 +41,7 @@ def async_fwdownload(request):
     # 获取下载URL
     # # fw_download_url = req_get_param(request, 'url')
 
-    fw_download_url, ftp_user, ftp_password = ReqParams.many(request, ['url', 'user', 'password'])
+    fw_download_url, ftp_user, ftp_password = ReqParams.many(request, ['url', 'user', 'password'], protocol='POST')
 
     print(fw_download_url)
 

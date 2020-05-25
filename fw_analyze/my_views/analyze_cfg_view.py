@@ -21,3 +21,27 @@ def analyze_cfg(request):
 
     # 返回响应：任务初始化的信息
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+
+def analyze_cfg_auto(request):
+    # 启动自动CFG分析任务
+    # 启动分析任务
+    task_id = CfgAnalyzeService.auto_cfg_task()
+
+    # # 保存操作日志
+    # LogRecords.save({'task_id': task_id, 'file_id': file_id}, category='analysis', action='分析CFG',
+    #                 desc='对二进制文件做调用流程图分析')
+
+    # 返回响应：任务初始化的信息
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+    # task = MyTask(_proc_cfg_analyze, )
+    # task_id = task.get_task_id()
+    #
+    # # 返回响应：任务初始化的信息
+    # return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+
+# def _proc_cfg_analyze(task_id):
+#     # 启动分析任务
+#     CfgAnalyzeService.auto_cfg_task(task_id)

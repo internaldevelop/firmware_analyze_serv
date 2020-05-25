@@ -7,6 +7,7 @@ from utils.fs.img_squashfs import SquashFS
 from utils.fs.img_jffs2 import IMG_JFFS2
 from utils.fs.img_ubifs import IMG_UBI
 from utils.fs.img_cramfs import IMG_CramFS
+from utils.gadget.my_file import MyFile
 from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
 from utils.const.file_type import FileType
@@ -30,7 +31,6 @@ class FsImage:
             return
         # 只取第一个镜像文件
         image_file = file_docs[0]
-
 
         # 导出镜像文件到临时目录
         image_file_path = FwFilesStorage.export(image_file['file_id'])
@@ -89,29 +89,61 @@ class FsImage:
 
     @staticmethod
     def parse_image_file(image_file, image_file_path):
-        # 判断镜像文件类型 squashfs/jffs2/ubi...
-        if '.jffs2' in image_file['file_name']:
-            image = IMG_JFFS2(image_file_path)
-        elif '.ubi' in image_file['file_name']:
-            image = IMG_UBI(image_file_path)
-        elif '.ubifs' in image_file['file_name']:
-            image = IMG_UBI(image_file_path)
-        elif '.img' in image_file['file_name']:
-            image = IMG_RomFS(image_file_path)
-        elif '.romfs' in image_file['file_name']:
-            image = IMG_RomFS(image_file_path)
-        elif '.yaffs' in image_file['file_name']:
-            image = IMG_YAFFS(image_file_path)
-        elif '.yaffs2' in image_file['file_name']:
-            image = IMG_YAFFS(image_file_path)
-        elif '.squashfs' in image_file['file_name']:
-            # 尝试 SquashFS 解析，并验证
-            image = SquashFS(image_file_path)
-        elif '.cramfs' in image_file['file_name']:
-            # 尝试 SquashFS 解析，并验证
+        contents = MyFile.read(image_file_path)
+        if contents[0:4] == b'\x45\x3d\xcd\x28' or contents[0:4] == b'\x28\xcd\x3d\x45':
+            print(contents[0:4], "cramfs")
             image = IMG_CramFS(image_file_path)
+        elif contents[0:2] == b'\x85\x19' or contents[0:2] == b'\x19\x85':
+            print(contents[0:4], "jffs2")
+            image = IMG_JFFS2(image_file_path)
+        elif contents[0:8] == b'-rom1fs-':
+            print("romfs")
+            image = IMG_RomFS(image_file_path)
+        elif contents[0:4] == b'UBI#':
+            print("ubifs")
+            image = IMG_UBI(image_file_path)
+        elif contents[0:10] == b'\x03\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
+                contents[0:10] == b'\x01\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
+                contents[0:10] == b'\x00\x00\x00\x03\x00\x00\x00\x01\xff\xff' or \
+                contents[0:10] == b'\x00\x00\x00\x01\x00\x00\x00\x01\xff\xff':
+            print("yaffs2")
+            image = IMG_YAFFS(image_file_path)
+        elif contents[0:4] == b'\x8a\x32\xfc\x66':
+            print("romfs")
+            return FileType.FS_IMAGE, contents
+        elif contents[0:4] == b'sqsh' or contents[0:4] == b'hsqs' or \
+                contents[0:4] == b'shsq' or contents[0:4] == b'qshs' or \
+                contents[0:4] == b'tqsh' or contents[0:4] == b'hsqt' or \
+                contents[0:4] == b'sqlz':
+            print(contents[0:4], "squashfs")
+            image = SquashFS(image_file_path)
+        else:
+            return None
 
-        if image:
-            return image
-
-        return None
+        return image
+        # # 判断镜像文件类型 squashfs/jffs2/ubi...
+        # if '.jffs2' in image_file['file_name']:
+        #     image = IMG_JFFS2(image_file_path)
+        # elif '.ubi' in image_file['file_name']:
+        #     image = IMG_UBI(image_file_path)
+        # elif '.ubifs' in image_file['file_name']:
+        #     image = IMG_UBI(image_file_path)
+        # elif '.img' in image_file['file_name']:
+        #     image = IMG_RomFS(image_file_path)
+        # elif '.romfs' in image_file['file_name']:
+        #     image = IMG_RomFS(image_file_path)
+        # elif '.yaffs' in image_file['file_name']:
+        #     image = IMG_YAFFS(image_file_path)
+        # elif '.yaffs2' in image_file['file_name']:
+        #     image = IMG_YAFFS(image_file_path)
+        # elif '.squashfs' in image_file['file_name']:
+        #     # 尝试 SquashFS 解析，并验证
+        #     image = SquashFS(image_file_path)
+        # elif '.cramfs' in image_file['file_name']:
+        #     # 尝试 SquashFS 解析，并验证
+        #     image = IMG_CramFS(image_file_path)
+        #
+        # if image:
+        #     return image
+        #
+        # return None

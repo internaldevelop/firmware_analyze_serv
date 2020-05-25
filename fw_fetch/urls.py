@@ -4,9 +4,18 @@ from . import views
 from . import old_views
 
 urlpatterns = [
+
+    #
+    # 固件获取：异步调用接口
+    #
+
+    # 固件下载
+    path('async_funcs/download', views.async_fwdownload, name='async_fw_download'),
+
+
+    # 以下为测试接口
     path('', old_views.index, name='index'),
 
-    path('test', old_views.test, name='firmware_test'),
     # 1.1 指定URL抓取固件 http://www.luyoudashi.com
     path('download', old_views.fwdownload, name='firmware_download'),
     path('downloadex', old_views.fwdownloadex, name='firmware_download'),
@@ -20,12 +29,6 @@ urlpatterns = [
 
     path('test_check_file', views.test_check_file, name='test_check_file'),
 
-    #
-    # 固件获取：异步调用接口
-    #
-
-    # 固件下载
-    path('async_funcs/download', views.async_fwdownload, name='async_fwdownload'),
 
     # 1.2 查询固件列表
     path('list', views.fwlist, name='firmware_list'),

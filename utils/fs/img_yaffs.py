@@ -156,7 +156,7 @@ class IMG_YAFFS(FsBase):
         #                 link_count += 1
         #             except Exception as e:
         #                 sys.stderr.write("WARNING: Failed to create hard link '%s' -> '%s': %s\n" % (dst, src, str(e)))
-
+        # 全部处理完毕后，返回 True 表示正常处理完成。
         return True
 
     def check_format(self):

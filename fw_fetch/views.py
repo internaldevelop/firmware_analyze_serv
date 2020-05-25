@@ -23,7 +23,6 @@ from utils.db.mongodb.mongo_pocs import MongoPocs
 from utils.gadget.general import SysUtils
 from utils.mybinwalk.mybinwalk import MyBinwalk
 
-
 # firmware 信息集合
 from utils.task.task_type import TaskType
 
@@ -37,20 +36,18 @@ method_fs = utils.sys.config.g_firmware_method_fs
 
 # 固件下载
 def async_fwdownload(request):
-
     # 获取下载URL
-    # # fw_download_url = req_get_param(request, 'url')
-
     fw_download_url, ftp_user, ftp_password = ReqParams.many(request, ['url', 'user', 'password'], protocol='POST')
 
-    print(fw_download_url)
-
     # 启动下载任务
-    task = MyTask(_proc_tasks, (fw_download_url, settings.FW_PATH, ftp_user, ftp_password))
+    extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
+                  'task_name': '固件下载',
+                  'task_desc': '下载固件入库存储桶并进行文件抽取操作'}
+    task = MyTask(_proc_tasks, (fw_download_url, settings.FW_PATH, ftp_user, ftp_password), extra_info=extra_info)
     task_id = task.get_task_id()
 
     # 保存操作日志
-    LogRecords.save({'task_id': task_id}, category='download', action='下载固件',
+    LogRecords.save({'task_id': task_id}, category='download', action='固件下载',
                     desc='下载固件入库存储桶并进行文件抽取操作')
 
     # 返回响应：任务初始化的信息
@@ -66,28 +63,25 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
     ret_download_info = fw_filename = ""
     file_list = []
 
-    # extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
-    #               'task_name': '文件下载',
-    #               'task_desc': '固件文件下载，并保存文件内容到数据库中。'}
-    # task = MyTask(fs_image.fs_image_extract, (pack_id,), extra_info=extra_info)
-    #
-    # MyTask.save_exec_info_name(task_id, filename)
-
     if 'ftp://' in fw_download_url:
-        ret_download_info, fw_filename, file_list = Mydownload.ftp_download(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id, total_percentage)
+        ret_download_info, fw_filename, file_list = Mydownload.ftp_download(fw_download_url, g_fw_save_path, ftp_user,
+                                                                            ftp_password, task_id, total_percentage)
     else:
-        ret_download_info, fw_filename, file_list = Mydownload.http_download(fw_download_url, g_fw_save_path, task_id, total_percentage)
+        ret_download_info, fw_filename, file_list = Mydownload.http_download(fw_download_url, g_fw_save_path, task_id,
+                                                                             total_percentage)
 
     print(ret_download_info, fw_filename)
 
     # 2 时间消耗总占比0 保存到 pack_file to mongodb
-    pack_id, pack_file_id = _save_pack_db(fw_download_url, os.path.join(g_fw_save_path, fw_filename), ret_download_info, task_id)
+    pack_id, pack_file_id = _save_pack_db(fw_download_url, os.path.join(g_fw_save_path, fw_filename), ret_download_info,
+                                          task_id)
 
     # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
     img_filename = _proc_uncompress(os.path.join(g_fw_save_path, fw_filename), g_fw_save_path, task_id)
     if len(img_filename) == 0:
         print("package uncompress error")
-        return "package uncompress error"
+        img_filename = fw_filename  # bin文件做为包名（文件名）
+        # return "package uncompress error"
 
     # 4 时间消耗总占比0 保存系统镜像文件 to mongodb
     file_id = _save_file_db(os.path.join(g_fw_save_path, img_filename), pack_id)
@@ -105,55 +99,89 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
         else:
             file_id = _save_file_db(file, pack_id)
 
-    # 6 时间消耗总占比30 提取文件系统  (squashfs)
+    # 6 时间消耗总占比30 提取文件系统
     FsImage.start_fs_image_extract_task(pack_id)
 
     total_percentage = 100.0
     MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
 
-    # # 7 call task_feedback
-    # task_feedback(task_id, total_percentage)
-
-    # 8 clear temp files
+    # 7 clear temp files
     return 'ERROR_OK'
-
-    # websocket通知页面
-    # ws = MyWebsocket()
-    # ws.sendmsg(str(task_item))
-
-    # MyWebsocket.sendmsg(str(task_item))
 
 
 # 获取文件类型
-def _get_file_type(file_name):
-    # file_type = os.path.splitext(file_name)
-    if '.zip' in file_name:
-        return FileType.PACK
-    elif '.bin' in file_name:
-        return FileType.FW_BIN
-    elif '.squashfs' in file_name:
-        return FileType.FS_IMAGE
-    elif '.jffs2' in file_name:
-        return FileType.FS_IMAGE
-    elif '.yaffs2' in file_name:
-        return FileType.FS_IMAGE
-    elif '.img' in file_name: #romfs
-        return FileType.FS_IMAGE
-    elif '.romfs' in file_name:
-        return FileType.FS_IMAGE
-    elif '.cramfs' in file_name:
-        return FileType.FS_IMAGE
-    elif '.ubi' in file_name:
-        return FileType.FS_IMAGE
-    elif '.7z' in file_name:
-        return FileType.ZIP_FILE
+def check_file_type(path_file_name):
+    contents = MyFile.read(path_file_name)
+    if contents[0:4] == b'\x45\x3d\xcd\x28' or contents[0:4] == b'\x28\xcd\x3d\x45':
+        print(contents[0:4], "cramfs")
+        return FileType.FS_IMAGE, contents
+    elif contents[0:2] == b'\x85\x19' or contents[0:2] == b'\x19\x85':
+        print(contents[0:4], "jffs2")
+        return FileType.FS_IMAGE, contents
+    elif contents[0:8] == b'-rom1fs-':
+        print("romfs")
+        return FileType.FS_IMAGE, contents
+    elif contents[0:4] == b'UBI#':
+        print("ubifs")
+        return FileType.FS_IMAGE, contents
+    elif contents[0:10] == b'\x03\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
+            contents[0:10] == b'\x01\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
+            contents[0:10] == b'\x00\x00\x00\x03\x00\x00\x00\x01\xff\xff' or \
+            contents[0:10] == b'\x00\x00\x00\x01\x00\x00\x00\x01\xff\xff':
+        print("yaffs2")
+        return FileType.FS_IMAGE, contents
+    elif contents[0:4] == b'\x8a\x32\xfc\x66':
+        print("romfs")
+        return FileType.FS_IMAGE, contents
+    elif contents[0:4] == b'sqsh' or contents[0:4] == b'hsqs' or \
+            contents[0:4] == b'shsq' or contents[0:4] == b'qshs' or \
+            contents[0:4] == b'tqsh' or contents[0:4] == b'hsqt' or \
+            contents[0:4] == b'sqlz':
+        print(contents[0:4], "squashfs")
+        return FileType.FS_IMAGE, contents
+    elif contents[0:4] == b'\x50\x4b\x03\04':
+        print("zip")
+        return FileType.PACK, contents
+    # elif '.bin' in file_name:
+    #     return FileType.FW_BIN
+    elif contents[0:5] == b'7z\xbc\xaf\x27\x1c':
+        print("7z")
+        return FileType.ZIP_FILE, contents
+    elif '.bin' in path_file_name:
+        return FileType.FW_BIN, contents
     else:
-        return FileType.OTHER_FILE
+        return FileType.OTHER_FILE, contents
+
+
+#
+# def _get_file_type(file_name):
+#     # file_type = os.path.splitext(file_name)
+#     if '.zip' in file_name:
+#         return FileType.PACK
+#     elif '.bin' in file_name:
+#         return FileType.FW_BIN
+#     elif '.squashfs' in file_name:
+#         return FileType.FS_IMAGE
+#     elif '.jffs2' in file_name:
+#         return FileType.FS_IMAGE
+#     elif '.yaffs2' in file_name:
+#         return FileType.FS_IMAGE
+#     elif '.img' in file_name: #romfs
+#         return FileType.FS_IMAGE
+#     elif '.romfs' in file_name:
+#         return FileType.FS_IMAGE
+#     elif '.cramfs' in file_name:
+#         return FileType.FS_IMAGE
+#     elif '.ubi' in file_name:
+#         return FileType.FS_IMAGE
+#     elif '.7z' in file_name:
+#         return FileType.ZIP_FILE
+#     else:
+#         return FileType.OTHER_FILE
 
 
 # 获取文件列表中的某类型文件名
 def getfilebytype(file_list, type):
-
     filename = ""
     for file in file_list:
         if type in file:
@@ -171,16 +199,12 @@ def _save_file_db(path_file_name, pack_id):
     #
     print(path_file_name)
     file_path, file_name = os.path.split(path_file_name)
-    # 获取文件类型
-    file_type = _get_file_type(file_name)
-    # file_type = FileType.FW_BIN
-
     # 新的文件 UUID
     file_id = StrUtils.uuid_str()
-    # 读取文件内容
-    contents = MyFile.read(path_file_name)
-
-    if contents is None:  #linux 系统下 BINWALK会提取出空目录，读目录文件为None
+    # 获取文件类型 内容
+    file_type, contents = check_file_type(path_file_name)
+    # file_type = _get_file_type(file_name)
+    if contents is None:  # linux 系统下 BINWALK会提取出空目录，读目录文件为None
         return None
     # 保存文件记录
     FwFileDO.save_file_item(pack_id, file_id, file_name, file_type, file_path)
@@ -193,8 +217,8 @@ def _save_file_db(path_file_name, pack_id):
 
 # 保存包文件到数据库
 def _save_pack_db(fw_download_url, path_file_name, download_info, task_id):
-    #todo file_type
-    # file_type = _get_file_type()
+    # todo file_type
+    file_type, contents = check_file_type(path_file_name)
     file_type = FileType.PACK
     file_name = os.path.basename(path_file_name)
 
@@ -293,7 +317,7 @@ def _proc_uncompress(path_file_name, uncompress_path, task_id):
 
 # test
 def test_check_file(reuqest):
-    task = MyTask(_check_file,)
+    task = MyTask(_check_file, )
     task_id = task.get_task_id()
     return sys_app_ok_p('ok')
 
@@ -337,7 +361,8 @@ def _check_file(task_id):
         if len(img_filename) == 0:
             continue
         # BINWALK 提取文件
-        extract_bin_files = MyBinwalk._binwalk_file_extract(os.path.join(uncompress_path, img_filename), uncompress_path)
+        extract_bin_files = MyBinwalk._binwalk_file_extract(os.path.join(uncompress_path, img_filename),
+                                                            uncompress_path)
 
         # binwalk解包返回的文件名带全路径 写文件
         with open('c:\\git\\file_tree_info0413.txt', 'a+') as fw:

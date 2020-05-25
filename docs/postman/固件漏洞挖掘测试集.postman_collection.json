@@ -122,7 +122,7 @@
 								},
 								{
 									"key": "sys_config",
-									"value": "{\n\"log_configs\": {\n\"analysis\": {\n\"on\": false,\n\"alias\": \"分析日志\",\n\"description\": \"固件代码分析操作日志\"\n},\n\"system_config\": {\n\"on\": true,\n\"alias\": \"系统配置日志\",\n\"description\": \"系统配置参数操作日志\"\n},\n\"task\": {\n\"on\": false,\n\"alias\": \"任务运行日志\",\n\"description\": \"后台任务运行信息日志\"\n},\n\"query_task\": {\n\"on\": true,\n\"alias\": \"任务查看日志\",\n\"description\": \"后台任务信息查看操作日志\"\n},\n\"query\": {\n\"on\": true,\n\"alias\": \"业务查询日志\",\n\"description\": \"系统业务数据查询日志\"\n},\n\"search\": {\n\"on\": true,\n\"alias\": \"数据搜索日志\",\n\"description\": \"系统业务数据搜索日志\"\n},\n\"statistics\": {\n\"on\": true,\n\"alias\": \"统计日志\",\n\"description\": \"系统数据统计操作日志\"\n},\n\"debug\": {\n\"on\": true,\n\"alias\": \"调试日志\",\n\"description\": \"系统运行时调试信息日志\"\n}\n}\n}",
+									"value": "{\n\"log_configs\": {\n\"download\": {\n\"on\": false,\n\"alias\": \"固件下载日志\",\n\"description\": \"固件下载操作日志\"\n},\n\"analysis\": {\n\"on\": false,\n\"alias\": \"分析日志\",\n\"description\": \"固件代码分析操作日志\"\n},\n\"system_config\": {\n\"on\": true,\n\"alias\": \"系统配置日志\",\n\"description\": \"系统配置参数操作日志\"\n},\n\"task\": {\n\"on\": false,\n\"alias\": \"任务运行日志\",\n\"description\": \"后台任务运行信息日志\"\n},\n\"query_task\": {\n\"on\": true,\n\"alias\": \"任务查看日志\",\n\"description\": \"后台任务信息查看操作日志\"\n},\n\"query\": {\n\"on\": true,\n\"alias\": \"业务查询日志\",\n\"description\": \"系统业务数据查询日志\"\n},\n\"search\": {\n\"on\": true,\n\"alias\": \"数据搜索日志\",\n\"description\": \"系统业务数据搜索日志\"\n},\n\"statistics\": {\n\"on\": true,\n\"alias\": \"统计日志\",\n\"description\": \"系统数据统计操作日志\"\n},\n\"debug\": {\n\"on\": true,\n\"alias\": \"调试日志\",\n\"description\": \"系统运行时调试信息日志\"\n}\n}\n}",
 									"type": "text"
 								},
 								{
@@ -1391,7 +1391,7 @@
 			"name": "3. 固件下载",
 			"item": [
 				{
-					"name": "1.1 指定URL下载固件",
+					"name": "1.1 指定URL下载固件-http",
 					"event": [
 						{
 							"listen": "test",
@@ -1410,18 +1410,21 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": []
+							"formdata": [
+								{
+									"key": "url",
+									"value": "http://192.168.1.100/testSquashfslarge.zip",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://192.168.43.214/CF-EW71-V2.6.0.zip",
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1429,12 +1432,6 @@
 								"fw_fetch",
 								"async_funcs",
 								"download"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "http://192.168.43.214/CF-EW71-V2.6.0.zip"
-								}
 							]
 						}
 					},
@@ -1443,10 +1440,20 @@
 				{
 					"name": "1.1 指定URL下载固件 JFFS2",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "url",
+									"value": "https://dlsvr04.asus.com/pub/ASUS/wireless/GT-AC5300/FW_GT_AC5300_300438445149.zip",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=https://dlsvr04.asus.com/pub/ASUS/wireless/GT-AC5300/FW_GT_AC5300_300438445149.zip",
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1457,8 +1464,9 @@
 							],
 							"query": [
 								{
-									"key": "url",
-									"value": "https://dlsvr04.asus.com/pub/ASUS/wireless/GT-AC5300/FW_GT_AC5300_300438445149.zip"
+									"key": "",
+									"value": "",
+									"disabled": true
 								}
 							]
 						}
@@ -1466,32 +1474,7 @@
 					"response": []
 				},
 				{
-					"name": "1.1 指定URL下载固件 Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://192.168.43.214/testSquashfs.zip",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"async_funcs",
-								"download"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "http://192.168.43.214/testSquashfs.zip"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.1 指定URL下载固件-FTP romfs",
+					"name": "1.2 指定URL下载固件-FTP romfs",
 					"event": [
 						{
 							"listen": "test",
@@ -1501,7 +1484,7 @@
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
+									"",
 									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
 									"});",
 									""
@@ -1511,61 +1494,30 @@
 						}
 					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.43.214/testromfs.zip&user=ftpuser&password=Pass4ftp",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"async_funcs",
-								"download"
-							],
-							"query": [
+						"body": {
+							"mode": "formdata",
+							"formdata": [
 								{
 									"key": "url",
-									"value": "ftp://192.168.43.214/testromfs.zip"
+									"value": "ftp://192.168.1.100/testromfs.zip",
+									"type": "text"
 								},
 								{
 									"key": "user",
-									"value": "ftpuser"
+									"value": "ftpuser",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "Pass4ftp"
+									"value": "Pass4ftp",
+									"type": "text"
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.1 指定URL下载固件-FTP yaffs2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "9894cf1f-c8a3-44b3-a8ea-9904f3de1ad0",
-								"exec": [
-									"pm.test(\"async functions list\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
+						},
 						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.43.214/testYaffs2.zip&user=ftpuser&password=Pass4ftp",
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1573,119 +1525,6 @@
 								"fw_fetch",
 								"async_funcs",
 								"download"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "ftp://192.168.43.214/testYaffs2.zip"
-								},
-								{
-									"key": "user",
-									"value": "ftpuser"
-								},
-								{
-									"key": "password",
-									"value": "Pass4ftp"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.1 指定URL下载固件-FTP rar",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.43.214/CF-WA800V3-V2.6.0.rar&user=ftpuser&password=Pass4ftp",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"async_funcs",
-								"download"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "ftp://192.168.43.214/CF-WA800V3-V2.6.0.rar"
-								},
-								{
-									"key": "user",
-									"value": "ftpuser"
-								},
-								{
-									"key": "password",
-									"value": "Pass4ftp"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.1 指定URL下载固件-FTP zip/img",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://172.16.113.26/DSL-2740EL_C1_C1.zip&user=ftpuser&password=Pass4ftp",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"async_funcs",
-								"download"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "ftp://172.16.113.26/DSL-2740EL_C1_C1.zip"
-								},
-								{
-									"key": "user",
-									"value": "ftpuser"
-								},
-								{
-									"key": "password",
-									"value": "Pass4ftp"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.1 指定URL下载固件-FTP jffs2",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=ftp://192.168.1.100/testjffs2.zip&user=ftpuser&password=Pass4ftp",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"async_funcs",
-								"download"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "ftp://192.168.1.100/testjffs2.zip"
-								},
-								{
-									"key": "user",
-									"value": "ftpuser"
-								},
-								{
-									"key": "password",
-									"value": "Pass4ftp"
-								}
 							]
 						}
 					},
@@ -1694,10 +1533,20 @@
 				{
 					"name": "1.1 指定URL下载固件 带中文下载URL",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "url",
+									"value": "http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-WR635AC-V1.0.0.zip",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/download?url=http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-WR635AC-V1.0.0.zip",
+							"raw": "{{base_url}}/fw_fetch/async_funcs/download",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1705,80 +1554,6 @@
 								"fw_fetch",
 								"async_funcs",
 								"download"
-							],
-							"query": [
-								{
-									"key": "url",
-									"value": "http://www.comfast.cn/uploadfile/%E8%BD%AF%E4%BB%B6%E9%A9%B1%E5%8A%A8/%E5%9B%BA%E4%BB%B6/CF-WR635AC-V1.0.0.zip"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.2 查询固件列表",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/all?access_token={{access_token}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"fw_analyze",
-								"pack",
-								"all"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.4 检测文件类型",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/test_check_file",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"test_check_file"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.3 根据指定ID读取固件",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/fw_fetch/async_funcs/fetch?firmware_id=900001",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"fw_fetch",
-								"async_funcs",
-								"fetch"
-							],
-							"query": [
-								{
-									"key": "firmware_id",
-									"value": "900001"
-								}
 							]
 						}
 					},
@@ -1875,6 +1650,68 @@
 								"fw_analyze",
 								"task",
 								"analyze_cfg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 启动自动CFG分析",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e4b45888-1e94-4076-a6fc-1cbee37a2762",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8b7aad5-cb7f-41ce-bd17-dc94efbba3f8",
+								"exec": [
+									"pm.test(\"run cfg analyze\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}",
+									"type": "text"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/analyze_cfg_auto",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"analyze_cfg_auto"
 							]
 						}
 					},
@@ -2428,7 +2265,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{temp_pack_id}}&tree_type=normal",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{pack_id}}&tree_type=normal",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -2444,7 +2281,7 @@
 								},
 								{
 									"key": "pack_id",
-									"value": "{{temp_pack_id}}"
+									"value": "{{pack_id}}"
 								},
 								{
 									"key": "tree_type",
@@ -2485,6 +2322,31 @@
 								{
 									"key": "task_id",
 									"value": "{{task_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.5 读取全部任务结果",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/query_all?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"query_all"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
 								}
 							]
 						}

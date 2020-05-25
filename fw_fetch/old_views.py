@@ -103,19 +103,6 @@ def testws(request):
     return sys_app_ok_p('test ok')
 
 
-def test(request):
-    print("run into test")
-    # filename = 'C:\\GIT\\firmware_analyze_serv\\firmware\\_CF-AC101-V2.6.1.bin.extracted\\12F304.squashfs'
-    # list = SysUtils.un_py7zr(filename, settings.FW_PATH)
-    # list = SysUtils.un_py7zrEx(filename)
-
-
-    # SysUtils.un_tgz(filename)
-    # SysUtils.un_tar(filename)
-    # SysUtils.un_rar(filename)
-    return sys_app_ok_p('test ok')
-
-
 # 1.1 指定URL下载固件
 def fwdownload(request):
     print("run into fwdownload")

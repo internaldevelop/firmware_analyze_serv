@@ -1,7 +1,9 @@
+from fw_analyze.service.cfg_analyze_service import CfgAnalyzeService
 from fw_analyze.service.files_service import FilesService
 from fw_analyze.service.functions_service import FunctionsService
 from fw_analyze.service.vars_service import VarsService
 from utils.db.mongodb.cfg_dao import CfgAnalyzeResultDAO
+from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.logs import LogRecords
 from utils.http.request import ReqParams
 from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p, sys_app_err
@@ -10,11 +12,27 @@ from angr_helper.function_parse import FunctionParse
 from angr_helper.angr_proj import AngrProj
 import base64
 
+from utils.task.my_task import MyTask
+
 
 def cfg_func_list(request):
     # 从请求中取参数：文件 ID
     file_id = ReqParams.one(request, 'file_id')
 
+    # 查找函数列表分析结果
+    # 查询文件 CFG 分析的标记
+    is_cfg = CfgAnalyzeService.has_cfg_analyze(file_id)
+    if not is_cfg:
+        # 启动分析任务
+        task_id = CfgAnalyzeService.start_cfg_task(file_id)
+        # 保存操作日志
+        LogRecords.save({'task_id': task_id, 'file_id': file_id}, category='analysis', action='分析CFG',
+                        desc='对二进制文件做调用流程图分析')
+
+        # 返回响应：任务初始化的信息
+        return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+    # 启动分析任务
     functions = FilesService.functions_list(file_id)
     # 查找函数列表分析结果
     # functions = CfgAnalyzeResultDAO.get_functions(file_id)

@@ -40,6 +40,16 @@ class FwFileDO:
         fw_files_coll.find({'file_id': file_id}, {'_id': 0})
 
     @staticmethod
+    def _db_get_all_file(file_type=None):
+        cursor = []
+        if file_type is None:
+            cursor = fw_files_coll.find({}, {'_id': 0})
+        else:
+            cursor = fw_files_coll.find({'file_type':file_type}, {'_id': 0})
+        item_list = list(cursor)
+        return item_list
+
+    @staticmethod
     def save_file_item(pack_id, file_id, file_name, file_type, file_path='', extra_props=None):
         # 如果文件路径未给定，则使用文件名称代替
         if len(file_path) == 0:

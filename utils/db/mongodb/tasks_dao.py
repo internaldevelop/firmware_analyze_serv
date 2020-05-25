@@ -18,6 +18,11 @@ class TasksDAO:
         return CursorResult.one(cursor)
 
     @staticmethod
+    def all_tasks():
+        cursor = tasks_coll.find({}, {'_id': 0})
+        return CursorResult.many(cursor)
+
+    @staticmethod
     def search_by_pack(pack_id):
         cursor = tasks_coll.find({'pack_id': pack_id}, {'_id': 0})
         return CursorResult.many(cursor)

@@ -20,6 +20,23 @@ def get_task_result(request):
     return sys_app_ok_p(task_info)
 
 
+# 读取全部任务状态
+def get_all_task_result(request):
+    # 读取数据库任务集合
+    task_id_list = TasksDAO.all_tasks()
+    # task_info_list = []
+    # # 从缓存中读取任务执行信息
+    # for task in task_id_list:
+    #     print(task['task_id'])
+    #     task_info = MyTask.fetch_exec_info(task['task_id'])
+    #     task_id_list.append(task_info)
+
+    # 保存操作日志
+    LogRecords.save(task_id_list, category='query', action='查询全部任务状态')
+
+    return sys_app_ok_p(task_id_list)
+
+
 def stop_task(request):
     # 从请求中取参数：任务 ID
     task_id = req_get_param(request, 'task_id')

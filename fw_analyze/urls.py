@@ -21,6 +21,9 @@ urlpatterns = [
     # 读取任务结果
     path('task/query', task_view.get_task_result, name='task_query'),
 
+    # 读取全部任务结果
+    path('task/query_all', task_view.get_all_task_result, name='task_query_all'),
+
     # 停止任务
     path('task/stop', task_view.stop_task, name='task_stop'),
 
@@ -62,6 +65,9 @@ urlpatterns = [
 
     # =========================================================================
     # 以下部分均为测试指令
+
+    # 启动 cfg 分析任务，并保存分析结果到数据库
+    path('task/analyze_cfg_auto', analyze_cfg_view.analyze_cfg_auto, name='task_analyze_cfg'),
 
     path('', views.index, name='index'),
 

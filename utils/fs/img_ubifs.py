@@ -118,6 +118,9 @@ class IMG_UBI(FsBase):
     def extract_files(self, extract_func=None):
         # 导出文件内容，忽略目录，导出方式由 extract_func 来进行
         IMG_UBI.my_extract_files(self.image, extract_func)
+        # 全部处理完毕后，返回 True 表示正常处理完成。
+        return True
+
         # nodes = self.list_all(exclude_folder=True)
         # for inode in nodes:
         #     name, path, folder = self.node_props(inode)

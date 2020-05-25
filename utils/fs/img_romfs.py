@@ -92,6 +92,8 @@ class IMG_RomFS(FsBase):
             if extract_func is not None:
                 total_count = len(root.findAll())
                 extract_func(name, path, file_type, content, index, total_count, extra_props=extra_props)
+        # 全部处理完毕后，返回 True 表示正常处理完成。
+        return True
 
     def check_format(self):
         # 检测加载的镜像，是否为有效的 squash-fs 格式

@@ -1,4 +1,14 @@
 
+class FileSystemType:
+    # 固件文件系统类型
+    SQUASHFS = 1
+    JFFS2 = 2
+    ROMFS = 3
+    UBIFS = 4
+    YAFFS = 5
+    CRAMFS = 6
+
+
 
 class FileType:
     # 原始包

@@ -9,10 +9,9 @@ g_docker_service_ip = "localhost"
 # g_server_ip = "192.168.43.72"
 # g_java_service_ip = "192.168.43.214"
 # g_docker_service_ip = "192.168.43.214"
-# g_java_service_ip = "172.16.113.44"
-# g_docker_service_ip = "172.16.113.44"
+g_java_service_ip = "172.16.113.44"
+g_docker_service_ip = "172.16.113.44"
 
-# g_server_ip = "192.168.1.105"
 # g_java_service_ip = "192.168.1.100"
 # g_docker_service_ip = "192.168.1.100"
 
@@ -22,6 +21,8 @@ eureka_server_list = "http://" + g_java_service_ip + ":10100/eureka/"
 # 本地服务
 your_rest_server_host = g_server_ip
 your_rest_server_port = 10112
+
+g_eureka_client = ""
 
 # ===========================================================================================
 # 各服务地址

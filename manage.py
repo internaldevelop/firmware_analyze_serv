@@ -54,6 +54,8 @@ def main():
         #                                return_type="string")
         settings.SYS_CODE = syscode['payload']
 
+        utils.sys.config.g_eureka_client = eureka_client
+
         #
         # syslog = eureka_client.do_service("SYSTEM-LOG", "/sys_log/add",
         #                                # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象

@@ -55,6 +55,7 @@ def async_fwdownload(request):
 
 
 def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id):
+    print("download task_id", task_id)
     # 检查本地保存路径 没有则创建
     SysUtils.check_filepath(g_fw_save_path)
 
@@ -71,6 +72,7 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
                                                                              total_percentage)
 
     print(ret_download_info, fw_filename)
+    MyTask.save_exec_info_name(task_id, fw_filename)
 
     # 2 时间消耗总占比0 保存到 pack_file to mongodb
     pack_id, pack_file_id = _save_pack_db(fw_download_url, os.path.join(g_fw_save_path, fw_filename), ret_download_info,
@@ -112,6 +114,9 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
 # 获取文件类型
 def check_file_type(path_file_name):
     contents = MyFile.read(path_file_name)
+    if contents is None:  # linux 系统下 BINWALK会提取出空目录，读目录文件为None
+        return None,contents
+
     if contents[0:4] == b'\x45\x3d\xcd\x28' or contents[0:4] == b'\x28\xcd\x3d\x45':
         print(contents[0:4], "cramfs")
         return FileType.FS_IMAGE, contents
@@ -151,33 +156,6 @@ def check_file_type(path_file_name):
         return FileType.FW_BIN, contents
     else:
         return FileType.OTHER_FILE, contents
-
-
-#
-# def _get_file_type(file_name):
-#     # file_type = os.path.splitext(file_name)
-#     if '.zip' in file_name:
-#         return FileType.PACK
-#     elif '.bin' in file_name:
-#         return FileType.FW_BIN
-#     elif '.squashfs' in file_name:
-#         return FileType.FS_IMAGE
-#     elif '.jffs2' in file_name:
-#         return FileType.FS_IMAGE
-#     elif '.yaffs2' in file_name:
-#         return FileType.FS_IMAGE
-#     elif '.img' in file_name: #romfs
-#         return FileType.FS_IMAGE
-#     elif '.romfs' in file_name:
-#         return FileType.FS_IMAGE
-#     elif '.cramfs' in file_name:
-#         return FileType.FS_IMAGE
-#     elif '.ubi' in file_name:
-#         return FileType.FS_IMAGE
-#     elif '.7z' in file_name:
-#         return FileType.ZIP_FILE
-#     else:
-#         return FileType.OTHER_FILE
 
 
 # 获取文件列表中的某类型文件名

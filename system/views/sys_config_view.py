@@ -3,6 +3,7 @@ from utils.db.mongodb.logs import LogRecords
 from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok_p
 from utils.http.http_request import req_post_param, req_get_param
+from utils.sys.config import g_eureka_client
 
 global false, null, true
 false = null = true = ''
@@ -10,12 +11,21 @@ false = null = true = ''
 # 重置包含两件事：1. 重置管理员和审计员密码；2. 系统配置回到出厂缺省状态
 def reset_default_sys_config(request):
     # 重置管理员和审计员密码
+    # 调用{{UNI_AUTH_URL}}/account_manage/change_pwd
+    # syscode = g_eureka_client.do_service("SYSTEM-CODE", "/sys_code/err_codes/all",
+    #                                    # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象
+    #                                    return_type="json")
+    #
+    # res = g_eureka_client.do_service("UNIFIED-AUTH", "/account_manage/change_pwd",
+    #                                # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象
+    #                                return_type="string")
 
     # 数据库中写入默认出厂参数
     SystemConfig.write_db(None)
 
     # 重新加载新的配置参数（出厂设置）到缓存
     config = SystemConfig.cache_load()
+
 
     # 保存操作日志
     LogRecords.save(config, category='system_config', action='重置系统配置',

@@ -35,13 +35,16 @@ class FsImage:
         # 导出镜像文件到临时目录
         image_file_path = FwFilesStorage.export(image_file['file_id'])
 
+        # 返回实际文件名 任务对应文件名
+        image_file_name = image_file['file_name']
+
         # 解析镜像文件
         image = self.parse_image_file(image_file, image_file_path)
         # 尝试 SquashFS 解析，并验证
         # image = SquashFS(image_file_path)
         # if image.check_format():
         #     pass
-        return image
+        return image, image_file_name
 
     @staticmethod
     def start_fs_image_extract_task(pack_id):
@@ -58,7 +61,10 @@ class FsImage:
     def fs_image_extract(self, pack_id, task_id):
         self.task_id = task_id
 
-        image = self.open_image()
+        image, image_file_name = self.open_image()
+
+        # 任务关联文件名
+        MyTask.save_exec_info_name(task_id, image_file_name)
 
         # 在主进程或任务中，采用预订的文件系统抽取文件
         if image.extract_files(extract_func=self.save_proc):
@@ -66,7 +72,7 @@ class FsImage:
             MyTask.save_exec_info(task_id, 100.0)
 
             # 完成抽取后，启动任务检验该包中所有可执行二进制文件的验证
-            PackFiles.start_exec_bin_verify_task(self.pack_id)
+            PackFiles.start_exec_bin_verify_task(self.pack_id, image_file_name)
 
     # 如果任务被终止，或其他异常错误，可返回 False，正常处理返回 True。主处理流程收到 False 结束处理。
     def save_proc(self, name, path, file_type, content, index, total, extra_props=None):

@@ -115,7 +115,7 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
 def check_file_type(path_file_name):
     contents = MyFile.read(path_file_name)
     if contents is None:  # linux 系统下 BINWALK会提取出空目录，读目录文件为None
-        return None,contents
+        return None, contents
 
     if contents[0:4] == b'\x45\x3d\xcd\x28' or contents[0:4] == b'\x28\xcd\x3d\x45':
         print(contents[0:4], "cramfs")

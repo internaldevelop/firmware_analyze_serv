@@ -16,28 +16,33 @@ class PackFiles:
         self.task_id = None
 
     @staticmethod
-    def start_exec_bin_verify_task(pack_id):
+    def start_exec_bin_verify_task(pack_id, image_file_name=None):
         pack_files = PackFiles(pack_id)
         extra_info = {'pack_id': pack_id, 'task_type': TaskType.VERIFY_EXEC_BIN,
                       'task_name': '验证二进制文件',
                       'task_desc': '验证固件包中所有的可执行二进制文件，并检查CPU架构。'}
-        task = MyTask(pack_files.verify_all_exec_bin_files, (pack_id,), extra_info=extra_info)
+        task = MyTask(pack_files.verify_all_exec_bin_files, (pack_id, image_file_name,), extra_info=extra_info)
+
+        # 任务关联文件名
+        MyTask.save_exec_info_name(task.get_task_id(), image_file_name)
         return task.get_task_id()
 
     @staticmethod
-    def start_exec_bin_cfg_analyze_task(pack_id):
+    def start_exec_bin_cfg_analyze_task(pack_id, image_file_name):
         pack_files = PackFiles(pack_id)
         extra_info = {'pack_id': pack_id, 'task_type': TaskType.CFG_ANALYZE,
                       'task_name': '控制流分析',
                       'task_desc': '进行控制流分析，保存 CFG graph 和函数列表。'}
         task = MyTask(pack_files.cfg_all_exec_bin_files, (pack_id,), extra_info=extra_info)
+
+        MyTask.save_exec_info_name(task.get_task_id(), image_file_name)
         return task.get_task_id()
 
     def _save_task_percentage(self, task_id, count, total):
         percent = count * 100.0 / total
         MyTask.save_task_percentage(task_id, percent, min_step=3.0)
 
-    def verify_all_exec_bin_files(self, pack_id, task_id):
+    def verify_all_exec_bin_files(self, pack_id, image_file_name, task_id):
         # 获取本固件包所有的二进制可执行文件记录
         bin_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
 
@@ -63,7 +68,7 @@ class PackFiles:
         MyTask.save_exec_info(task_id, 100.0)
 
         # 完成验证二进制文件，启动任务检验该包中所有可执行二进制文件的验证
-        PackFiles.start_exec_bin_cfg_analyze_task(self.pack_id)
+        PackFiles.start_exec_bin_cfg_analyze_task(self.pack_id, image_file_name)
 
     def cfg_all_exec_bin_files(self, pack_id, task_id):
         # 获取本固件包所有的二进制可执行文件记录

@@ -64,6 +64,7 @@ def main():
         settings.FW_PATH = MyPath.firmware()
         SysUtils.check_filepath(settings.FW_PATH)
         SysUtils.check_filepath(MyPath.temporary())
+        SysUtils.check_filepath(MyPath.component())
 
         # 启动自动CFG分析任务
         # task = MyTask(_proc_cfg_analyze, )

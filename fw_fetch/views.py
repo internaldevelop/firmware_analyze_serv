@@ -3,13 +3,16 @@ import os
 import utils.sys.config
 from django.conf import settings
 
+from utils.db.mongodb.com_file import PackCOMFileDO
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.db.mongodb.logs import LogRecords
 from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
+from utils.db.mongodb.pack_com_file_storage import PackCOMFilesStorage
 from utils.fs.fs_image import FsImage
 from utils.gadget.my_file import MyFile
+from utils.gadget.my_path import MyPath
 from utils.gadget.strutil import StrUtils
 from utils.http.request import ReqParams
 from utils.http.response import sys_app_ok_p
@@ -32,6 +35,61 @@ task_info_coll = utils.sys.config.g_task_info_col
 
 # firmware 存储桶
 method_fs = utils.sys.config.g_firmware_method_fs
+
+
+# 组件源码下载
+def async_com_download(request):
+    com_download_url = ReqParams.one(request, 'url', protocol='POST')
+    # 启动下载任务
+    extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
+                  'task_name': '组件源码下载',
+                  'task_desc': '下载组件源码入库存储桶'}
+    task = MyTask(_proc_component_tasks, (com_download_url, MyPath.component()), extra_info=extra_info)
+    task_id = task.get_task_id()
+
+    # 保存操作日志
+    LogRecords.save({'task_id': task_id}, category='download', action='组件源码下载',
+                    desc='下载组件源码入库存储桶')
+
+    # 返回响应：任务初始化的信息
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+
+def _proc_component_tasks(com_download_url, g_fw_save_path, task_id):
+    print("download task_id", task_id)
+    # 检查本地保存路径 没有则创建
+    SysUtils.check_filepath(g_fw_save_path)
+
+    # 1 时间消耗总占比30  执行下载操作
+    total_percentage = 30.0
+    ret_download_info = com_filename = ""
+    file_list = []
+
+    ret_download_info, com_filename, file_list = Mydownload.http_download(com_download_url, g_fw_save_path, task_id,
+                                                                             total_percentage)
+
+    print(ret_download_info, com_filename)
+    MyTask.save_exec_info_name(task_id, com_filename)
+
+    # 2 时间消耗总占比0 保存到 pack_file to mongodb
+    pack_id, pack_file_id = _save_pack_com_db(os.path.join(g_fw_save_path, com_filename), ret_download_info, task_id)
+
+    # # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
+    # img_filename = _proc_uncompress(os.path.join(g_fw_save_path, fw_filename), g_fw_save_path, task_id)
+    # if len(img_filename) == 0:
+    #     print("package uncompress error")
+    #     img_filename = fw_filename  # bin文件做为包名（文件名）
+    #     # return "package uncompress error"
+
+    # # 4 时间消耗总占比0 保存源码文件 to mongodb
+    # file_id = _save_com_file_db(os.path.join(g_fw_save_path, img_filename), pack_id)
+
+
+    total_percentage = 100.0
+    MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
+
+    # 7 clear temp files
+    return 'ERROR_OK'
 
 
 # 固件下载
@@ -191,6 +249,29 @@ def _save_file_db(path_file_name, pack_id):
 
     # 返回文件ID
     return file_id
+
+
+# 保存源码组件文件到数据库
+def _save_pack_com_db(path_file_name, download_info, task_id):
+    # todo file_type
+    file_type, contents = check_file_type(path_file_name)
+    file_type = FileType.PACK
+    file_name = os.path.basename(path_file_name)
+
+    # 新建或保存文件记录
+    # 新的 pack ID
+    pack_id = StrUtils.uuid_str()
+    # 新的 pack 文件 UUID
+    file_id = StrUtils.uuid_str()
+    # 读取包文件内容
+    contents = MyFile.read(path_file_name)
+    # 保存文件记录
+    PackCOMFileDO.save(pack_id, file_id, name=file_name, file_type=file_type)
+    # 保存文件内容
+    PackCOMFilesStorage.save(file_id, file_name, FileType.PACK, contents)
+
+    # 返回固件包ID,文件ID
+    return pack_id, file_id
 
 
 # 保存包文件到数据库

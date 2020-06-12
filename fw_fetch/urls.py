@@ -12,6 +12,8 @@ urlpatterns = [
     # 固件下载
     path('async_funcs/download', views.async_fwdownload, name='async_fw_download'),
 
+    # 组件源码下载
+    path('async_funcs/com/download', views.async_com_download, name='async_com_download'),
 
     # 以下为测试接口
     path('', old_views.index, name='index'),

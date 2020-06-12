@@ -58,7 +58,7 @@ class Mydownload:
             MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
 
             # 判断是否为合法下载文件名 .zip .bin .img .rar .exe ...
-            filetype = 'zip,bin,img,rar,exe,trx'
+            filetype = 'zip,bin,img,rar,exe,trx,gz'
             file_list = filename.split('.')
             result = file_list[file_list.__len__() - 1] in filetype
             # print(result)

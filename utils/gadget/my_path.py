@@ -12,6 +12,11 @@ class MyPath:
         return os.path.join(root_path, 'files', 'firmware')
 
     @staticmethod
+    def component():
+        root_path = MyPath.work_root()
+        return os.path.join(root_path, 'files', 'source_code')
+
+    @staticmethod
     def temporary():
         root_path = MyPath.work_root()
         return os.path.join(root_path, 'files', 'temporary')

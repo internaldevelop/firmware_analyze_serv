@@ -12,8 +12,8 @@ g_docker_service_ip = "localhost"
 # g_java_service_ip = "172.16.113.44"
 # g_docker_service_ip = "172.16.113.44"
 
-# g_java_service_ip = "192.168.1.100"
-# g_docker_service_ip = "192.168.1.100"
+g_java_service_ip = "192.168.1.100"
+g_docker_service_ip = "192.168.1.100"
 
 # EUREKA 配置信息
 # eureka_server

@@ -38,7 +38,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "1e081930-2119-4d80-9fcb-517ff96dadd7",
+								"id": "de1f6439-472f-4663-b8a0-6f6ed209e496",
 								"exec": [
 									""
 								],
@@ -48,7 +48,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "16c8877c-9748-4f32-85c6-96fbed1f0876",
+								"id": "d03cf847-d22f-426b-83bd-33275a8596a9",
 								"exec": [
 									""
 								],
@@ -79,6 +79,64 @@
 								{
 									"key": "access_token",
 									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 重置系统出厂配置-带用户密码",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1e081930-2119-4d80-9fcb-517ff96dadd7",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "16c8877c-9748-4f32-85c6-96fbed1f0876",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{FW_SERV_URL}}/system/default_config?access_token={{access_token}}&password=12345678",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"system",
+								"default_config"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"description": "当前用户密码"
 								}
 							]
 						}
@@ -1418,7 +1476,7 @@
 							"formdata": [
 								{
 									"key": "url",
-									"value": "http://192.168.1.100/testSquashfslarge.zip",
+									"value": "http://172.16.113.44/testSquashfsmini.zip",
 									"type": "text"
 								}
 							]
@@ -2435,6 +2493,60 @@
 									"key": "file_id",
 									"value": "{{file_id}}"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "9.组件源码下载",
+			"item": [
+				{
+					"name": "1.1 指定URL下载源码",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca0f409d-7a1f-4a74-bd95-6185071c6cb3",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "url",
+									"value": "https://www.openssl.org/source/old/1.0.0/openssl-1.0.0s.tar.gz",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/fw_fetch/async_funcs/com/download",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fw_fetch",
+								"async_funcs",
+								"com",
+								"download"
 							]
 						}
 					},

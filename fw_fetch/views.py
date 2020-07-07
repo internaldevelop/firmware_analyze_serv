@@ -55,38 +55,37 @@ def async_com_download(request):
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
-def _proc_component_tasks(com_download_url, g_fw_save_path, task_id):
+def _proc_component_tasks(com_download_url, components_save_path, task_id):
     print("download task_id", task_id)
     # 检查本地保存路径 没有则创建
-    SysUtils.check_filepath(g_fw_save_path)
+    SysUtils.check_filepath(components_save_path)
 
     # 1 时间消耗总占比30  执行下载操作
     total_percentage = 30.0
     ret_download_info = com_filename = ""
     file_list = []
 
-    ret_download_info, com_filename, file_list = Mydownload.http_download(com_download_url, g_fw_save_path, task_id,
-                                                                             total_percentage)
+    ret_download_info, com_filename, file_list = Mydownload.http_download(com_download_url, components_save_path, task_id, total_percentage)
 
     print(ret_download_info, com_filename)
     MyTask.save_exec_info_name(task_id, com_filename)
 
-    # 2 时间消耗总占比0 保存到 pack_file to mongodb
-    pack_id, pack_file_id = _save_pack_com_db(os.path.join(g_fw_save_path, com_filename), ret_download_info, task_id)
+    # 2 时间消耗总占比0 保存到 pack_com_file to mongodb
+    pack_com_id, pack_com_file_id = _save_pack_com_db(os.path.join(components_save_path, com_filename), ret_download_info, task_id)
 
-    # # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
-    # img_filename = _proc_uncompress(os.path.join(g_fw_save_path, fw_filename), g_fw_save_path, task_id)
+    # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
+    img_filename = _proc_com_uncompress(os.path.join(components_save_path, com_filename), components_save_path, task_id)
     # if len(img_filename) == 0:
     #     print("package uncompress error")
     #     img_filename = fw_filename  # bin文件做为包名（文件名）
     #     # return "package uncompress error"
 
-    # # 4 时间消耗总占比0 保存源码文件 to mongodb
-    # file_id = _save_com_file_db(os.path.join(g_fw_save_path, img_filename), pack_id)
+    # 4 时间消耗总占比0 保存源码文件 to mongodb
+    file_id = _save_com_file_db(os.path.join(g_fw_save_path, img_filename), pack_id)
 
 
     total_percentage = 100.0
-    MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
+    MyTask.save_exec_info(task_id, total_percentage, {'download': "下载组件源码入库操作完成"})
 
     # 7 clear temp files
     return 'ERROR_OK'
@@ -260,18 +259,18 @@ def _save_pack_com_db(path_file_name, download_info, task_id):
 
     # 新建或保存文件记录
     # 新的 pack ID
-    pack_id = StrUtils.uuid_str()
+    pack_com_id = StrUtils.uuid_str()
     # 新的 pack 文件 UUID
-    file_id = StrUtils.uuid_str()
+    file_com_id = StrUtils.uuid_str()
     # 读取包文件内容
     contents = MyFile.read(path_file_name)
     # 保存文件记录
-    PackCOMFileDO.save(pack_id, file_id, name=file_name, file_type=file_type)
+    PackCOMFileDO.save(pack_com_id, file_com_id, name=file_name, file_type=file_type)
     # 保存文件内容
-    PackCOMFilesStorage.save(file_id, file_name, FileType.PACK, contents)
+    PackCOMFilesStorage.save(file_com_id, file_name, FileType.PACK, contents)
 
     # 返回固件包ID,文件ID
-    return pack_id, file_id
+    return pack_com_id, file_com_id
 
 
 # 保存包文件到数据库
@@ -340,6 +339,10 @@ def _proc_fetch(firmware_id, path, task_id):
     item = {'fw_info': {'filepath': path, 'filename': fw_filename}}
     fw_coll.update(firmware_id, item)
     return 'ERROR_OK'
+
+
+def _proc_com_uncompress(path_file_name, uncompress_path, task_id):
+    SysUtils.uncompress(path_file_name, uncompress_path)
 
 
 def _proc_uncompress(path_file_name, uncompress_path, task_id):

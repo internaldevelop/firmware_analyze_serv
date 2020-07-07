@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin', admin.site.urls),
     path('fw_fetch/', include('fw_fetch.urls')),
     path('fw_analyze/', include('fw_analyze.urls')),
+    path('component/', include('component.urls')),
     path('test/', include('test.urls')),
 
 ]

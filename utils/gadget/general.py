@@ -141,10 +141,19 @@ class SysUtils:
     def un_tgz(filename):
         tar = tarfile.open(filename)
         # 判断同名文件夹是否存在，若不存在则创建同名文件夹
-        SysUtils.check_filepath(os.path.splitext(filename)[0])
+        # SysUtils.check_filepath(os.path.splitext(filename)[0])
+        # tar.extractall(os.path.splitext(filename)[0])
+        print(filename.split('.tar.gz')[0])
+        output_dir, file_name = os.path.split(filename)
+        SysUtils.check_filepath(output_dir)
+        tar.extractall(output_dir)
+        print(tar.getmembers())
+        print(tar.getnames())
+        print(tar.list())
+        list = tar.list()
 
-        tar.extractall(os.path.splitext(filename)[0])
         tar.close()
+        return list
 
     @staticmethod
     def un_tar(file_name):
@@ -206,6 +215,8 @@ class SysUtils:
                 list = SysUtils.un_zip(filename, extract_dir)  #for http://www.comfast.cn
             if len(list) == 0:
                 list = SysUtils.un_rar(filename, extract_dir)
+            if len(list) == 0:
+                list = SysUtils.un_tgz(filename)
 
         except Exception as e:
             print(e)

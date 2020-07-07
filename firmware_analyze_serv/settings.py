@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # 'corsheaders',  # 这是我们的主角，放在新建的其他项目之前
     'fw_fetch',
     'fw_analyze',
+    'component',
 ]
 
 MIDDLEWARE = [

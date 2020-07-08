@@ -34,6 +34,12 @@ from utils.task.task_type import TaskType
 import shlex
 import subprocess
 
+from component.assembly import Assembly
+from component.inverted_index import InvertedIndex
+
+assembly = Assembly()
+invertedIndex = InvertedIndex()
+
 firmware_info_coll = utils.sys.config.g_firmware_info_col
 # 任务集合
 task_info_coll = utils.sys.config.g_task_info_col
@@ -191,4 +197,32 @@ def _proc_component_tasks(com_download_url, g_fw_save_path, task_id):
     # 7 clear temp files
     return 'ERROR_OK'
 
+
+# 余弦相似度计算
+def cosine_algorithm(request):
+    # 获取参数
+    file_id1, file_id2 = ReqParams.many(request, ['file_id1', 'file_id2'])
+    return assembly.cosine_algorithm(file_id1, file_id2)
+
+
+# 倒排索引
+def inverted(request):
+    # 获取参数
+    file_id = req_get_param(request, 'file_id')
+    return invertedIndex.inverted(file_id)
+
+
+# 根据倒排索引查询数据
+def get_inverted_data(request):
+    # 获取参数
+    index_con, file_id = ReqParams.many(request, ['index_con', 'file_id'])
+
+    return invertedIndex.get_inverted_data(index_con, file_id)
+
+
+# 根据倒排索引查询组件文件
+def get_inverted_fw_data(request):
+    # 获取参数
+    index_con = req_get_param(request, 'index_con')
+    return invertedIndex.get_inverted_fw_data(index_con)
 

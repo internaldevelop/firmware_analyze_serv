@@ -3,7 +3,7 @@ from gridfs import GridFS
 import utils.sys.config
 from utils.gadget.general import SysUtils
 
-# 固件包存储桶集合
+# 组件包文件存储桶集合
 pack_com_files_storage = GridFS(utils.sys.config.g_firmware_db_full, collection='component_files_storage')
 
 

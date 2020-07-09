@@ -264,7 +264,10 @@ class SysUtils:
 
     @staticmethod
     def rm_filepath(path):
-        shutil.rmtree(path)  # 能删除该文件夹和文件夹下所有文件
+        # 判断路径是否存在 # 存在     True        # 不存在   False
+        isExists = os.path.exists(path)
+        if isExists:
+            shutil.rmtree(path)  # 能删除该文件夹和文件夹下所有文件
         os.mkdir(path)
         # for i in os.listdir(path):
         #     path_file = os.path.join(path, i)

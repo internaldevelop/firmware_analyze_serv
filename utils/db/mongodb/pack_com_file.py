@@ -15,11 +15,10 @@ class PackCOMFileDO:
     # def __init__(self, pack_id=None):
     #     # pack_id 为None时表示新建的pack文件对象
     #     pass
-
     @staticmethod
-    def save(pack_id, file_id, edb_id, name=None, description='', pack_type=PackType.REAL,
+    def save(pack_id, file_id, edb_id, path_file_name, name=None, description='', pack_type=PackType.REAL,
              source_type=FileSource.REMOTE_DOWNLOAD, file_type=FileType.OTHER_FILE, source_addr=''):
-        doc = {'pack_id': pack_id, 'file_id': file_id, 'edb_id': edb_id, 'name': name, 'description': description,
+        doc = {'pack_id': pack_id, 'file_id': file_id, 'edb_id': edb_id, 'name': name, 'file_path': path_file_name, 'description': description,
                'pack_type': pack_type, 'source_type': source_type, 'file_type': file_type, 'source_addr': source_addr,
                'create_time': SysUtils.get_now_time()}
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录

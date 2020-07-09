@@ -107,35 +107,43 @@ def testcmd(request):
 
 
 # 获取组件编译工作目录
-def getworkpath(file_name):
+def getmakepath(file_name):
     # root, ext = os.path.splitext(file_name)
     dir = file_name.split('.tar.gz')[0]
     return os.path.join(MyPath.component(), dir)
 
 
 # 组件编译X86
-def compile_x86(file_name, path, task_id):
-    # work_path = getworkpath(file_name)
-    work_path = path
+def compile_x86(file_name, task_id):
+    make_path = getmakepath(file_name)
 
     # cmd = './config && make'
     # cmd = './config'
 
+    # clear make_component
+    build_path = os.path.join(make_path, 'make_component')
+    SysUtils.rm_filepath(build_path)
+
     # 指定生成的目录，方便将新生成文件进行入库操作
-    cmd = './config --prefix=' + work_path + "/make_component"
-    process, result = runcmd(cmd, work_path)
+    cmd = './config --prefix=' + build_path
+    process, result = runcmd(cmd, make_path)
     cmd = 'make'
-    process, result = runcmd(cmd, work_path)
+    process, result = runcmd(cmd, make_path)
 
     cmd = 'make install'
-    process, result = runcmd(cmd, work_path)
+    process, result = runcmd(cmd, make_path)
+
+    return build_path
 
 
 # 组件编译ARM
 def compile_arm(file_name, path, task_id):
-    work_path = getworkpath(file_name)
+    make_path = getmakepath(file_name)
+    # clear make_component
+    SysUtils.rm_filepath(make_path)
+
     cmd = '/bin/sh -c CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
-    runcmd(cmd, work_path)
+    runcmd(cmd, make_path)
     return
 
 
@@ -206,13 +214,13 @@ def list(request):
 # 组件编译
 def compile(request):
     # 获取编译参数
-    arch, file_name, pack_id = ReqParams.many(request, ['arch', 'filename', 'pack_id'])
+    arch, pack_id = ReqParams.many(request, ['arch', 'pack_id'])
 
     # 启动编译任务
     extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
                   'task_name': '组件编译',
                   'task_desc': '组件编译及入库操作'}
-    task = MyTask(_proc_compile_tasks, (arch, pack_id, file_name), extra_info=extra_info)
+    task = MyTask(_proc_compile_tasks, (arch, pack_id), extra_info=extra_info)
     task_id = task.get_task_id()
 
     # 保存操作日志
@@ -232,9 +240,9 @@ def export_files(pack_id):
         path, name = os.path.split(file['file_path'])
         SourceCodeFilesStorage.export(file['file_id'], name, path)
 
-    for file in files_list:
-        path, name = os.path.split(file['file_path'])
-        return path
+    fileinfo = PackCOMFileDO.fetch_pack(pack_id)
+    path, name = os.path.split(fileinfo['file_path'])
+    return path, name
 
 
 # 遍历文件夹
@@ -272,16 +280,13 @@ def walkFile(file):
             print(os.path.join(root, d))
 
 
-def save_make_files(pack_com_id, path):
-    print(path)
-
-    # 自定义的安装目录下读取文件
-    makepath = path + "/make_component"
+def save_make_files(pack_com_id, buildpath):
+    print(buildpath)
 
     # 遍历生成目录
     # 遍历目录 读取文件内容保存到DB
     itotal_files = 0
-    for root, dirs, files in os.walk(makepath):
+    for root, dirs, files in os.walk(buildpath):
 
         # root 表示当前正在访问的文件夹路径
         # dirs 表示该文件夹下的子目录名list
@@ -307,8 +312,8 @@ def save_make_files(pack_com_id, path):
             # 保存文件内容
             MakeCOMFilesStorage.save(file_com_id, file_name, path_file_name, file_type, contents)
 
-        print(root)
-        print(dir)
+        # print(root)
+        # print(dir)
         print(files)
 
     print(itotal_files)
@@ -316,27 +321,30 @@ def save_make_files(pack_com_id, path):
 
 
 # 启动编译任务
-def _proc_compile_tasks(arch, pack_id, file_name, task_id):
+def _proc_compile_tasks(arch, pack_id, task_id):
+
+
+    #1 DB中导出源码文件／目录
+    path, file_name = export_files(pack_id)
+    print(path)
+    if path is None:
+        print("export_files error")
+        MyTask.save_exec_info(task_id, 0, {'download': "组件源码编译失败，导出组件库源码失败"})
+        return
 
     MyTask.save_exec_info_name(task_id, file_name)
 
-    #1 DB中导出源码文件／目录
-    path = export_files(pack_id)
-    print(path)
     # cmd = 'tar -xzvf ' + file_name
     # runcmd(cmd)
 
-    # clear make_component path
-    SysUtils.rm_filepath(path + "/make_component")
-
     # 2 make
     if arch == 'x86':
-        compile_x86(file_name, path, task_id)
+        build_path = compile_x86(file_name, task_id)
     elif arch == 'arm':
-        compile_arm(file_name, path, task_id)
+        build_path = compile_arm(file_name, task_id)
 
     # 3 save make file to db
-    save_make_files(pack_id, path)
+    save_make_files(pack_id, build_path)
 
 
     total_percentage = 100.0

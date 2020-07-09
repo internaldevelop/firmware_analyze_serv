@@ -3,13 +3,17 @@ import os
 import utils.sys.config
 from django.conf import settings
 
-from utils.db.mongodb.com_file import PackCOMFileDO
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.db.mongodb.logs import LogRecords
 from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
+from utils.db.mongodb.source_code_file import SourceCodeFileDO
+from utils.db.mongodb.source_code_file_storage import SourceCodeFilesStorage
+from utils.db.mongodb.pack_com_file import PackCOMFileDO
 from utils.db.mongodb.pack_com_file_storage import PackCOMFilesStorage
+from utils.db.mongodb.cnvd_share import CnvdshareDO
+
 from utils.fs.fs_image import FsImage
 from utils.gadget.my_file import MyFile
 from utils.gadget.my_path import MyPath
@@ -55,6 +59,25 @@ def async_com_download(request):
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
+# 判断识别文件名中的版本号进查询
+def associated_vulner_db(file_name):
+    name, ver = file_name.split('-')
+    version = ver.split('.tar.gz')[0]
+    name = 'OpenSSL'
+    cnvd_list = CnvdshareDO.search_info_of_component_name(name)
+
+    # 枚举每个文件，读出其文件数据，校验
+    total_count = len(cnvd_list)
+    for index, file_item in enumerate(cnvd_list):
+        cnvd_id = file_item['edb_id']
+        versions = file_item['products'][0]['version']
+        print(versions)
+        if version in versions:
+            return cnvd_id
+
+    return None
+
+
 def _proc_component_tasks(com_download_url, components_save_path, task_id):
     print("download task_id", task_id)
     # 检查本地保存路径 没有则创建
@@ -70,18 +93,20 @@ def _proc_component_tasks(com_download_url, components_save_path, task_id):
     print(ret_download_info, com_filename)
     MyTask.save_exec_info_name(task_id, com_filename)
 
-    # 2 时间消耗总占比0 保存到 pack_com_file to mongodb
-    pack_com_id, pack_com_file_id = _save_pack_com_db(os.path.join(components_save_path, com_filename), ret_download_info, task_id)
+    # 5 组件源码下载后关联漏洞库
+    edb_id = associated_vulner_db(com_filename)
 
-    # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
-    img_filename = _proc_com_uncompress(os.path.join(components_save_path, com_filename), components_save_path, task_id)
-    # if len(img_filename) == 0:
-    #     print("package uncompress error")
-    #     img_filename = fw_filename  # bin文件做为包名（文件名）
-    #     # return "package uncompress error"
+    # 2 时间消耗总占比0 保存到 pack_com_file to mongodb
+    pack_com_id, pack_com_file_id = _save_pack_com_db(os.path.join(components_save_path, com_filename), ret_download_info, edb_id,task_id)
+
+    # 3 时间消耗总占比0 解压缩源码包，提取文件到mongo
+    output_dir, file_name = os.path.split(os.path.join(components_save_path, com_filename))
+    file_list = _proc_com_uncompress(os.path.join(components_save_path, com_filename), output_dir, task_id)
 
     # 4 时间消耗总占比0 保存源码文件 to mongodb
-    file_id = _save_com_file_db(os.path.join(g_fw_save_path, img_filename), pack_id)
+    file_id = _save_source_code_file_db(os.path.join(output_dir, file_name.split('.tar.gz')[0]), pack_com_id, task_id)
+
+
 
 
     total_percentage = 100.0
@@ -250,10 +275,10 @@ def _save_file_db(path_file_name, pack_id):
     return file_id
 
 
-# 保存源码组件文件到数据库
-def _save_pack_com_db(path_file_name, download_info, task_id):
+# 保存源码组件文件tar.gz 到数据库
+def _save_pack_com_db(path_file_name, download_info, edb_id, task_id):
     # todo file_type
-    file_type, contents = check_file_type(path_file_name)
+    #file_type, contents = check_file_type(path_file_name)
     file_type = FileType.PACK
     file_name = os.path.basename(path_file_name)
 
@@ -265,12 +290,53 @@ def _save_pack_com_db(path_file_name, download_info, task_id):
     # 读取包文件内容
     contents = MyFile.read(path_file_name)
     # 保存文件记录
-    PackCOMFileDO.save(pack_com_id, file_com_id, name=file_name, file_type=file_type)
+    PackCOMFileDO.save(pack_com_id, file_com_id, edb_id, name=file_name, file_type=file_type)
     # 保存文件内容
     PackCOMFilesStorage.save(file_com_id, file_name, FileType.PACK, contents)
 
     # 返回固件包ID,文件ID
     return pack_com_id, file_com_id
+
+
+# 保存解压缩源码组件文件到数据库
+def _save_source_code_file_db(path_file_name, pack_com_id, task_id):
+    # 遍历目录 读取文件内容保存到DB
+    itotal_files=0
+    for root, dirs, files in os.walk(path_file_name):
+
+        # root 表示当前正在访问的文件夹路径
+        # dirs 表示该文件夹下的子目录名list
+        # files 表示该文件夹下的文件list
+
+        # 遍历文件
+        for f in files:
+            itotal_files+=1
+            print(os.path.join(root, f))
+            path_file_name = os.path.join(root, f)
+            #contents = MyFile.read(path_file_name)
+
+            # todo file_type
+            #file_type, contents = check_file_type(path_file_name)
+            file_type = FileType.OTHER_FILE
+            file_name = os.path.basename(path_file_name)
+
+            # 新建或保存文件记录
+            # 新的 pack ID
+            # pack_com_id = StrUtils.uuid_str()
+            # 新的 pack 文件 UUID
+            file_com_id = StrUtils.uuid_str()
+            # 读取包文件内容
+            contents = MyFile.read(path_file_name)
+            # 保存文件记录
+            SourceCodeFileDO.save_file_item(pack_com_id, file_com_id, file_name, file_type, path_file_name, None)
+            # 保存文件内容
+            SourceCodeFilesStorage.save(file_com_id, file_name, path_file_name, file_type, contents)
+
+
+        # 遍历所有的文件夹
+        for d in dirs:
+            print(os.path.join(root, d))
+
 
 
 # 保存包文件到数据库
@@ -342,7 +408,7 @@ def _proc_fetch(firmware_id, path, task_id):
 
 
 def _proc_com_uncompress(path_file_name, uncompress_path, task_id):
-    SysUtils.uncompress(path_file_name, uncompress_path)
+    return SysUtils.uncompress(path_file_name, uncompress_path)
 
 
 def _proc_uncompress(path_file_name, uncompress_path, task_id):

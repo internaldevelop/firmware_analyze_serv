@@ -138,22 +138,14 @@ class SysUtils:
 
     # 解压tgz压缩文件
     @staticmethod
-    def un_tgz(filename):
+    def un_tgz(filename, extract_dir):
         tar = tarfile.open(filename)
         # 判断同名文件夹是否存在，若不存在则创建同名文件夹
-        # SysUtils.check_filepath(os.path.splitext(filename)[0])
-        # tar.extractall(os.path.splitext(filename)[0])
-        print(filename.split('.tar.gz')[0])
-        output_dir, file_name = os.path.split(filename)
-        SysUtils.check_filepath(output_dir)
-        tar.extractall(output_dir)
-        print(tar.getmembers())
-        print(tar.getnames())
-        print(tar.list())
-        list = tar.list()
-
+        SysUtils.check_filepath(extract_dir)
+        tar.extractall(extract_dir)
+        file_list = tar.getnames()
         tar.close()
-        return list
+        return file_list
 
     @staticmethod
     def un_tar(file_name):
@@ -216,7 +208,7 @@ class SysUtils:
             if len(list) == 0:
                 list = SysUtils.un_rar(filename, extract_dir)
             if len(list) == 0:
-                list = SysUtils.un_tgz(filename)
+                list = SysUtils.un_tgz(filename, extract_dir)
 
         except Exception as e:
             print(e)
@@ -267,8 +259,22 @@ class SysUtils:
             return True
         else:
             # 如果目录存在则不创建，并提示目录已存在
-            print(path + ' 目录已存在')
+            # print(path + ' 目录已存在')
             return False
+
+    @staticmethod
+    def rm_filepath(path):
+        shutil.rmtree(path)  # 能删除该文件夹和文件夹下所有文件
+        os.mkdir(path)
+        # for i in os.listdir(path):
+        #     path_file = os.path.join(path, i)
+        #     if os.path.isfile(path_file):
+        #         os.remove(path_file)
+        #     else:
+        #         for f in os.listdir(path_file):
+        #             path_file2 = os.path.join(path_file, f)
+        #             if os.path.isfile(path_file2):
+        #                 os.remove(path_file2)
 
 
 class TimeEncoder(json.JSONEncoder):

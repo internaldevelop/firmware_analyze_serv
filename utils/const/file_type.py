@@ -26,6 +26,9 @@ class FileType:
     # 固件二进制文件
     FW_BIN = 7
 
+    # 组件源码生成文件
+    MAKE_FILE = 8
+
     # =========================================================
     # 对 FS_IMAGE 提取出来的文件做文件类型细分，不能识别的文件设置成 NORMAL_FILE 或 OTHER_FILE
     WORD_FILE = 101

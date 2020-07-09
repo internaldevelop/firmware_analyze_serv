@@ -52,6 +52,9 @@ g_firmware_info_col_full = g_firmware_db_full["firmware_info"]
 # 固件操作方法文件存储桶
 g_firmware_method_fs_full = GridFS(g_firmware_db_full, collection='firmware_methods')
 
+# cnvd_db 数据库
+g_cnvd_db_full = g_mongo_client["cnvd_db"]
+
 # 任务表 下载、提取、分析
 g_task_info_col_full = g_firmware_db_full["task_info"]
 
@@ -69,3 +72,5 @@ g_type_coll = g_type_coll_full
 g_platform_coll = g_platform_coll_full
 
 g_firmware_filepath = ''
+
+g_cnvd_db = g_cnvd_db_full

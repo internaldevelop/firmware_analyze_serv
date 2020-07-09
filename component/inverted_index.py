@@ -4,6 +4,7 @@ from utils.http.response import sys_app_ok_p, sys_app_ok, sys_app_err
 # firmware 集合
 file_inverted_col = utils.sys.config.g_firmware_db_full["file_inverted_index"]
 fw_files_col = utils.sys.config.g_firmware_db_full["fw_files"]
+pack_files_col = utils.sys.config.g_firmware_db_full["pack_files"]
 
 
 class InvertedIndex:
@@ -139,7 +140,12 @@ class InvertedIndex:
                 return sys_app_err('ERROR_INVALID_PARAMETER')
 
             for file_info in file_list:
-                file_info.pop("_id")
+                file_info.pop('_id')
+                pack_info = pack_files_col.find_one({'pack_id': file_info.get('pack_id')})
+                if pack_info is not None:
+                    pack_info.pop('_id')
+                    file_info['pack_info'] = pack_info
+
             return sys_app_ok_p({'total': len(file_list), 'files': file_list})
 
         return sys_app_err('ERROR_GENERAL_ERROR')

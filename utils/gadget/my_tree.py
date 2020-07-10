@@ -12,7 +12,7 @@ class MyTree:
     #     ...
     # }
     @staticmethod
-    def file_path_insert_into_tree(tree_obj, file_path, file_id):
+    def file_path_insert_into_tree(tree_obj, file_path, file_id, component=None):
         # 从文件路径获取 folders_list, file_name
         folders_list, file_name = MyFile.file_path_to_folder_list(file_path)
 
@@ -27,7 +27,7 @@ class MyTree:
             node_obj = node_obj[folder]
 
         # 最后，添加叶子节点（含文件ID和文件路径信息）
-        node_obj[file_name] = {'file_path': file_path, 'file_id': file_id}
+        node_obj[file_name] = {'file_path': file_path, 'file_id': file_id, 'component': component}
 
     # tree_data = [ 节点数组
     #   {
@@ -39,7 +39,7 @@ class MyTree:
     #   {}, ... {}
     # ]
     @staticmethod
-    def file_path_insert_into_antd_tree(tree_obj, file_path, file_id):
+    def file_path_insert_into_antd_tree(tree_obj, file_path, file_id, component=None):
         # 从文件路径获取 folders_list, file_name
         folders_list, file_name = MyFile.file_path_to_folder_list(file_path)
 
@@ -68,6 +68,6 @@ class MyTree:
                 nodes_list = node['children']
 
         # 添加文件节点
-        node = {'title': file_name, 'key': file_id, 'file_path': file_path, 'children': []}
+        node = {'title': file_name, 'key': file_id, 'file_path': file_path, 'component': component, 'children': []}
         nodes_list.append(node)
         # pass

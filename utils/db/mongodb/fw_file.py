@@ -56,7 +56,7 @@ class FwFileDO:
             file_path = file_name
 
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
-               'file_type': file_type, 'create_time': SysUtils.get_now_time()}
+               'file_type': file_type, 'create_time': SysUtils.get_now_time(), 'component': 0}
         if extra_props is not None:
             doc['extra_props'] = extra_props
 
@@ -87,4 +87,14 @@ class FwFileDO:
     @staticmethod
     def set_cfg_analyzed(file_id, cfg_analyzed=1):
         FwFileDO._save_file_props(file_id, {'cfg_analyze': cfg_analyzed})
+
+    # @staticmethod
+    # def _save_file_com_props(file_id, props):
+    #     # 更新记录
+    #     rv = fw_files_coll.update_one({'file_id': file_id}, {'$set': props}, True)
+    #     return rv
+
+    @staticmethod
+    def set_component(file_id, component=1):
+        FwFileDO._save_file_props(file_id, {'component': component})
 

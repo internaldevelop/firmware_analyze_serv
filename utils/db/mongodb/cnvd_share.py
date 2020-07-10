@@ -4,7 +4,7 @@ from utils.db.mongodb.cursor_result import CursorResult
 
 from utils.gadget.general import SysUtils
 
-# 固件文件记录集合
+# 漏洞记录集合
 cnvd_share_coll = utils.sys.config.g_cnvd_db_full["cnvd_share"]
 
 

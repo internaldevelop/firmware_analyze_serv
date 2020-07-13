@@ -14,8 +14,8 @@ urlpatterns = [
     # 组件编译结果查询
     path('async_funcs/list_make', views.list_make, name='async_com_list_make'),
 
-    path('async_funcs/test', views.test, name='async_test'),
-    path('async_funcs/testcmd', views.testcmd, name='async_testcmd'),
+    path('test', views.test, name='async_test'),
+    path('testcmd', views.testcmd, name='async_testcmd'),
 
     # 余弦相似度、倒排索引
     path('async_funcs/cosine_algorithm', views.cosine_algorithm, name='cosine_algorithm'),

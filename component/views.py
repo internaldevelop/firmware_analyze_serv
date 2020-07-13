@@ -53,16 +53,18 @@ task_info_coll = utils.sys.config.g_task_info_col
 method_fs = utils.sys.config.g_firmware_method_fs
 
 
-def runcmd(cmd, work_path=MyPath.component()):
+# 执行shell命令,默认的执行路径: pwd\files\source_code
+def runcmd(command, work_path=MyPath.component(), env=None):
     # 1.    命令被分号“;”分隔，这些命令会顺序执行下去；
     # 2.    命令被“ && ”分隔，这些命令会顺序执行下去，遇到执行错误的命令停止；
     # 3.    命令被双竖线“ || ”分隔，这些命令会顺序执行下去，遇到执行成功的命令停止，后面的所有命令都将不会执行;
-    print(cmd)
+    print(command)
     # command = '/bin/sh -c ' + cmd
-    command = cmd
+    # command = cmd
     args = shlex.split(command)
-    sub_proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_path)
-    output = sub_proc.communicate()
+    sub_proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_path, env={'CC':'arm-linux-gnueabihf-gcc', 'RANLIB':'arm-linux-gnueabihf-ranlib'})
+    output, stderr = sub_proc.communicate()
+    exit_code = sub_proc.returncode
     process = output[0].decode('utf-8')
     result = output[1].decode('utf-8')
     print(process)
@@ -79,13 +81,23 @@ def testcmd(request):
     # process, result = runcmd(cmd)
 
     work_path = MyPath.component() + '/openssl-1.0.0s'
-    save_make_files('18e2f698-487a-47d4-9bf0-3c33d7a78320', work_path)
-    return
+
+    testfile = work_path + '/CHANGES'
+    SysUtils.chmod(testfile, "777")
+
+    # save_make_files('18e2f698-487a-47d4-9bf0-3c33d7a78320', work_path)
+    # return
+
     # cmd = MyPath.component() + '/openssl-1.0.0s/' + 'CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ AR=arm-linux-gnueabihf-ar RANLIB=arm-linux-gnueabihf-ranlib ./Configure no-asm shared --prefix=/usr/local/arm/openssl linux-armv4'
     # cmd = '/bin/sh -c CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ AR=arm-linux-gnueabihf-ar RANLIB=arm-linux-gnueabihf-ranlib ./Configure no-asm shared --prefix=/usr/local/arm/openssl linux-armv4'
     # runcmd(cmd, work_path)
     # cmd = '/bin/sh -c CC=arm-linux-gnueabihf-gccCXX=arm-linux-gnueabihf-g++AR=arm-linux-gnueabihf-arRANLIB=arm-linux-gnueabihf-ranlib ./Configure no-asm shared --prefix=/usr/local/arm/openssl linux-armv4'
     # runcmd(cmd, work_path)
+
+    # cmd = 'CC=arm-linux-gnueabihf-gcc RANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
+    cmd = './Configure --prefix=/usr/local/arm/openssl linux-armv4'
+
+    runcmd(cmd, work_path, "{'CC':'arm-linux-gnueabihf-gcc', 'RANLIB':'arm-linux-gnueabihf-ranlib'}")
 
     cmd = '/bin/sh -c CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
     runcmd(cmd, work_path)
@@ -133,21 +145,46 @@ def compile_x86(file_name, task_id):
     cmd = 'make install'
     process, result = runcmd(cmd, make_path)
 
+    total_percentage = 90.0
+    MyTask.save_exec_info(task_id, total_percentage, {'process': process})
+    MyTask.save_exec_info(task_id, total_percentage, {'result': result})
+
     return build_path
 
 
 # 组件编译ARM
-def compile_arm(file_name, path, task_id):
+def compile_arm(file_name, task_id):
     make_path = getmakepath(file_name)
+
     # clear make_component
-    SysUtils.rm_filepath(make_path)
+    build_path = os.path.join(make_path, 'make_component')
+    SysUtils.rm_filepath(build_path)
 
     cmd = '/bin/sh -c CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
     runcmd(cmd, make_path)
-    return
+
+    cmd = 'CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
+    runcmd(cmd, make_path)
 
 
-# 组件编译
+
+
+
+
+
+    cmd = 'CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=' + build_path + ' linux-armv4'
+    runcmd(cmd, make_path)
+
+    cmd = 'make'
+    process, result = runcmd(cmd, make_path)
+
+    cmd = 'make install'
+    process, result = runcmd(cmd, make_path)
+
+    return build_path
+
+
+# 查询所有组件生成文件信息
 def list_make(request):
     print('list_make')
     pack_id = ReqParams.one(request, 'pack_id')
@@ -189,7 +226,7 @@ def list_make(request):
     return sys_app_ok_p(exec_tree)
 
 
-# 组件编译
+# 查询所有组件源码包信息
 def list(request):
     # 所有包的基本信息
     com_list = PackCOMFileDO.all_packs()
@@ -208,7 +245,6 @@ def list(request):
                     desc='查询所有组件源码包的信息，统计其文件数量，查询任务信息')
 
     return sys_app_ok_p(com_list)
-
 
 
 # 组件编译
@@ -231,6 +267,7 @@ def compile(request):
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
+# 从存储桶导出源码文件
 def export_files(pack_id):
     # DB中导出源码文件／目录
     files_list = SourceCodeFileDO.get_files_of_pack(pack_id)
@@ -280,6 +317,7 @@ def walkFile(file):
             print(os.path.join(root, d))
 
 
+# 保存MAKE生成目录文件
 def save_make_files(pack_com_id, buildpath):
     print(buildpath)
 
@@ -319,7 +357,6 @@ def save_make_files(pack_com_id, buildpath):
     print(itotal_files)
 
 
-
 # 启动编译任务
 def _proc_compile_tasks(arch, pack_id, task_id):
 
@@ -329,7 +366,7 @@ def _proc_compile_tasks(arch, pack_id, task_id):
     print(path)
     if path is None:
         print("export_files error")
-        MyTask.save_exec_info(task_id, 0, {'download': "组件源码编译失败，导出组件库源码失败"})
+        MyTask.save_exec_info(task_id, 0, {'compile': "组件源码编译失败，导出组件库源码失败"})
         return
 
     MyTask.save_exec_info_name(task_id, file_name)
@@ -348,47 +385,47 @@ def _proc_compile_tasks(arch, pack_id, task_id):
 
 
     total_percentage = 100.0
-    MyTask.save_exec_info(task_id, total_percentage, {'download': "组件源码编译操作完成"})
+    MyTask.save_exec_info(task_id, total_percentage, {'compile': "组件源码编译操作完成"})
 
 
-# 组件源码
+# test
 def test(request):
-    com_download_url = ReqParams.one(request, 'url', protocol='GET')
-    # 启动下载任务
-    extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
-                  'task_name': '组件源码下载',
-                  'task_desc': '下载组件源码入库存储桶'}
-    task = MyTask(_proc_component_tasks, (com_download_url, MyPath.component()), extra_info=extra_info)
-    task_id = task.get_task_id()
-
-    # 保存操作日志
-    LogRecords.save({'task_id': task_id}, category='download', action='组件源码下载',
-                    desc='下载组件源码入库存储桶')
+    # com_download_url = ReqParams.one(request, 'url', protocol='GET')
+    # # 启动下载任务
+    # extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
+    #               'task_name': '组件源码下载',
+    #               'task_desc': '下载组件源码入库存储桶'}
+    # task = MyTask(_proc_component_tasks, (com_download_url, MyPath.component()), extra_info=extra_info)
+    # task_id = task.get_task_id()
+    #
+    # # 保存操作日志
+    # LogRecords.save({'task_id': task_id}, category='download', action='组件源码下载',
+    #                 desc='下载组件源码入库存储桶')
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+    return sys_app_ok_p({})
 
 
-def _proc_component_tasks(com_download_url, g_fw_save_path, task_id):
-    print("download task_id", task_id)
-    # 检查本地保存路径 没有则创建
-    SysUtils.check_filepath(g_fw_save_path)
-
-    # 1 时间消耗总占比30  执行下载操作
-    total_percentage = 30.0
-    ret_download_info = com_filename = ""
-    file_list = []
-
-    ret_download_info, com_filename, file_list = Mydownload.http_download(com_download_url, g_fw_save_path, task_id, total_percentage)
-
-    print(ret_download_info, com_filename)
-    MyTask.save_exec_info_name(task_id, com_filename)
-
-    total_percentage = 100.0
-    MyTask.save_exec_info(task_id, total_percentage, {'download': "固件下载、提取、入库操作完成"})
-
-    # 7 clear temp files
-    return 'ERROR_OK'
+# def _proc_component_tasks(com_download_url, g_fw_save_path, task_id):
+#     print("download task_id", task_id)
+#     # 检查本地保存路径 没有则创建
+#     SysUtils.check_filepath(g_fw_save_path)
+#
+#     # 1 时间消耗总占比30  执行下载操作
+#     total_percentage = 30.0
+#     ret_download_info = com_filename = ""
+#     file_list = []
+#
+#     ret_download_info, com_filename, file_list = Mydownload.http_download(com_download_url, g_fw_save_path, task_id, total_percentage)
+#
+#     print(ret_download_info, com_filename)
+#     MyTask.save_exec_info_name(task_id, com_filename)
+#
+#     total_percentage = 100.0
+#     MyTask.save_exec_info(task_id, total_percentage, {'download': "组件下载、提取、入库操作完成"})
+#
+#     # 7 clear temp files
+#     return 'ERROR_OK'
 
 
 # 余弦相似度计算

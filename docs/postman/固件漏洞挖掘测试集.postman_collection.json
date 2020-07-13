@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5450bd3a-8231-4ced-9c46-6c4d2c3b5343",
+		"_postman_id": "3b1c3b00-301d-45ba-9ebb-fb332dbd417c",
 		"name": "固件漏洞挖掘测试集",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -38,7 +38,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "de1f6439-472f-4663-b8a0-6f6ed209e496",
+								"id": "e4f7fd9f-e843-4977-9f4c-684e7434d393",
 								"exec": [
 									""
 								],
@@ -48,7 +48,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d03cf847-d22f-426b-83bd-33275a8596a9",
+								"id": "3ebbcf2b-3a72-4272-bcab-d8129ae5457b",
 								"exec": [
 									""
 								],
@@ -91,7 +91,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "1e081930-2119-4d80-9fcb-517ff96dadd7",
+								"id": "3ad88a7d-68ef-4377-87e3-252b32b136e6",
 								"exec": [
 									""
 								],
@@ -101,7 +101,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "16c8877c-9748-4f32-85c6-96fbed1f0876",
+								"id": "4f1bc6ea-3e99-478d-8ba3-40e6b5104bba",
 								"exec": [
 									""
 								],
@@ -149,7 +149,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "199f21b7-d6a1-4d2f-9bf7-3a468a701fb4",
+								"id": "a479a808-0db2-43d3-97ac-d293b386be82",
 								"exec": [
 									""
 								],
@@ -159,7 +159,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "11223ac6-a55c-46d3-9696-af98dba59d7a",
+								"id": "5fe793d6-febd-42a7-a61c-733893ac9308",
 								"exec": [
 									""
 								],
@@ -210,7 +210,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f3bee64a-6c40-4208-8317-6a4c4cc6ca6b",
+								"id": "ae017b19-c5bd-49cd-9eba-502fabd27cd0",
 								"exec": [
 									""
 								],
@@ -220,7 +220,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ad7a275d-8a85-465c-a4c6-d44a2e0385f1",
+								"id": "18c8bc0b-33c5-47fb-b1fe-6a9c14442f5e",
 								"exec": [
 									""
 								],
@@ -268,7 +268,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a16dbbd4-728e-4848-9fb4-9c23988c6398",
+								"id": "05f6f5c5-5ed3-4dfb-83f7-27ac917cc559",
 								"exec": [
 									""
 								],
@@ -278,7 +278,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1120e200-2bb8-480b-acdd-d07fd9be5389",
+								"id": "6fc24095-896e-4be7-9938-82d83878de29",
 								"exec": [
 									""
 								],
@@ -329,7 +329,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8cbd0e0e-9eb2-4f2e-8b27-8af418ac71a0",
+								"id": "ffde2260-12a7-42a0-a61f-f15e9b152007",
 								"exec": [
 									""
 								],
@@ -339,7 +339,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9097b207-8901-410a-a3d0-bd1692d38951",
+								"id": "405babb6-8f2e-4bc2-88ed-12911bdc2906",
 								"exec": [
 									""
 								],
@@ -386,7 +386,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "dcecbe2b-94f2-4534-87ab-8f930eacfbc3",
+								"id": "65d82be0-4f62-4702-8c15-a2994a5420a7",
 								"exec": [
 									"pm.environment.set(\"file_id\", \"1\");"
 								],
@@ -426,7 +426,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3b7f9e0b-21a3-4ac3-a8ea-7d04194b6e44",
+								"id": "d2b40169-d86f-4680-99c0-cb7de0668506",
 								"exec": [
 									""
 								],
@@ -467,7 +467,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "fd9564f2-5729-4742-8895-32b1e81a8a7c",
+								"id": "62a356aa-2141-41c4-ae60-9a96adf7fc17",
 								"exec": [
 									""
 								],
@@ -507,7 +507,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6fb33950-9332-447d-a7e5-a2111e54a767",
+						"id": "88932b31-638b-4a1d-b60d-35da16bef0cf",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -517,7 +517,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "301a3745-0ff3-47ea-8a7d-f66ff31144f9",
+						"id": "ebe6b214-9408-4c2a-bb56-40fcfc913edb",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -539,7 +539,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2078a4cc-6501-4030-9d59-62b5d3681b5c",
+										"id": "52570162-b4b2-4001-9694-7acd57212969",
 										"exec": [
 											""
 										],
@@ -654,7 +654,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9cb8c503-8f75-45a7-9fb3-9d3bc7040457",
+								"id": "068f0b59-6a9c-4dd3-bbed-a09793879d6f",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -664,7 +664,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7ed1e417-86fc-4ac2-9716-c643537df6b3",
+								"id": "184b5415-8e84-44c8-91ef-d8af68497ab2",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -684,7 +684,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d3ad47a7-6c76-4f0d-97bf-3257ad851eca",
+										"id": "94e21272-ec7d-49e0-84b3-11ab84480e12",
 										"exec": [
 											""
 										],
@@ -726,7 +726,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "746f0ef0-8242-4773-97b3-0e584bf50ee6",
+										"id": "28fb9e34-9bcd-49b4-a050-315a0e87d31b",
 										"exec": [
 											""
 										],
@@ -767,7 +767,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "35cc12c2-33bc-45ac-8371-60c9e4f4b4aa",
+										"id": "f657067f-9ac3-4a22-88c5-7af66aec50ee",
 										"exec": [
 											""
 										],
@@ -818,7 +818,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "52336676-baef-45c4-bda6-ec84d1704ea0",
+										"id": "c1a84fd3-2d7d-460a-bd8b-2c43fb0bb595",
 										"exec": [
 											""
 										],
@@ -871,7 +871,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9575cc16-d12d-4efd-8549-7098a629b982",
+										"id": "c30e06aa-2e86-4545-94ba-3ac57f56b08b",
 										"exec": [
 											""
 										],
@@ -922,7 +922,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9fa5b483-da18-4173-9698-6022b90c7f34",
+										"id": "fed95b48-7686-4cbc-90e9-588a4a68cb3a",
 										"exec": [
 											""
 										],
@@ -973,7 +973,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "af56b311-8f49-46e0-aa48-ab04294c9050",
+										"id": "e028fd7d-5f1c-446d-b512-f8bff4302b1a",
 										"exec": [
 											""
 										],
@@ -1024,7 +1024,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f7b9a994-1465-478e-81e5-34cd7cc7384e",
+										"id": "8c32aa58-5003-4cfa-a2ad-3440c55f9c95",
 										"exec": [
 											""
 										],
@@ -1082,7 +1082,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4cca2e66-02c7-443c-a617-c19b9b113ad5",
+										"id": "008f981c-5458-448b-8bb5-23dd2742caec",
 										"exec": [
 											""
 										],
@@ -1123,7 +1123,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "14bab845-99d1-4b49-9384-4bca06c376e2",
+										"id": "8464630d-f81a-4b43-b99e-ad9c24edd4d2",
 										"exec": [
 											"pm.test(\"test\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -1170,7 +1170,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d59344d7-b906-41e0-873d-d81168f6695a",
+										"id": "8ddee0d7-cba2-42cf-bcb2-c1c4afabb0df",
 										"exec": [
 											"pm.test(\"run XXXXX\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -1224,7 +1224,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "53517bf9-89c9-4d17-bf91-d8b99e39a31a",
+										"id": "09888f26-9133-4d64-825d-963da8a27e3d",
 										"exec": [
 											""
 										],
@@ -1268,7 +1268,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "15feb1f1-0397-4103-bf96-2624cd024355",
+										"id": "9f88a607-947d-4b0a-87f5-98becd715546",
 										"exec": [
 											""
 										],
@@ -1309,7 +1309,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c8d8f5af-e0f3-4895-b4ff-c9f8fbc5b36d",
+										"id": "90cde1f4-2ce2-4c1a-b65f-736563f7f029",
 										"exec": [
 											""
 										],
@@ -1408,7 +1408,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fd8d609d-197a-4e0d-bef7-b6af22569a10",
+										"id": "e14ab618-7c11-48b9-958e-59acf373961a",
 										"exec": [
 											""
 										],
@@ -1454,7 +1454,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d01e9155-4aeb-406c-95e2-d6bdfad90a29",
+								"id": "dd9c9783-431b-4f90-bcf1-c40741a22d00",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1537,7 +1537,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c269db73-e442-4430-a51d-8a437baef4f6",
+								"id": "979ca4db-299a-4181-ab9b-f666e17e69eb",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1657,7 +1657,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "066eeaab-e90c-4f72-8324-97a4bf5e3c8e",
+								"id": "320f3125-07db-42a6-b6ad-583cff9e8299",
 								"exec": [
 									""
 								],
@@ -1667,7 +1667,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6288d7c0-fa9b-4642-92a5-8f3f8e910c71",
+								"id": "c29d931b-210b-4e15-b38b-82242c64db70",
 								"exec": [
 									"pm.test(\"run cfg analyze\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1719,7 +1719,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e4b45888-1e94-4076-a6fc-1cbee37a2762",
+								"id": "36a368f1-35bd-4c21-af4b-8c92dbc9cabd",
 								"exec": [
 									""
 								],
@@ -1729,7 +1729,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f8b7aad5-cb7f-41ce-bd17-dc94efbba3f8",
+								"id": "c7e934b8-90c7-44b3-b354-c32d331883a6",
 								"exec": [
 									"pm.test(\"run cfg analyze\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1780,7 +1780,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "0f186bd0-4254-4983-b0ae-9ef7f5961c6c",
+						"id": "91c62e7e-0401-4288-86b3-e347c5968fde",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1790,7 +1790,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "51155c28-a8bf-4818-afd2-ae54106a8cd3",
+						"id": "13529316-88c5-4f71-bba8-e62533e18885",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1809,7 +1809,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "009615fe-fc06-4a0c-bb0e-1e9f7eec3bcb",
+								"id": "2164c832-2aa2-476e-a5e3-878bf8a9d616",
 								"exec": [
 									""
 								],
@@ -1819,7 +1819,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8c1034d4-6ec8-4ca1-9384-36a6db60463a",
+								"id": "9111b0f1-9401-43b9-90ed-a49508d09728",
 								"exec": [
 									""
 								],
@@ -1860,7 +1860,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b77f59f4-81dd-4fc2-b622-7dfcfba7e96a",
+								"id": "986d1080-72d5-4beb-b2d7-89cc96795643",
 								"exec": [
 									""
 								],
@@ -1870,7 +1870,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "78a2b1b1-85f2-4d7e-97f0-7a12c5daef1f",
+								"id": "935d79a6-12f0-4791-94c1-4b219231910f",
 								"exec": [
 									""
 								],
@@ -1921,7 +1921,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7d755853-7089-4fca-8a04-39683cca7533",
+								"id": "c185a251-47e8-4780-81c6-8b6b034f1861",
 								"exec": [
 									""
 								],
@@ -1931,7 +1931,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "5f36ae65-4e4c-4c22-b387-1238162ab4e8",
+								"id": "4fca2e6d-196c-44b1-9a5f-e713d2f1f424",
 								"exec": [
 									""
 								],
@@ -1981,7 +1981,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "222a82b0-c5f4-482a-bf87-7ffcc4117d11",
+								"id": "2685bfc7-ac46-40e7-be3f-eaf723bc9a77",
 								"exec": [
 									""
 								],
@@ -1991,7 +1991,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "09886349-01f1-4ab3-ae7c-5c11a955ec06",
+								"id": "4512abdf-d245-4adf-9c1d-4d36d2196dcf",
 								"exec": [
 									""
 								],
@@ -2042,7 +2042,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "41adf7a2-0738-46f8-9cf4-12700d11b464",
+								"id": "786d4120-511c-48ec-a392-46906cffd151",
 								"exec": [
 									""
 								],
@@ -2052,7 +2052,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "15d6c9a5-e344-4e7e-8fa6-8889c9ec7b97",
+								"id": "177e7fa4-35ff-4b18-a38f-541ab3fc5208",
 								"exec": [
 									""
 								],
@@ -2098,7 +2098,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "85664edd-d8cc-48dd-b4b6-9a80a72965e4",
+								"id": "41e6f0c7-b3ca-4fd8-9771-e04b0501395d",
 								"exec": [
 									""
 								],
@@ -2108,7 +2108,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "bdb2e628-b4d5-4477-985a-89b65429bb7b",
+								"id": "fb96898e-db5b-4386-9172-21c34b3d2af2",
 								"exec": [
 									""
 								],
@@ -2154,7 +2154,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2fe2e7dc-6bfd-4347-84ef-6d339fcf9d3c",
+								"id": "0bbb8580-e68d-4162-a3d8-48fb88708388",
 								"exec": [
 									""
 								],
@@ -2164,7 +2164,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "85f1eb50-be1f-4e4e-94bc-186eeaf57a24",
+								"id": "a7b7b9eb-edf1-4b86-a876-50b765ec4865",
 								"exec": [
 									""
 								],
@@ -2209,7 +2209,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "ef9ea4d8-8dd2-412f-9fe5-843940932096",
+						"id": "a72b3cd9-3c43-4652-89a5-2df1dfd767e6",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2219,7 +2219,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f96a8bee-f739-4bdd-ac93-c950b7b988e3",
+						"id": "0a46b402-14d9-41c0-995b-e4ca9dbb3fb7",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2238,7 +2238,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8669d538-e47d-4ccf-a94b-0e697b5aea28",
+								"id": "10ded43a-68f6-457f-89d7-2322123c2e42",
 								"exec": [
 									"pm.test(\"run pack all\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2308,7 +2308,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "14ac564f-5e04-40c9-a20a-29800f53eef2",
+								"id": "ab19047f-8ca3-4ab1-8de1-f9caf8772884",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
 									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
@@ -2510,7 +2510,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ca0f409d-7a1f-4a74-bd95-6185071c6cb3",
+								"id": "fe717b97-e5f0-4e8a-9f40-609cc611d73f",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2554,13 +2554,148 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "10.组件文件(余弦/倒排索引)",
+			"item": [
+				{
+					"name": "10.1 余弦相似度计算",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:10112/component/async_funcs/cosine_algorithm?file_id1=175f7eaa-ed6d-424b-97a7-0bb84d6501af&file_id2=1c087ea8-55ad-4172-b5da-1f749e104755",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "10112",
+							"path": [
+								"component",
+								"async_funcs",
+								"cosine_algorithm"
+							],
+							"query": [
+								{
+									"key": "file_id1",
+									"value": "175f7eaa-ed6d-424b-97a7-0bb84d6501af"
+								},
+								{
+									"key": "file_id2",
+									"value": "1c087ea8-55ad-4172-b5da-1f749e104755"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10.2 组件文件建立倒排索引",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:10112/component/async_funcs/inverted?file_id=175f7eaa-ed6d-424b-97a7-0bb84d6501af",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "10112",
+							"path": [
+								"component",
+								"async_funcs",
+								"inverted"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "175f7eaa-ed6d-424b-97a7-0bb84d6501af"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10.3 倒排索引数据查询",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:10112/component/async_funcs/get_inverted_data?file_id=175f7eaa-ed6d-424b-97a7-0bb84d6501af",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "10112",
+							"path": [
+								"component",
+								"async_funcs",
+								"get_inverted_data"
+							],
+							"query": [
+								{
+									"key": "index_con",
+									"value": "senten",
+									"disabled": true
+								},
+								{
+									"key": "file_id",
+									"value": "175f7eaa-ed6d-424b-97a7-0bb84d6501af"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10.4 根据倒排索引查询组件文件数据",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:10112/component/async_funcs/get_inverted_fw_data?index_con=senten",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "10112",
+							"path": [
+								"component",
+								"async_funcs",
+								"get_inverted_fw_data"
+							],
+							"query": [
+								{
+									"key": "index_con",
+									"value": "senten"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "f84ed436-8adc-4835-8795-a99f3800f3a3",
+				"id": "0ef4c8bc-440d-49b4-be79-89b03e66e46f",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2570,7 +2705,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "a30081a9-91c9-4dc6-9bf9-743d9826ab31",
+				"id": "0e991027-3cc9-4001-b5a2-7b98c494a553",
 				"type": "text/javascript",
 				"exec": [
 					""

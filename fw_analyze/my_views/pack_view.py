@@ -7,6 +7,7 @@ from utils.gadget.my_tree import MyTree
 from utils.http.request import ReqParams
 from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p
 from utils.sys.error_code import Error
+from utils.db.mongodb.make_com_file import MakeCOMFileDO
 
 """
 固件包信息查询
@@ -47,9 +48,26 @@ def pack_info(request):
     return sys_app_ok_p(info)
 
 
+# 检查组件关联
+def check_component(pack_id, iFileType):
+    # 获取本固件包所有的二进制可执行文件记录
+    bin_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
+
+    # 枚举每个文件，根据文件名检索组件库（make），校验
+    total_count = len(bin_files_list)
+    for index, file_item in enumerate(bin_files_list):
+        componentinfo = MakeCOMFileDO.search_component_name(file_item['file_name'])
+        if componentinfo is not None:
+            FwFileDO.set_component(file_item['file_id'], 1)
+
+    return
+
+
 def pack_exec_files_tree(request):
     pack_id, tree_type = ReqParams.many(request, ['pack_id', 'tree_type'])
 
+    # 检查组件关联
+    check_component(pack_id, FileType.EXEC_FILE)
     # 读取所有可执行文件
     exec_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
 
@@ -69,13 +87,20 @@ def pack_exec_files_tree(request):
         # 获取文件路径
         file_path = exec_file['file_path']
         file_id = exec_file['file_id']
+
+        component = exec_file['component']
+        # if exec_file['component'] is not None:
+        #     component = exec_file['component']
+        # else:
+        #     component = 0
+
         if file_path is None or len(file_path) == 0:
             continue
 
         if tree_type == 'normal':
-            MyTree.file_path_insert_into_tree(exec_tree, file_path, file_id)
+            MyTree.file_path_insert_into_tree(exec_tree, file_path, file_id, component)
         elif tree_type == 'antd':
-            MyTree.file_path_insert_into_antd_tree(exec_tree, file_path, file_id)
+            MyTree.file_path_insert_into_antd_tree(exec_tree, file_path, file_id, component)
 
     # 保存操作日志
     LogRecords.save('', category='statistics', action='读取固件包文件结构',

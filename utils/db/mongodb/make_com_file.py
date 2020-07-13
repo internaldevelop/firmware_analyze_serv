@@ -15,6 +15,10 @@ class MakeCOMFileDO:
     # def __init__(self, pack_id=None):
     #     # pack_id 为None时表示新建的pack文件对象
     #     pass
+    @staticmethod
+    def search_component_name(name):
+        cursor = make_com_files_coll.find({'file_name': name})
+        return CursorResult.one(cursor)
 
     @staticmethod
     def search_files_of_pack(pack_id, file_type):

@@ -62,19 +62,23 @@ def runcmd(command, work_path=MyPath.component(), env=None):
     # command = '/bin/sh -c ' + cmd
     # command = cmd
     args = shlex.split(command)
-    sub_proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_path, env={'CC':'arm-linux-gnueabihf-gcc', 'RANLIB':'arm-linux-gnueabihf-ranlib'})
+    # sub_proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_path, env={'CC':'arm-linux-gnueabihf-gcc', 'RANLIB':'arm-linux-gnueabihf-ranlib'})
+    sub_proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=work_path)
     output, stderr = sub_proc.communicate()
     exit_code = sub_proc.returncode
-    process = output[0].decode('utf-8')
-    result = output[1].decode('utf-8')
+    # process = output[0].decode('utf-8')
+    # result = output[1].decode('utf-8')
+    process = output.decode('utf-8')
+    result = output.decode('utf-8')
+
     print(process)
     print(result)
     return process, result
 
 
 def testcmd(request):
-    # process, result = runcmd('pwd')
-    # process, result = runcmd('ls -l')
+    process, result = runcmd('pwd')
+    process, result = runcmd('ls -l')
     # # cmd = ReqParams.one(request, 'url', protocol='GET')
     # cmd = 'tar -xzvf ' + 'openssl-1.0.0s.tar.gz'
     # # process, result = runcmd(cmd, MyPath.component())

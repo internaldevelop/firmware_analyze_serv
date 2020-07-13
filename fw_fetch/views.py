@@ -59,11 +59,12 @@ def async_com_download(request):
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
-# 判断识别文件名中的版本号进查询
+# 组件源码下载后关联漏洞库 判断识别文件名中的版本号进查询
 def associated_vulner_db(file_name):
     name, ver = file_name.split('-')
     version = ver.split('.tar.gz')[0]
-    name = 'OpenSSL'
+    print(name)
+    print(version)
     cnvd_list = CnvdshareDO.search_info_of_component_name(name)
 
     # 枚举每个文件，读出其文件数据，校验
@@ -318,7 +319,7 @@ def _save_source_code_file_db(path_file_name, pack_com_id, task_id):
             #contents = MyFile.read(path_file_name)
 
             # todo file_type
-            file_type, contents = check_file_type(path_file_name)
+            # file_type, contents = check_file_type(path_file_name)
             file_type = FileType.OTHER_FILE
             file_name = os.path.basename(path_file_name)
 

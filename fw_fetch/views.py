@@ -59,11 +59,12 @@ def async_com_download(request):
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
-# 判断识别文件名中的版本号进查询
+# 组件源码下载后关联漏洞库 判断识别文件名中的版本号进查询
 def associated_vulner_db(file_name):
     name, ver = file_name.split('-')
     version = ver.split('.tar.gz')[0]
-    name = 'OpenSSL'
+    print(name)
+    print(version)
     cnvd_list = CnvdshareDO.search_info_of_component_name(name)
 
     # 枚举每个文件，读出其文件数据，校验
@@ -78,6 +79,7 @@ def associated_vulner_db(file_name):
     return None
 
 
+# 下载组件源码入库存储桶
 def _proc_component_tasks(com_download_url, components_save_path, task_id):
     print("download task_id", task_id)
     # 检查本地保存路径 没有则创建
@@ -95,6 +97,8 @@ def _proc_component_tasks(com_download_url, components_save_path, task_id):
 
     # 5 组件源码下载后关联漏洞库
     edb_id = associated_vulner_db(com_filename)
+    total_percentage = 50.0
+    MyTask.save_exec_info(task_id, total_percentage, {'download': "组件源码下载后关联漏洞库"})
 
     # 2 时间消耗总占比0 保存到 pack_com_file to mongodb
     pack_com_id, pack_com_file_id = _save_pack_com_db(os.path.join(components_save_path, com_filename), ret_download_info, edb_id,task_id)
@@ -103,11 +107,10 @@ def _proc_component_tasks(com_download_url, components_save_path, task_id):
     output_dir, file_name = os.path.split(os.path.join(components_save_path, com_filename))
     file_list = _proc_com_uncompress(os.path.join(components_save_path, com_filename), output_dir, task_id)
 
+    total_percentage = 70.0
+    MyTask.save_exec_info(task_id, total_percentage, {'download': "下载组件解压缩源码包操作完成"})
     # 4 时间消耗总占比0 保存源码文件 to mongodb
     file_id = _save_source_code_file_db(os.path.join(output_dir, file_name.split('.tar.gz')[0]), pack_com_id, task_id)
-
-
-
 
     total_percentage = 100.0
     MyTask.save_exec_info(task_id, total_percentage, {'download': "下载组件源码入库操作完成"})
@@ -316,7 +319,7 @@ def _save_source_code_file_db(path_file_name, pack_com_id, task_id):
             #contents = MyFile.read(path_file_name)
 
             # todo file_type
-            #file_type, contents = check_file_type(path_file_name)
+            # file_type, contents = check_file_type(path_file_name)
             file_type = FileType.OTHER_FILE
             file_name = os.path.basename(path_file_name)
 

@@ -26,5 +26,29 @@ def task_feedback(task_uuid, task_status):
         req = url + '?' + data
         # 打开请求
         response = urllib.request.urlopen(req)
+        print(response.code)
     except Exception as e:
-        print("task_feedback error:", e)
+         print("task_feedback error:", e)
+
+    # try:
+    #     import thread
+    # except ImportError:
+    #     import _thread as thread
+    # import time
+    # import websocket
+    #
+    # try:
+    #     url = "ws://" + g_java_service_ip + ":10901/websocket/asset_info"
+    #     data = json.dumps(task_status)
+    #     # ws = websocket.create_connection("ws://127.0.0.1:8080/")
+    #     ws = websocket.create_connection(url)
+    #     ret = ws.send(data)
+    #     print(data)
+    #     print(ret)
+    #
+    # except Exception as e:
+    #     print("task_feedback error:", e)
+
+    # while True:
+    #     data = ws.recv()
+    #     print(data)

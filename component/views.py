@@ -53,8 +53,35 @@ task_info_coll = utils.sys.config.g_task_info_col
 method_fs = utils.sys.config.g_firmware_method_fs
 
 
+# 分行发送命令返回值到WEBSOCKET
+def websocket_callback(task_id, process, percent=50):
+    print(task_id)
+    # 从缓存或数据库中读取该任务的记录
+    task_info = MyTask.fetch_exec_info(task_id)
+
+    # 没有该任务信息记录时，返回失败
+    if task_info is None:
+        return False
+
+    # 计算并记录执行时间（预计剩余时间）
+    task_info['remain_time'] = MyTask._calc_exec_time(task_info)
+    # 设置当前记录时间
+    task_info['record_time'] = SysUtils.get_now_time_str()
+    # 设置百分比和运行状态
+    task_info['percentage'] = percent
+
+    value_list = process.split('\n')
+    for result in value_list:
+        # 结果集不为空时，用新的结果集替换
+        if result is not None:
+            task_info['result'] = result
+
+        # 调用 websocket task_feedback
+        task_feedback(task_id, task_info)
+
+
 # 执行shell命令,默认的执行路径: pwd\files\source_code
-def runcmd(command, work_path=MyPath.component(), env=None):
+def runcmd(command, work_path=MyPath.component(), task_id=None, env = None):
     # 1.    命令被分号“;”分隔，这些命令会顺序执行下去；
     # 2.    命令被“ && ”分隔，这些命令会顺序执行下去，遇到执行错误的命令停止；
     # 3.    命令被双竖线“ || ”分隔，这些命令会顺序执行下去，遇到执行成功的命令停止，后面的所有命令都将不会执行;
@@ -70,9 +97,11 @@ def runcmd(command, work_path=MyPath.component(), env=None):
     # result = output[1].decode('utf-8')
     process = output.decode('utf-8')
     result = output.decode('utf-8')
-
     print(process)
-    print(result)
+
+    websocket_callback(task_id, process)
+
+    # print(result)
     return process, result
 
 
@@ -135,23 +164,19 @@ def compile_x86(file_name, task_id):
 
     # cmd = './config && make'
     # cmd = './config'
-
     # clear make_component
     build_path = os.path.join(make_path, 'make_component')
     SysUtils.rm_filepath(build_path)
 
     # 指定生成的目录，方便将新生成文件进行入库操作
     cmd = './config --prefix=' + build_path
-    process, result = runcmd(cmd, make_path)
+    process, result = runcmd(cmd, make_path, task_id)
+
     cmd = 'make'
-    process, result = runcmd(cmd, make_path)
+    process, result = runcmd(cmd, make_path, task_id)
 
     cmd = 'make install'
-    process, result = runcmd(cmd, make_path)
-
-    total_percentage = 90.0
-    MyTask.save_exec_info(task_id, total_percentage, {'process': process})
-    MyTask.save_exec_info(task_id, total_percentage, {'result': result})
+    process, result = runcmd(cmd, make_path, task_id)
 
     return build_path
 
@@ -165,10 +190,10 @@ def compile_arm(file_name, task_id):
     SysUtils.rm_filepath(build_path)
 
     cmd = '/bin/sh -c CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
-    runcmd(cmd, make_path)
+    runcmd(cmd, make_path, task_id)
 
     cmd = 'CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
-    runcmd(cmd, make_path)
+    runcmd(cmd, make_path, task_id)
 
 
 
@@ -213,7 +238,9 @@ def list_make(request):
     # 对每个文件做树的各级节点定位和创建
     for exec_file in exec_list:
         # 获取文件路径
-        file_path = exec_file['file_path']
+        path = exec_file['file_path']
+        # 保留make_component之后目录
+        file_path = path.split('make_component')[1]
         file_id = exec_file['file_id']
         if file_path is None or len(file_path) == 0:
             continue
@@ -279,6 +306,7 @@ def export_files(pack_id):
     for file in files_list:
         print(file['file_path'])
         path, name = os.path.split(file['file_path'])
+
         SourceCodeFilesStorage.export(file['file_id'], name, path)
 
     fileinfo = PackCOMFileDO.fetch_pack(pack_id)
@@ -394,26 +422,29 @@ def _proc_compile_tasks(arch, pack_id, task_id):
 
 # test
 def test(request):
-    # com_download_url = ReqParams.one(request, 'url', protocol='GET')
-    # # 启动下载任务
-    # extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
-    #               'task_name': '组件源码下载',
-    #               'task_desc': '下载组件源码入库存储桶'}
-    # task = MyTask(_proc_component_tasks, (com_download_url, MyPath.component()), extra_info=extra_info)
-    # task_id = task.get_task_id()
-    #
-    # # 保存操作日志
-    # LogRecords.save({'task_id': task_id}, category='download', action='组件源码下载',
-    #                 desc='下载组件源码入库存储桶')
+    value = ReqParams.one(request, 'value', protocol='GET')
+    # 启动下载任务
+    extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
+                  'task_name': 'test组件源码下载',
+                  'task_desc': 'test下载组件源码入库存储桶'}
+    task = MyTask(_proc_component_tasks, (value, MyPath.component()), extra_info=extra_info)
+    task_id = task.get_task_id()
+
+    # 保存操作日志
+    LogRecords.save({'task_id': task_id}, category='download', action='test组件源码下载',
+                    desc='test下载组件源码入库存储桶')
 
     # 返回响应：任务初始化的信息
-    return sys_app_ok_p({})
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
-# def _proc_component_tasks(com_download_url, g_fw_save_path, task_id):
-#     print("download task_id", task_id)
-#     # 检查本地保存路径 没有则创建
-#     SysUtils.check_filepath(g_fw_save_path)
+def _proc_component_tasks(value, g_fw_save_path, task_id):
+    print("download task_id", task_id)
+    print(value)
+    MyTask.save_exec_info(task_id, 0, {'download': "组件源码下载后关联漏洞库"})
+    MyTask.save_exec_info(task_id, 100, {'value': value})
+    # 检查本地保存路径 没有则创建
+    SysUtils.check_filepath(g_fw_save_path)
 #
 #     # 1 时间消耗总占比30  执行下载操作
 #     total_percentage = 30.0

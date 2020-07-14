@@ -31,6 +31,12 @@ class SourceCodeFilesStorage:
 
     @staticmethod
     def export(file_id, file_name=None, folder=None, override=False):
+        file_path = os.path.join(folder, file_name)
+
+        # 不设置覆写时，如果文件已存在，则跳过文件创建和写数据的操作
+        if not override and MyFile.exist(file_path):
+            return file_path
+
         # 在存储桶中读取文件记录
         grid_out = source_code_files_storage.find_one({'filename': file_id})
         item = SysUtils.grid_out_to_dict(grid_out)

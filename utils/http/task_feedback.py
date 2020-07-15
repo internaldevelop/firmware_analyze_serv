@@ -26,7 +26,7 @@ def task_feedback(task_uuid, task_status):
         req = url + '?' + data
         # 打开请求
         response = urllib.request.urlopen(req)
-        print(response.code)
+        # print(response.code)
     except Exception as e:
          print("task_feedback error:", e)
 

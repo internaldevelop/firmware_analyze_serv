@@ -98,9 +98,10 @@ def runcmd(command, work_path=MyPath.component(), task_id=None, env = None):
     # result = output[1].decode('utf-8')
     process = output.decode('utf-8')
     result = output.decode('utf-8')
-    print(process)
 
     websocket_callback(task_id, process)
+
+    print(process)
 
     # print(result)
     return process, result
@@ -173,6 +174,10 @@ def compile_x86(file_name, task_id):
     cmd = './config --prefix=' + build_path
     process, result = runcmd(cmd, make_path, task_id)
 
+    # 先清数据，防止再次编译时ERROR
+    cmd = 'make clean'
+    process, result = runcmd(cmd, make_path, task_id)
+
     cmd = 'make'
     process, result = runcmd(cmd, make_path, task_id)
 
@@ -190,26 +195,22 @@ def compile_arm(file_name, task_id):
     build_path = os.path.join(make_path, 'make_component')
     SysUtils.rm_filepath(build_path)
 
-    cmd = '/bin/sh -c CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
-    runcmd(cmd, make_path, task_id)
+    ret = os.chdir(make_path)
 
-    cmd = 'CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=/usr/local/arm/openssl linux-armv4'
-    runcmd(cmd, make_path, task_id)
+    # cmd = 'CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ AR=arm-linux-gnueabihf-ar RANLIB=arm-linux-gnueabihf-ranlib ./Configure no-asm shared    --prefix=/usr/local/arm/openssl    linux-armv4'
+    CC = 'CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ AR=arm-linux-gnueabihf-ar RANLIB=arm-linux-gnueabihf-ranlib ./Configure no-asm shared    --prefix='
+    cmd = CC + build_path +' linux-armv4'
+    os.system(cmd)
+    print(cmd)
 
-
-
-
-
-
-
-    cmd = 'CC=arm-linux-gnueabihf-gccRANLIB=arm-linux-gnueabihf-ranlib ./Configure --prefix=' + build_path + ' linux-armv4'
-    runcmd(cmd, make_path)
-
+    # 先清数据，防止再次编译时ERROR
+    cmd = 'make clean'
+    process, result = runcmd(cmd, make_path, task_id)
     cmd = 'make'
-    process, result = runcmd(cmd, make_path)
+    process, result = runcmd(cmd, make_path, task_id)
 
     cmd = 'make install'
-    process, result = runcmd(cmd, make_path)
+    process, result = runcmd(cmd, make_path, task_id)
 
     return build_path
 
@@ -217,24 +218,21 @@ def compile_arm(file_name, task_id):
 # 查询所有组件生成文件信息
 def list_make(request):
     print('list_make')
-    pack_id = ReqParams.one(request, 'pack_id')
+    pack_id, arch, tree_type = ReqParams.many(request, ['pack_id', 'arch', 'tree_type'])
 
     # 读取所有可执行文件
-    exec_list = MakeCOMFileDO.search_files_of_pack(pack_id, FileType.MAKE_FILE)
+    exec_list = MakeCOMFileDO.search_files_of_pack(pack_id, FileType.MAKE_FILE, arch)
 
-    # if tree_type is None or len(tree_type) == 0 or tree_type == 'normal':
-    #     # file_path_insert_into_tree 树，初始化为字典
-    #     tree_type = 'normal'
-    #     exec_tree = {}
-    # elif tree_type == 'antd':
-    #     # file_path_insert_into_antd_tree 树，初始化为数组
-    #     exec_tree = []
-    # else:
-    #     tree_type = 'normal'
-    #     exec_tree = {}
-
-    tree_type = 'normal'
-    exec_tree = {}
+    if tree_type is None or len(tree_type) == 0 or tree_type == 'normal':
+        # file_path_insert_into_tree 树，初始化为字典
+        tree_type = 'normal'
+        exec_tree = {}
+    elif tree_type == 'antd':
+        # file_path_insert_into_antd_tree 树，初始化为数组
+        exec_tree = []
+    else:
+        tree_type = 'normal'
+        exec_tree = {}
 
     # 对每个文件做树的各级节点定位和创建
     for exec_file in exec_list:
@@ -373,7 +371,7 @@ def walkFile(file):
 
 
 # 保存MAKE生成目录文件
-def save_make_files(pack_com_id, buildpath):
+def save_make_files(pack_com_id, buildpath, arch):
     print(buildpath)
 
     # 遍历生成目录
@@ -401,7 +399,7 @@ def save_make_files(pack_com_id, buildpath):
             # 读取包文件内容
             contents = MyFile.read(path_file_name)
             # 保存文件记录
-            MakeCOMFileDO.save_file_item(pack_com_id, file_com_id, file_name, file_type, path_file_name, None)
+            MakeCOMFileDO.save_file_item(pack_com_id, file_com_id, file_name, file_type, arch, path_file_name, None)
             # 保存文件内容
             MakeCOMFilesStorage.save(file_com_id, file_name, path_file_name, file_type, contents)
 
@@ -438,7 +436,7 @@ def _proc_compile_tasks(arch, pack_id, task_id):
         build_path = compile_arm(file_name, task_id)
 
     # 3 save make file to db
-    save_make_files(pack_id, build_path)
+    save_make_files(pack_id, build_path, arch)
 
     # 4 set compile flag
     PackCOMFileDO.set_compile_flag(pack_id, CompileStatus.success)

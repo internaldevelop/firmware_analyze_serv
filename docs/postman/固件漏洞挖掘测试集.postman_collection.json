@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3b1c3b00-301d-45ba-9ebb-fb332dbd417c",
+		"_postman_id": "1e89e290-f361-45f0-b823-372cc9a88408",
 		"name": "固件漏洞挖掘测试集",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -38,7 +38,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e4f7fd9f-e843-4977-9f4c-684e7434d393",
+								"id": "100f9819-eb61-49d6-beea-cddd69507f69",
 								"exec": [
 									""
 								],
@@ -48,7 +48,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3ebbcf2b-3a72-4272-bcab-d8129ae5457b",
+								"id": "0faa23ad-b5f1-46a4-a431-3dd0103ddf39",
 								"exec": [
 									""
 								],
@@ -91,7 +91,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3ad88a7d-68ef-4377-87e3-252b32b136e6",
+								"id": "5ea37280-5558-4a85-b0a2-4d403b969ba6",
 								"exec": [
 									""
 								],
@@ -101,7 +101,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4f1bc6ea-3e99-478d-8ba3-40e6b5104bba",
+								"id": "6160004c-1396-4543-a819-8569dd73416d",
 								"exec": [
 									""
 								],
@@ -149,7 +149,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a479a808-0db2-43d3-97ac-d293b386be82",
+								"id": "5c648f5d-484c-466e-ac16-900eb0082c1f",
 								"exec": [
 									""
 								],
@@ -159,7 +159,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5fe793d6-febd-42a7-a61c-733893ac9308",
+								"id": "4e5c4429-3083-4343-8607-34221b1bfb00",
 								"exec": [
 									""
 								],
@@ -180,7 +180,7 @@
 								},
 								{
 									"key": "sys_config",
-									"value": "{\n\"log_configs\": {\n\"download\": {\n\"on\": false,\n\"alias\": \"固件下载日志\",\n\"description\": \"固件下载操作日志\"\n},\n\"analysis\": {\n\"on\": false,\n\"alias\": \"分析日志\",\n\"description\": \"固件代码分析操作日志\"\n},\n\"system_config\": {\n\"on\": true,\n\"alias\": \"系统配置日志\",\n\"description\": \"系统配置参数操作日志\"\n},\n\"task\": {\n\"on\": false,\n\"alias\": \"任务运行日志\",\n\"description\": \"后台任务运行信息日志\"\n},\n\"query_task\": {\n\"on\": true,\n\"alias\": \"任务查看日志\",\n\"description\": \"后台任务信息查看操作日志\"\n},\n\"query\": {\n\"on\": true,\n\"alias\": \"业务查询日志\",\n\"description\": \"系统业务数据查询日志\"\n},\n\"search\": {\n\"on\": true,\n\"alias\": \"数据搜索日志\",\n\"description\": \"系统业务数据搜索日志\"\n},\n\"statistics\": {\n\"on\": true,\n\"alias\": \"统计日志\",\n\"description\": \"系统数据统计操作日志\"\n},\n\"debug\": {\n\"on\": true,\n\"alias\": \"调试日志\",\n\"description\": \"系统运行时调试信息日志\"\n}\n}\n}",
+									"value": "{\n\"log_configs\": {\n\"download\": {\n\"on\": false,\n\"alias\": \"固件下载日志\",\n\"description\": \"固件下载操作日志\"\n},\n\"compile\": {\n\"on\": false,\n\"alias\": \"组件源码编译日志\",\n\"description\": \"组件源码编译日志\"\n},\n\"analysis\": {\n\"on\": false,\n\"alias\": \"分析日志\",\n\"description\": \"固件代码分析操作日志\"\n},\n\"system_config\": {\n\"on\": true,\n\"alias\": \"系统配置日志\",\n\"description\": \"系统配置参数操作日志\"\n},\n\"task\": {\n\"on\": false,\n\"alias\": \"任务运行日志\",\n\"description\": \"后台任务运行信息日志\"\n},\n\"query_task\": {\n\"on\": true,\n\"alias\": \"任务查看日志\",\n\"description\": \"后台任务信息查看操作日志\"\n},\n\"query\": {\n\"on\": true,\n\"alias\": \"业务查询日志\",\n\"description\": \"系统业务数据查询日志\"\n},\n\"search\": {\n\"on\": true,\n\"alias\": \"数据搜索日志\",\n\"description\": \"系统业务数据搜索日志\"\n},\n\"statistics\": {\n\"on\": true,\n\"alias\": \"统计日志\",\n\"description\": \"系统数据统计操作日志\"\n},\n\"debug\": {\n\"on\": true,\n\"alias\": \"调试日志\",\n\"description\": \"系统运行时调试信息日志\"\n}\n}\n}",
 									"type": "text"
 								},
 								{
@@ -210,7 +210,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ae017b19-c5bd-49cd-9eba-502fabd27cd0",
+								"id": "4d73060d-9f8d-48c5-b2ee-4ca347640a51",
 								"exec": [
 									""
 								],
@@ -220,7 +220,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "18c8bc0b-33c5-47fb-b1fe-6a9c14442f5e",
+								"id": "44a33485-b26f-4e29-8edb-6ea20bd65a31",
 								"exec": [
 									""
 								],
@@ -268,7 +268,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "05f6f5c5-5ed3-4dfb-83f7-27ac917cc559",
+								"id": "d63f13a6-233f-44ff-95c6-e1bf63c00fb1",
 								"exec": [
 									""
 								],
@@ -278,7 +278,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6fc24095-896e-4be7-9938-82d83878de29",
+								"id": "39efc714-6bd8-402c-bcab-66b1d590d2bf",
 								"exec": [
 									""
 								],
@@ -329,7 +329,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ffde2260-12a7-42a0-a61f-f15e9b152007",
+								"id": "cfd8ae08-03df-4c52-8b9d-4245f550d6ae",
 								"exec": [
 									""
 								],
@@ -339,7 +339,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "405babb6-8f2e-4bc2-88ed-12911bdc2906",
+								"id": "263487a9-7dc5-40ad-9bbe-6d115657f2a9",
 								"exec": [
 									""
 								],
@@ -386,7 +386,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "65d82be0-4f62-4702-8c15-a2994a5420a7",
+								"id": "5cd412cf-e8a9-4bad-845c-3bed2634eea6",
 								"exec": [
 									"pm.environment.set(\"file_id\", \"1\");"
 								],
@@ -426,7 +426,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d2b40169-d86f-4680-99c0-cb7de0668506",
+								"id": "4cb7b83b-3e88-41b3-8722-a47c9aab6232",
 								"exec": [
 									""
 								],
@@ -467,7 +467,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "62a356aa-2141-41c4-ae60-9a96adf7fc17",
+								"id": "687fbb32-9588-4311-a537-8e9355a8cbd9",
 								"exec": [
 									""
 								],
@@ -507,7 +507,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "88932b31-638b-4a1d-b60d-35da16bef0cf",
+						"id": "5104184a-5812-4371-a7fd-059f708e52f3",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -517,7 +517,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ebe6b214-9408-4c2a-bb56-40fcfc913edb",
+						"id": "61d74c8e-cf7e-481e-988c-bb9eea1f4da9",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -539,7 +539,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "52570162-b4b2-4001-9694-7acd57212969",
+										"id": "c38501fc-3f7f-40e3-8a47-dabaab6ca7f3",
 										"exec": [
 											""
 										],
@@ -654,7 +654,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "068f0b59-6a9c-4dd3-bbed-a09793879d6f",
+								"id": "efc360fb-5a34-4d23-9ec2-5d9bba619e3e",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -664,7 +664,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "184b5415-8e84-44c8-91ef-d8af68497ab2",
+								"id": "c4fc6edc-9178-4503-9a2c-500847bb2494",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -684,7 +684,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "94e21272-ec7d-49e0-84b3-11ab84480e12",
+										"id": "82cbf54a-5d15-4804-abd8-7de98cab0921",
 										"exec": [
 											""
 										],
@@ -726,7 +726,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "28fb9e34-9bcd-49b4-a050-315a0e87d31b",
+										"id": "0a5d1b04-ecdb-4225-aee7-83ddaa3ef051",
 										"exec": [
 											""
 										],
@@ -767,7 +767,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "f657067f-9ac3-4a22-88c5-7af66aec50ee",
+										"id": "1b0261f5-68f8-400c-b77c-871c017da913",
 										"exec": [
 											""
 										],
@@ -818,7 +818,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c1a84fd3-2d7d-460a-bd8b-2c43fb0bb595",
+										"id": "9cf60f54-684d-49ef-af1a-5519b900689e",
 										"exec": [
 											""
 										],
@@ -871,7 +871,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "c30e06aa-2e86-4545-94ba-3ac57f56b08b",
+										"id": "ababf068-fb4d-4bb4-bb66-f846008d3185",
 										"exec": [
 											""
 										],
@@ -922,7 +922,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fed95b48-7686-4cbc-90e9-588a4a68cb3a",
+										"id": "cc72d51f-6192-4a66-a2b8-dc6962677b32",
 										"exec": [
 											""
 										],
@@ -973,7 +973,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e028fd7d-5f1c-446d-b512-f8bff4302b1a",
+										"id": "f2e43048-03a9-42c8-bcab-68889ef0fb65",
 										"exec": [
 											""
 										],
@@ -1024,7 +1024,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8c32aa58-5003-4cfa-a2ad-3440c55f9c95",
+										"id": "d6541898-f45a-4189-a81d-4efd5fc52707",
 										"exec": [
 											""
 										],
@@ -1082,7 +1082,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "008f981c-5458-448b-8bb5-23dd2742caec",
+										"id": "908dec92-1d98-4539-b76a-6fd9d46c1759",
 										"exec": [
 											""
 										],
@@ -1123,7 +1123,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8464630d-f81a-4b43-b99e-ad9c24edd4d2",
+										"id": "283cb7c8-dc8e-4cb9-b473-655f72637e40",
 										"exec": [
 											"pm.test(\"test\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -1170,7 +1170,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8ddee0d7-cba2-42cf-bcb2-c1c4afabb0df",
+										"id": "ff4f1b8d-9fd8-4b3a-a130-21801238e7db",
 										"exec": [
 											"pm.test(\"run XXXXX\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -1224,7 +1224,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "09888f26-9133-4d64-825d-963da8a27e3d",
+										"id": "427ec909-4200-49f5-95b9-06b37cdb3159",
 										"exec": [
 											""
 										],
@@ -1268,7 +1268,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9f88a607-947d-4b0a-87f5-98becd715546",
+										"id": "ce662c71-111a-472c-9325-555438fd8411",
 										"exec": [
 											""
 										],
@@ -1309,7 +1309,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "90cde1f4-2ce2-4c1a-b65f-736563f7f029",
+										"id": "bc119cec-9af7-4b46-8438-4e38206cf511",
 										"exec": [
 											""
 										],
@@ -1408,7 +1408,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e14ab618-7c11-48b9-958e-59acf373961a",
+										"id": "5b29af1d-a73d-467d-b5d7-74a2a9b1cd6b",
 										"exec": [
 											""
 										],
@@ -1454,7 +1454,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dd9c9783-431b-4f90-bcf1-c40741a22d00",
+								"id": "d3a42c2e-9d59-4f3d-85a5-ff9f8068d682",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1476,7 +1476,7 @@
 							"formdata": [
 								{
 									"key": "url",
-									"value": "http://192.168.43.31/testSquashfsmini.zip",
+									"value": "http://192.168.43.31/FW_RT_AC86U_300438481352_.zip",
 									"type": "text"
 								}
 							]
@@ -1537,7 +1537,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "979ca4db-299a-4181-ab9b-f666e17e69eb",
+								"id": "8452f52b-4b16-4214-a30e-8ee6b2ed3d48",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1657,7 +1657,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "320f3125-07db-42a6-b6ad-583cff9e8299",
+								"id": "a7633dd2-ae7e-41af-8607-44686caa1622",
 								"exec": [
 									""
 								],
@@ -1667,7 +1667,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c29d931b-210b-4e15-b38b-82242c64db70",
+								"id": "2b46a442-364b-4ba4-9711-fca29917eeee",
 								"exec": [
 									"pm.test(\"run cfg analyze\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1719,7 +1719,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "36a368f1-35bd-4c21-af4b-8c92dbc9cabd",
+								"id": "5ce54687-5dd1-421a-89a4-3f5864e1c8e4",
 								"exec": [
 									""
 								],
@@ -1729,7 +1729,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c7e934b8-90c7-44b3-b354-c32d331883a6",
+								"id": "4949af17-2ad9-4519-b328-9f48346d6826",
 								"exec": [
 									"pm.test(\"run cfg analyze\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1780,7 +1780,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "91c62e7e-0401-4288-86b3-e347c5968fde",
+						"id": "d6c8472c-167e-48e6-a871-0f7b0212de90",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1790,7 +1790,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "13529316-88c5-4f71-bba8-e62533e18885",
+						"id": "8df9200d-df6c-4580-af0d-c9fc8b536cd1",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1809,7 +1809,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2164c832-2aa2-476e-a5e3-878bf8a9d616",
+								"id": "00c9b9a2-f853-4350-b69d-b905597b0262",
 								"exec": [
 									""
 								],
@@ -1819,7 +1819,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9111b0f1-9401-43b9-90ed-a49508d09728",
+								"id": "aaa36979-1125-492a-b8cf-856e29b32a9b",
 								"exec": [
 									""
 								],
@@ -1860,7 +1860,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "986d1080-72d5-4beb-b2d7-89cc96795643",
+								"id": "0beea309-1d4d-494c-93ef-9eca2a992615",
 								"exec": [
 									""
 								],
@@ -1870,7 +1870,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "935d79a6-12f0-4791-94c1-4b219231910f",
+								"id": "c0ed7919-f3fe-44cf-80c0-77d6c360fb2e",
 								"exec": [
 									""
 								],
@@ -1921,7 +1921,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c185a251-47e8-4780-81c6-8b6b034f1861",
+								"id": "42b712eb-b8f4-4570-b0c4-fb084205e73b",
 								"exec": [
 									""
 								],
@@ -1931,7 +1931,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "4fca2e6d-196c-44b1-9a5f-e713d2f1f424",
+								"id": "d45ce0e1-e4b1-4b10-b8b8-da77ae25061e",
 								"exec": [
 									""
 								],
@@ -1981,7 +1981,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2685bfc7-ac46-40e7-be3f-eaf723bc9a77",
+								"id": "f530f834-1cff-4e7a-8d58-c8e1975acafe",
 								"exec": [
 									""
 								],
@@ -1991,7 +1991,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "4512abdf-d245-4adf-9c1d-4d36d2196dcf",
+								"id": "e359d15d-a97f-4378-b8e2-18c07cff6881",
 								"exec": [
 									""
 								],
@@ -2042,7 +2042,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "786d4120-511c-48ec-a392-46906cffd151",
+								"id": "0b8b6a71-12a5-423a-84d9-48504b22420a",
 								"exec": [
 									""
 								],
@@ -2052,7 +2052,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "177e7fa4-35ff-4b18-a38f-541ab3fc5208",
+								"id": "7be8cc33-3ab1-43e0-816d-bb2541ff67cb",
 								"exec": [
 									""
 								],
@@ -2098,7 +2098,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "41e6f0c7-b3ca-4fd8-9771-e04b0501395d",
+								"id": "13b5e92f-28bd-4863-ad31-89423bc057bf",
 								"exec": [
 									""
 								],
@@ -2108,7 +2108,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "fb96898e-db5b-4386-9172-21c34b3d2af2",
+								"id": "87233dcc-262a-4a9d-a144-8d07a2e422b1",
 								"exec": [
 									""
 								],
@@ -2154,7 +2154,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0bbb8580-e68d-4162-a3d8-48fb88708388",
+								"id": "f64bcba6-4400-4e0d-a6d7-fd481444998c",
 								"exec": [
 									""
 								],
@@ -2164,7 +2164,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a7b7b9eb-edf1-4b86-a876-50b765ec4865",
+								"id": "e0b22098-1e84-44f4-aea1-1f2a97770ab6",
 								"exec": [
 									""
 								],
@@ -2209,7 +2209,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "a72b3cd9-3c43-4652-89a5-2df1dfd767e6",
+						"id": "d483bb87-8187-4f28-a664-40fd5fbef8b1",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2219,7 +2219,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0a46b402-14d9-41c0-995b-e4ca9dbb3fb7",
+						"id": "3e225582-76a4-45a5-b8f8-3c9230e52787",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2238,7 +2238,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "10ded43a-68f6-457f-89d7-2322123c2e42",
+								"id": "e739790f-0bf7-4683-bac3-2395bcf67aff",
 								"exec": [
 									"pm.test(\"run pack all\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2308,7 +2308,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ab19047f-8ca3-4ab1-8de1-f9caf8772884",
+								"id": "6255f40f-279b-463f-98ae-cf9ab055bc2d",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
 									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
@@ -2323,7 +2323,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{pack_id}}&tree_type=antd",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{pack_id}}&tree_type=normal",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -2343,7 +2343,7 @@
 								},
 								{
 									"key": "tree_type",
-									"value": "antd",
+									"value": "normal",
 									"description": "normal: 为普通树，antd: 为antd树组件的树"
 								}
 							]
@@ -2510,7 +2510,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fe717b97-e5f0-4e8a-9f40-609cc611d73f",
+								"id": "f15a3e8a-29c8-4e4a-9cc3-fc33bcec9b22",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2532,7 +2532,7 @@
 							"formdata": [
 								{
 									"key": "url",
-									"value": "http://192.168.43.31/openssl-1.0.1a.tar.gz",
+									"value": "http://192.168.43.31/openssl-1.0.1b.tar.gz",
 									"type": "text"
 								}
 							]
@@ -2553,12 +2553,12 @@
 					"response": []
 				},
 				{
-					"name": "1.1 组件源码查询",
+					"name": "1.1 枚举组件源码包",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "7a997d5b-d198-43fe-ad8b-4d09faa822d2",
+								"id": "77e4b5f7-4576-4155-9c2a-8a39193ab760",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2604,12 +2604,12 @@
 					"response": []
 				},
 				{
-					"name": "1.1 组件库（生成文件）查询",
+					"name": "1.1 组件库查询（MAKE生成文件）",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "f46a4f86-6ccc-4e3d-a085-7bc421b65b18",
+								"id": "4c45a3d6-49f8-4008-a63b-3d90d3ac1548",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2641,7 +2641,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/component/async_funcs/list_make?pack_id={{pack_id}}",
+							"raw": "{{base_url}}/component/async_funcs/list_make?pack_id={{pack_id}}&arch=arm&tree_type=antd",
 							"host": [
 								"{{base_url}}"
 							],
@@ -2654,48 +2654,17 @@
 								{
 									"key": "pack_id",
 									"value": "{{pack_id}}"
+								},
+								{
+									"key": "arch",
+									"value": "arm",
+									"description": "x86,arm"
+								},
+								{
+									"key": "tree_type",
+									"value": "antd",
+									"description": "normal: 为普通树，antd: 为antd树组件的树"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "1.2 组件源码 test",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "adddbc82-ba1c-4132-9594-c84ece8adc0c",
-								"exec": [
-									"pm.test(\"async functions list\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(0);",
-									"    ",
-									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
-						"url": {
-							"raw": "{{base_url}}/component/async_funcs/testcmd",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"component",
-								"async_funcs",
-								"testcmd"
 							]
 						}
 					},
@@ -2707,7 +2676,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7a0e7c40-7da7-4979-9cc6-0504084edb84",
+								"id": "39a9a22e-0038-4c23-afe6-3ae36bebaefa",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2755,13 +2724,95 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "1.2 组件源码 test Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "10e99a4d-20c0-4c90-8b5b-043bf3931166",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/component/async_funcs/test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"component",
+								"async_funcs",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 组件源码 testcmd",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a0a2be7-ba70-4bec-8a2c-8b286cc29473",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"task_id\", jsonData.payload.task_id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/component/async_funcs/testcmd",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"component",
+								"async_funcs",
+								"testcmd"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "815007dc-2f06-4dbc-b191-06ca1186275c",
+						"id": "341b1011-6277-4a14-8cf0-0eceab449627",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2771,7 +2822,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0c891011-5dfb-4d43-8e6b-5bd330b7b263",
+						"id": "083e6ef3-0dda-4f6a-adb5-c2c8de9bd7b7",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2921,7 +2972,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "0ef4c8bc-440d-49b4-be79-89b03e66e46f",
+				"id": "db656c3f-969c-4cd5-84de-1d4f6a9068f4",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2931,7 +2982,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "0e991027-3cc9-4001-b5a2-7b98c494a553",
+				"id": "9524f96d-5ce7-4471-9339-ae6b8ce1c013",
 				"type": "text/javascript",
 				"exec": [
 					""

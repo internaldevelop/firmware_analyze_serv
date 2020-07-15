@@ -285,6 +285,10 @@ def _save_pack_com_db(path_file_name, download_info, edb_id, task_id):
     file_type = FileType.PACK
     file_name = os.path.basename(path_file_name)
 
+    name, ver = file_name.split('-')
+    version = ver.split('.tar.gz')[0]
+
+
     # 新建或保存文件记录
     # 新的 pack ID
     pack_com_id = StrUtils.uuid_str()
@@ -293,7 +297,7 @@ def _save_pack_com_db(path_file_name, download_info, edb_id, task_id):
     # 读取包文件内容
     contents = MyFile.read(path_file_name)
     # 保存文件记录
-    PackCOMFileDO.save(pack_com_id, file_com_id, edb_id, path_file_name, name=file_name, file_type=file_type)
+    PackCOMFileDO.save(pack_com_id, file_com_id, edb_id, version, path_file_name, name=file_name, file_type=file_type)
     # 保存文件内容
     PackCOMFilesStorage.save(file_com_id, file_name, FileType.PACK, contents)
 

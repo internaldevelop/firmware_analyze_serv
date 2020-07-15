@@ -32,8 +32,8 @@ class SourceCodeFileDO:
         return CursorResult.many(cursor)
 
     @staticmethod
-    def count_files(pack_id, file_type):
-        return source_code_files_coll.find({'pack_id': pack_id, 'file_type': file_type}, {}).count()
+    def count_files(pack_id):
+        return source_code_files_coll.find({'pack_id': pack_id, }, {}).count()
 
     @staticmethod
     def _db_get_file(file_id):

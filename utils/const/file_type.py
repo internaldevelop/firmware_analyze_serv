@@ -107,3 +107,12 @@ class FileType:
         results = dict(zip(names, values))
         # results = [{key: eval('FileType.' + key)} for key in names]
         return results
+
+
+class CompileStatus:
+    # 未编译原始包
+    none = 0
+    # 编译成功
+    success = 1
+    # 编译失败
+    failed = 99

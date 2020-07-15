@@ -22,6 +22,7 @@ from utils.http.response import sys_app_ok_p
 from utils.http.http_request import req_get_param, req_post_param
 from utils.gadget.download import Mydownload
 from utils.const.file_type import FileType
+from utils.const.file_type import CompileStatus
 from utils.http.task_feedback import task_feedback
 from utils.task.my_task import MyTask
 from utils.db.mongodb.mongo_db import MongoDB
@@ -257,25 +258,47 @@ def list_make(request):
     return sys_app_ok_p(exec_tree)
 
 
+def get_sourcecode_files_stat(pack_id):
+    # file_type_list = PackInfoService._file_type_list()
+
+    # 统计指定类型文件的数量
+    count = SourceCodeFileDO.count_files(pack_id)
+
+    # for file_type in file_type_list:
+    #     # 不统计固件包的文件数量
+    #     if file_type == FileType.PACK:
+    #         continue
+    #
+    #     # 获取文件类型的别名
+    #     alias = FileType.get_alias(file_type)
+    #
+    #     # 统计指定类型文件的数量
+    #     count = FwFileDO.count_files(pack_id, file_type)
+    #     unpack_files[str(file_type)] = {'alias': alias, 'count': count}
+
+    fw_files = {
+        'sourcecode_files': count
+    }
+    return fw_files
+
+
 # 查询所有组件源码包信息
 def list(request):
     # 所有包的基本信息
     com_list = PackCOMFileDO.all_packs()
-    # info_list = []
-    # for pack in com_list:
-    #     # 各个包的所含文件信息
-    #     # 各个包的提取任务和分析任务状态
-    #     pack_id = pack['pack_id']
-    #     pack_service = PackInfoService(pack_id, pack)
-    #     pack = pack_service.pack_summary()
-    #
-    #     info_list.append(pack)
+    """ 获取源码包所有的文件统计信息 """
+    info_list = []
+    for pack in com_list:
+        # 各个包的所含文件信息
+        files_stat = get_sourcecode_files_stat(pack['pack_id'])
+        pack_info = dict(pack, **files_stat)
+        info_list.append(pack_info)
 
     # 保存操作日志
     LogRecords.save('', category='statistics', action='查询所有组件源码包信息',
                     desc='查询所有组件源码包的信息，统计其文件数量，查询任务信息')
 
-    return sys_app_ok_p(com_list)
+    return sys_app_ok_p(info_list)
 
 
 # 组件编译
@@ -399,6 +422,8 @@ def _proc_compile_tasks(arch, pack_id, task_id):
     if path is None:
         print("export_files error")
         MyTask.save_exec_info(task_id, 0, {'compile': "组件源码编译失败，导出组件库源码失败"})
+        PackCOMFileDO.set_compile_flag(pack_id, CompileStatus.failed)
+
         return
 
     MyTask.save_exec_info_name(task_id, file_name)
@@ -415,6 +440,8 @@ def _proc_compile_tasks(arch, pack_id, task_id):
     # 3 save make file to db
     save_make_files(pack_id, build_path)
 
+    # 4 set compile flag
+    PackCOMFileDO.set_compile_flag(pack_id, CompileStatus.success)
 
     total_percentage = 100.0
     MyTask.save_exec_info(task_id, total_percentage, {'compile': "组件源码编译操作完成"})

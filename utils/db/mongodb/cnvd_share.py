@@ -17,5 +17,6 @@ class CnvdshareDO:
 
     @staticmethod
     def search_info_of_component_name(name):
-        cursor = cnvd_share_coll.find({'products.product': {'$regex': name}})
+        cursor = cnvd_share_coll.find({'products.product': {'$regex': name, '$options': 'i'}})
+        # 操作符"i"表示“不区分大小写”    模糊查询
         return CursorResult.many(cursor)

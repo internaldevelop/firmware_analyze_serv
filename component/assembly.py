@@ -2,7 +2,10 @@ import math
 
 import utils.sys.config
 from utils.http.response import sys_app_ok_p, sys_app_err
-
+from utils.db.mongodb.fw_file import FwFileDO
+from utils.db.mongodb.make_com_file import MakeCOMFileDO
+from utils.db.mongodb.fw_files_storage import FwFilesStorage
+from utils.db.mongodb.make_com_file_storage import MakeCOMFilesStorage
 fw_files_col = utils.sys.config.g_firmware_db_full["fw_files"]
 
 
@@ -120,16 +123,19 @@ class Assembly:
 
         return similarPercent
 
-    def cosine_algorithm(self, file_id1, file_id2):
+    # fw_file_id 固件文件ID,
+    # component_file_id 组件生成文件ID
+    # 计算相似度
+    def cosine_algorithm(self, fw_file_id, component_file_id):
 
-        file_result = fw_files_col.find({'file_id': {'$in': [file_id1, file_id2]}})
-        file_list = list(file_result)
-
-        if file_list is None or len(file_list) != 2:
+        # 1 从存储桶导出相关文件
+        fw_file_path = FwFilesStorage.export(fw_file_id)
+        if fw_file_path is None:
             return sys_app_err('ERROR_INVALID_PARAMETER')
 
-        sourcefile = file_list[0].get('file_path')
-        s2 = file_list[1].get('file_path')
+        component_file_path = MakeCOMFilesStorage.export(component_file_id)
+        if component_file_path is None:
+            return sys_app_err('ERROR_INVALID_PARAMETER')
 
         # 两篇待比较的文档的路径
         # sourcefile = 'E:/samples/11.txt'
@@ -137,10 +143,10 @@ class Assembly:
         # sourcefile = 'E:/samples/argv_test'
         # s2 = 'E:/samples/argv_test1'
 
-        T1 = Assembly.Count(sourcefile)
+        T1 = Assembly.Count(fw_file_path)
         # print("文档1的词频统计如下：")
         # print(T1)
-        T2 = Assembly.Count(s2)
+        T2 = Assembly.Count(component_file_path)
         # print("文档2的词频统计如下：")
         # print(T2)
         # 合并两篇文档的关键词

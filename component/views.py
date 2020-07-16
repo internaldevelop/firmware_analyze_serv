@@ -218,10 +218,10 @@ def compile_arm(file_name, task_id):
 # 查询所有组件生成文件信息
 def list_make(request):
     print('list_make')
-    pack_id, arch, tree_type = ReqParams.many(request, ['pack_id', 'arch', 'tree_type'])
+    pack_id, arch, tree_type, component_name = ReqParams.many(request, ['pack_id', 'arch', 'tree_type', 'component_name'])
 
     # 读取所有可执行文件
-    exec_list = MakeCOMFileDO.search_files_of_pack(pack_id, FileType.MAKE_FILE, arch)
+    exec_list = MakeCOMFileDO.search_files_of_pack(pack_id, FileType.MAKE_FILE, arch, component_name)
 
     if tree_type is None or len(tree_type) == 0 or tree_type == 'normal':
         # file_path_insert_into_tree 树，初始化为字典
@@ -491,8 +491,8 @@ def _proc_component_tasks(value, g_fw_save_path, task_id):
 # 余弦相似度计算
 def cosine_algorithm(request):
     # 获取参数
-    file_id1, file_id2 = ReqParams.many(request, ['file_id1', 'file_id2'])
-    return assembly.cosine_algorithm(file_id1, file_id2)
+    fw_file_id, component_file_id = ReqParams.many(request, ['fw_file_id', 'component_file_id'])
+    return assembly.cosine_algorithm(fw_file_id, component_file_id)
 
 
 # 倒排索引

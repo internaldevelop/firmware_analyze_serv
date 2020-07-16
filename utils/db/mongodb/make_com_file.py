@@ -16,13 +16,17 @@ class MakeCOMFileDO:
     #     # pack_id 为None时表示新建的pack文件对象
     #     pass
     @staticmethod
-    def search_component_name(name):
-        cursor = make_com_files_coll.find({'file_name': name})
+    def search_component_name(file_name):
+        cursor = make_com_files_coll.find({'file_name': file_name})
         return CursorResult.one(cursor)
 
     @staticmethod
-    def search_files_of_pack(pack_id, file_type, arch):
-        cursor = make_com_files_coll.find({'pack_id': pack_id, 'file_type': file_type, 'arch': arch}, {'_id': 0})
+    def search_files_of_pack(pack_id, file_type, arch, file_name):
+        if file_name is None:
+            cursor = make_com_files_coll.find({'pack_id': pack_id, 'file_type': file_type, 'arch': arch}, {'_id': 0})
+        else:
+            cursor = make_com_files_coll.find({'pack_id': pack_id, 'file_type': file_type, 'arch': arch, 'file_name': file_name}, {'_id': 0})
+
         return CursorResult.many(cursor)
 
     @staticmethod
@@ -49,8 +53,8 @@ class MakeCOMFileDO:
         make_com_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
 
     @staticmethod
-    def fetch_pack(pack_id):
-        cursor = make_com_files_coll.find({'pack_id': pack_id}, {'_id': 0})
+    def fetch_file(file_id):
+        cursor = make_com_files_coll.find({'file_id': file_id}, {'_id': 0})
         return CursorResult.one(cursor)
 
     @staticmethod

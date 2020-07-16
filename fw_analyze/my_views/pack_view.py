@@ -49,6 +49,7 @@ def pack_info(request):
 
 
 # 检查组件关联
+# 固件里文件名与组件名匹配，相同则认为是组件
 def check_component(pack_id, iFileType):
     # 获取本固件包所有的二进制可执行文件记录
     bin_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)

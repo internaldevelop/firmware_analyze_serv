@@ -26,8 +26,11 @@ class MyTree:
             # 准备下一级节点设置
             node_obj = node_obj[folder]
 
-        # 最后，添加叶子节点（含文件ID和文件路径信息）
-        node_obj[file_name] = {'file_path': file_path, 'file_id': file_id, 'component': component}
+        if component is None:
+            node_obj[file_name] = {'file_path': file_path, 'file_id': file_id}
+        else:
+            # 最后，添加叶子节点（含文件ID和文件路径信息）
+            node_obj[file_name] = {'file_path': file_path, 'file_id': file_id, 'component': component}
 
     # tree_data = [ 节点数组
     #   {

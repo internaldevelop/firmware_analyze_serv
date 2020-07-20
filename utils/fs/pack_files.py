@@ -67,7 +67,7 @@ class PackFiles:
         # 保存任务完成状态
         MyTask.save_exec_info(task_id, 100.0)
 
-        # 完成验证二进制文件，启动任务检验该包中所有可执行二进制文件的验证
+        # 完成验证二进制文件，启动任务cfg_analyze
         PackFiles.start_exec_bin_cfg_analyze_task(self.pack_id, image_file_name)
 
     def cfg_all_exec_bin_files(self, pack_id, task_id):
@@ -110,6 +110,7 @@ class PackFiles:
 
         # 保存任务完成状态
         MyTask.save_exec_info(task_id, 100.0)
+
 
     def run_percent_cb(self, percentage, **kwargs):
         if self.task_id is None:

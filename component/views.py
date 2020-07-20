@@ -215,6 +215,22 @@ def compile_arm(file_name, task_id):
     return build_path
 
 
+# 组件手动漏洞关联
+def vuler_association(request):
+    print('vuler_association')
+    file_id, version, name, edb_id = ReqParams.many(request, ['file_id', 'version', 'name', 'edb_id'])
+
+    rv = FwFileDO.set_component_extra_props(file_id, {'version': version, 'name': name, 'edb_id': edb_id})
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='组件手动漏洞关联',
+                    desc='组件手动漏洞关联(漏洞编号 版本 名称)')
+
+    if rv.matched_count == 1:
+        return sys_app_ok_p('组件手动漏洞关联成功')
+    else:
+        return sys_app_ok_p('组件手动漏洞关联失败，文件未找到')
+
 # 查询所有组件生成文件信息
 def list_make(request):
     print('list_make')
@@ -305,7 +321,7 @@ def compile(request):
     arch, pack_id = ReqParams.many(request, ['arch', 'pack_id'])
 
     # 启动编译任务
-    extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
+    extra_info = {'task_type': TaskType.COMPONENT_COMPILE,
                   'task_name': '组件编译',
                   'task_desc': '组件编译及入库操作'}
     task = MyTask(_proc_compile_tasks, (arch, pack_id), extra_info=extra_info)

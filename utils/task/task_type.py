@@ -13,6 +13,8 @@ class TaskType:
     REMOVE_FW_PACKS = 6
     # 验证可执行二进制文件
     VERIFY_EXEC_BIN = 7
+    COMPONENT_COMPILE = 8
+    COMPONENT_CHECK = 9
 
     # 一般任务
     REGULAR = 99

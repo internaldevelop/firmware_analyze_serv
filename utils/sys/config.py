@@ -74,3 +74,6 @@ g_platform_coll = g_platform_coll_full
 g_firmware_filepath = ''
 
 g_cnvd_db = g_cnvd_db_full
+
+# 组件漏洞关联任务标记
+g_check_component_lock = False

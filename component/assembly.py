@@ -76,6 +76,8 @@ class Assembly:
 
     # 得出文档向量
     def CalVector(T1, MergeWord):
+        print('CalVector')
+        # print(MergeWord)
         TF1 = [0] * len(MergeWord)
 
         for ch in range(len(T1)):
@@ -118,8 +120,9 @@ class Assembly:
 
         A = math.sqrt(A1) * math.sqrt(A2)
 
-        similarPercent = format(float(B) * 100 / A, ".2f")
-        print('两个文件的相似度 = ' + similarPercent)
+        # similarPercent = format(float(B) * 100 / A, ".2f")
+        similarPercent = float(B) * 100 / A
+        print('两个文件的相似度 = ' + format(similarPercent, ".2f"))
 
         return similarPercent
 
@@ -161,6 +164,49 @@ class Assembly:
         # print("文档2向量化得到的向量如下：")
         # print(v2)
         # 计算余弦距离
-        cosine_percent = Assembly.CalConDis(v1, v2, len(v1)) + '%'
+        # cosine_percent = Assembly.CalConDis(v1, v2, len(v1)) + '%'
+        cosine_percent = format(Assembly.CalConDis(v1, v2, len(v1)), ".2f") + '%'
 
         return sys_app_ok_p({'cosine_percent': cosine_percent})
+
+    # fw_file_id 固件文件ID,
+    # component_file_id 组件生成文件ID
+    # 计算相似度
+    def calc_cosine_algorithm(self, fw_file_id, component_file_id):
+
+        # 1 从存储桶导出相关文件
+        fw_file_path = FwFilesStorage.export(fw_file_id)
+        if fw_file_path is None:
+            return sys_app_err('ERROR_INVALID_PARAMETER')
+
+        component_file_path = MakeCOMFilesStorage.export(component_file_id)
+        if component_file_path is None:
+            return sys_app_err('ERROR_INVALID_PARAMETER')
+
+        # 两篇待比较的文档的路径
+        # sourcefile = 'E:/samples/11.txt'
+        # s2 = 'E:/samples/22.txt'
+        # sourcefile = 'E:/samples/argv_test'
+        # s2 = 'E:/samples/argv_test1'
+
+        T1 = Assembly.Count(fw_file_path)
+        # print("文档1的词频统计如下：")
+        # print(T1)
+        T2 = Assembly.Count(component_file_path)
+        # print("文档2的词频统计如下：")
+        # print(T2)
+        # 合并两篇文档的关键词
+        mergeword = Assembly.MergeWord(T1, T2)
+        # print(mergeword)
+        # print(len(mergeword))
+        # 得出文档向量
+        v1 = Assembly.CalVector(T1, mergeword)
+        # print("文档1向量化得到的向量如下：")
+        # print(v1)
+        v2 = Assembly.CalVector(T2, mergeword)
+        # print("文档2向量化得到的向量如下：")
+        # print(v2)
+        # 计算余弦距离
+        cosine_percent = Assembly.CalConDis(v1, v2, len(v1))
+
+        return cosine_percent

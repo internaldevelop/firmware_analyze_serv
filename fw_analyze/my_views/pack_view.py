@@ -8,6 +8,21 @@ from utils.http.request import ReqParams
 from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p
 from utils.sys.error_code import Error
 from utils.db.mongodb.make_com_file import MakeCOMFileDO
+from utils.db.mongodb.pack_com_file import PackCOMFileDO
+from utils.task.my_task import MyTask
+from utils.task.task_type import TaskType
+from component.assembly import Assembly
+from component.inverted_index import InvertedIndex
+from utils.gadget.general import SysUtils
+import utils.sys.config
+import multiprocessing
+import os
+from utils.cache.redis import MyRedis
+
+assembly = Assembly()
+invertedIndex = InvertedIndex()
+
+g_runing_flag = False
 
 """
 固件包信息查询
@@ -50,25 +65,76 @@ def pack_info(request):
 
 # 检查组件关联
 # 固件里文件名与组件名匹配，相同则认为是组件
-def check_component(pack_id, iFileType):
+def check_component(pack_id, task_id):
+
+    # 检查组件关联是否运行，运行中则跳过
+    brun = MyRedis.get('running_check_com_flag')
+    if brun:
+        return
+
+    MyRedis.set('running_check_com_flag', True)
+
     # 获取本固件包所有的二进制可执行文件记录
-    bin_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
+    fw_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
 
     # 枚举每个文件，根据文件名检索组件库（make），校验
-    total_count = len(bin_files_list)
-    for index, file_item in enumerate(bin_files_list):
+    total_count = len(fw_files_list)
+    for index, file_item in enumerate(fw_files_list):
         componentinfo = MakeCOMFileDO.search_component_name(file_item['file_name'])
-        if componentinfo is not None:
-            FwFileDO.set_component(file_item['file_id'], 1)
+        if componentinfo is None:
+            continue
+        FwFileDO.set_component(file_item['file_id'], 1)
+        # 相似度匹配计算，标记漏洞(version / edbid)
+        fw_file_id = file_item['file_id']
+        component_file_id = componentinfo['file_id']
+
+        print(SysUtils.get_now_time())
+        # 计算相似度 比较耗时 openssl计算大约两分钟
+        similarity = assembly.calc_cosine_algorithm(fw_file_id, component_file_id)
+        print(SysUtils.get_now_time())
+
+        # todo 相似度阈值设定： 0－100
+        if similarity < 50:
+            print(similarity)
+            continue
+        # 相似度大于阈值 标记漏洞(version / edbid)
+        com_file_info = PackCOMFileDO.fetch_pack(componentinfo['pack_id'])
+        version = com_file_info['version']
+        name = com_file_info['name']
+        edb_id = com_file_info['edb_id']
+        FwFileDO.set_component_extra_props(fw_file_id, {'version': version, 'name': name, 'edb_id': edb_id})
+
+    MyRedis.set('running_check_com_flag', False)
 
     return
+
+
+def start_check_component_task(pack_id):
+    # # 检查组件关联
+    # check_component(pack_id, FileType.EXEC_FILE)
+    # 修改为任务处理方式进行检查组件关联 关联组件标记，相似度匹配计算，标记漏洞(version/edbid)
+    # 启动编译任务
+    extra_info = {'task_type': TaskType.COMPONENT_CHECK,
+                  'task_name': '检查组件关联',
+                  'task_desc': '检查组件关联,相似度匹配计算，标记漏洞(version/edbid)'}
+    task = MyTask(check_component, (pack_id,), extra_info=extra_info)
+    task_id = task.get_task_id()
 
 
 def pack_exec_files_tree(request):
     pack_id, tree_type = ReqParams.many(request, ['pack_id', 'tree_type'])
 
-    # 检查组件关联
-    check_component(pack_id, FileType.EXEC_FILE)
+    start_check_component_task(pack_id)
+    # # # 检查组件关联
+    # # check_component(pack_id, FileType.EXEC_FILE)
+    # # 修改为任务处理方式进行检查组件关联 关联组件标记，相似度匹配计算，标记漏洞(version/edbid)
+    # # 启动编译任务
+    # extra_info = {'task_type': TaskType.COMPONENT_CHECK,
+    #               'task_name': '检查组件关联',
+    #               'task_desc': '检查组件关联,相似度匹配计算，标记漏洞(version/edbid)'}
+    # task = MyTask(check_component, (pack_id,), extra_info=extra_info)
+    # task_id = task.get_task_id()
+
     # 读取所有可执行文件
     exec_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
 

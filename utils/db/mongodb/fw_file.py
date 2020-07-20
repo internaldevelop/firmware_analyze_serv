@@ -98,3 +98,8 @@ class FwFileDO:
     def set_component(file_id, component=1):
         FwFileDO._save_file_props(file_id, {'component': component})
 
+    @staticmethod
+    def set_component_extra_props(file_id, extra_props=None):
+        doc = {'extra_props': extra_props}
+        rv = fw_files_coll.update_one({'file_id': file_id}, {'$set': doc})
+        return rv

@@ -70,13 +70,14 @@ def associated_vulner_db(file_name):
     # 枚举每个文件，读出其文件数据，校验
     total_count = len(cnvd_list)
     for index, file_item in enumerate(cnvd_list):
+        title = file_item['title']
         cnvd_id = file_item['edb_id']
         versions = file_item['products'][0]['version']
         print(versions)
         if version in versions:
-            return cnvd_id
+            return cnvd_id, title
 
-    return None
+    return None, None
 
 
 # 下载组件源码入库存储桶
@@ -96,12 +97,12 @@ def _proc_component_tasks(com_download_url, components_save_path, task_id):
     MyTask.save_exec_info_name(task_id, com_filename)
 
     # 5 组件源码下载后关联漏洞库
-    edb_id = associated_vulner_db(com_filename)
+    edb_id, title = associated_vulner_db(com_filename)
     total_percentage = 50.0
     MyTask.save_exec_info(task_id, total_percentage, {'download': "组件源码下载后关联漏洞库"})
 
     # 2 时间消耗总占比0 保存到 pack_com_file to mongodb
-    pack_com_id, pack_com_file_id = _save_pack_com_db(os.path.join(components_save_path, com_filename), ret_download_info, edb_id,task_id)
+    pack_com_id, pack_com_file_id = _save_pack_com_db(os.path.join(components_save_path, com_filename), ret_download_info, edb_id, title, task_id)
 
     # 3 时间消耗总占比0 解压缩源码包，提取文件到mongo
     output_dir, file_name = os.path.split(os.path.join(components_save_path, com_filename))
@@ -279,7 +280,7 @@ def _save_file_db(path_file_name, pack_id):
 
 
 # 保存源码组件文件tar.gz 到数据库
-def _save_pack_com_db(path_file_name, download_info, edb_id, task_id):
+def _save_pack_com_db(path_file_name, download_info, edb_id, title, task_id):
     # todo file_type
     #file_type, contents = check_file_type(path_file_name)
     file_type = FileType.PACK
@@ -297,7 +298,7 @@ def _save_pack_com_db(path_file_name, download_info, edb_id, task_id):
     # 读取包文件内容
     contents = MyFile.read(path_file_name)
     # 保存文件记录
-    PackCOMFileDO.save(pack_com_id, file_com_id, edb_id, version, path_file_name, name=file_name, file_type=file_type)
+    PackCOMFileDO.save(pack_com_id, file_com_id, edb_id, title, version, path_file_name, name=file_name, file_type=file_type)
     # 保存文件内容
     PackCOMFilesStorage.save(file_com_id, file_name, FileType.PACK, contents)
 

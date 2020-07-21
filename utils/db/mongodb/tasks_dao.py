@@ -31,3 +31,8 @@ class TasksDAO:
     def search_by_file(file_id):
         cursor = tasks_coll.find({'file_id': file_id}, {'_id': 0})
         return CursorResult.many(cursor)
+
+    @staticmethod
+    def all_component():
+        cursor = tasks_coll.find({'task_name': "检查组件关联"}, {'_id': 0})
+        return CursorResult.many(cursor)

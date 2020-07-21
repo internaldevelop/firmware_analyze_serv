@@ -215,6 +215,23 @@ def compile_arm(file_name, task_id):
     return build_path
 
 
+# 组件关联任务进度接口
+def task_vuler_association(request):
+    print('task_vuler_association')
+    # file_id, version, name, edb_id = ReqParams.many(request, ['file_id', 'version', 'name', 'edb_id'])
+    #
+    # rv = FwFileDO.set_component_extra_props(file_id, {'version': version, 'name': name, 'edb_id': edb_id})
+    #
+    # # 保存操作日志
+    # LogRecords.save('', category='statistics', action='组件手动漏洞关联',
+    #                 desc='组件手动漏洞关联(漏洞编号 版本 名称)')
+    #
+    # if rv.matched_count == 1:
+    #     return sys_app_ok_p('组件手动漏洞关联成功')
+    # else:
+    return sys_app_ok_p('组件手动漏洞关联失败，文件未找到')
+
+
 # 组件手动漏洞关联
 def vuler_association(request):
     print('vuler_association')

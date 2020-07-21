@@ -17,6 +17,9 @@ urlpatterns = [
     # 组件手动漏洞关联
     path('async_funcs/vuler_association', views.vuler_association, name='async_com_vuler_association'),
 
+    # 组件关联任务进度接口
+    path('async_funcs/task_vuler_association', views.task_vuler_association, name='async_com_vuler_association'),
+
     path('test', views.test, name='async_test'),
     path('testcmd', views.testcmd, name='async_testcmd'),
 

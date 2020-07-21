@@ -119,6 +119,10 @@ class SystemConfig:
         # 将所有的系统配置参数写入缓存
         MyRedis.set('System_Config', config)
         # MyRedis.set('test', '111')
+
+        # 检查组件关联是否运行标志设置为False
+        MyRedis.set('running_check_com_flag', False)
+
         return config
 
     @staticmethod

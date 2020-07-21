@@ -6,12 +6,12 @@ import py_eureka_client.eureka_client as eureka_client
 from django.conf import settings
 import utils.sys.config
 from fw_analyze.service.cfg_analyze_service import CfgAnalyzeService
-from utils.db.mongodb.logs import LogRecords
+# from utils.db.mongodb.logs import LogRecords
 from utils.db.mongodb.sys_config import SystemConfig
 from utils.gadget.general import SysUtils
 from utils.gadget.my_path import MyPath
-from utils.task.my_task import MyTask
-from utils.task.task_type import TaskType
+# from utils.task.my_task import MyTask
+# from utils.task.task_type import TaskType
 
 
 def main():
@@ -61,10 +61,13 @@ def main():
         #                                # 返回类型，默认为 `string`，可以传入 `json`，如果传入值是 `json`，那么该方法会返回一个 `dict` 对象
         #                                return_type="string")
         # print("system-log:" + syslog)
+
+        # for initial
         settings.FW_PATH = MyPath.firmware()
         SysUtils.check_filepath(settings.FW_PATH)
         SysUtils.check_filepath(MyPath.temporary())
         SysUtils.check_filepath(MyPath.component())
+
 
         # 启动自动CFG分析任务
         # task = MyTask(_proc_cfg_analyze, )

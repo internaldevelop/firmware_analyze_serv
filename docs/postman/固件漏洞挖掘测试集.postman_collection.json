@@ -2350,6 +2350,51 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "7.4 包的组件文件树",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "aec56618-261c-4cc9-9064-d596cf91385d",
+								"exec": [
+									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
+									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
+									"//579e1250-3000-4208-a9b2-dcd9d9c3322c",
+									"//5152c5c5-23cd-48c6-9f50-c7d742ebafe6"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/com_files_tree?access_token={{access_token}}&tree_type=normal",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"pack",
+								"com_files_tree"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "tree_type",
+									"value": "normal",
+									"description": "normal: 为普通树，antd: 为antd树组件的树"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -2380,31 +2425,6 @@
 								{
 									"key": "task_id",
 									"value": "{{task_id}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "8.5 读取全部任务结果",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/task/query_all?access_token={{access_token}}",
-							"host": [
-								"{{FW_SERV_URL}}"
-							],
-							"path": [
-								"fw_analyze",
-								"task",
-								"query_all"
-							],
-							"query": [
-								{
-									"key": "access_token",
-									"value": "{{access_token}}"
 								}
 							]
 						}
@@ -2492,6 +2512,56 @@
 								{
 									"key": "file_id",
 									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.5 读取全部任务结果",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/query_all?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"query_all"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.6 读取组件关联漏洞任务结果",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/query_component?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"query_component"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
 								}
 							]
 						}
@@ -3004,7 +3074,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/component/async_funcs/inverted?file_id=175f7eaa-ed6d-424b-97a7-0bb84d6501af",
+							"raw": "{{base_url}}/component/async_funcs/inverted?file_id=c36dfbaf-c679-49da-90ef-7fa67b6443e1",
 							"host": [
 								"{{base_url}}"
 							],
@@ -3016,7 +3086,7 @@
 							"query": [
 								{
 									"key": "file_id",
-									"value": "175f7eaa-ed6d-424b-97a7-0bb84d6501af"
+									"value": "c36dfbaf-c679-49da-90ef-7fa67b6443e1"
 								}
 							]
 						}
@@ -3029,15 +3099,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:10112/component/async_funcs/get_inverted_data?file_id=175f7eaa-ed6d-424b-97a7-0bb84d6501af",
-							"protocol": "http",
+							"raw": "{{base_url}}/component/async_funcs/get_inverted_data?file_id=c36dfbaf-c679-49da-90ef-7fa67b6443e1",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "10112",
 							"path": [
 								"component",
 								"async_funcs",
@@ -3051,7 +3116,7 @@
 								},
 								{
 									"key": "file_id",
-									"value": "175f7eaa-ed6d-424b-97a7-0bb84d6501af"
+									"value": "c36dfbaf-c679-49da-90ef-7fa67b6443e1"
 								}
 							]
 						}
@@ -3064,15 +3129,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:10112/component/async_funcs/get_inverted_fw_data?index_con=senten",
-							"protocol": "http",
+							"raw": "{{base_url}}/component/async_funcs/get_inverted_fw_data?index_con=/x65/x72/x72/x6f/x72/x3a/x74/x68/x65/x72/x65",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"{{base_url}}"
 							],
-							"port": "10112",
 							"path": [
 								"component",
 								"async_funcs",
@@ -3081,7 +3141,7 @@
 							"query": [
 								{
 									"key": "index_con",
-									"value": "senten"
+									"value": "/x65/x72/x72/x6f/x72/x3a/x74/x68/x65/x72/x65"
 								}
 							]
 						}

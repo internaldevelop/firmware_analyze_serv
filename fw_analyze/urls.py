@@ -24,6 +24,9 @@ urlpatterns = [
     # 读取全部任务结果
     path('task/query_all', task_view.get_all_task_result, name='task_query_all'),
 
+    # 读取组件任务结果
+    path('task/query_component', task_view.query_component, name='task_query_component'),
+
     # 停止任务
     path('task/stop', task_view.stop_task, name='task_stop'),
 
@@ -59,6 +62,9 @@ urlpatterns = [
 
     # 查询指定固件包中所含的执行文件目录树
     path('pack/exec_files_tree', pack_view.pack_exec_files_tree, name='query_pack_exec_files_tree'),
+
+    # 查询所有组件文件目录树
+    path('pack/com_files_tree', pack_view.com_files_tree, name='query_com_files_tree'),
 
     # 提取解析变量
     path('vars/extract', variable_views.analyze_extract_vars, name='query_analyze_extract_vars'),

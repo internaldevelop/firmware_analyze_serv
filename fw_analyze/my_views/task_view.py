@@ -20,6 +20,17 @@ def get_task_result(request):
     return sys_app_ok_p(task_info)
 
 
+# 读取组件任务结果
+def query_component(request):
+    # path('task/query_component', task_view.query_component, name='task_query_component'),
+    # 读取数据库任务集合
+    task_id_list = TasksDAO.all_component()
+
+    # 保存操作日志
+    LogRecords.save(task_id_list, category='query', action='查询组件任务状态')
+
+    return sys_app_ok_p(task_id_list)
+
 # 读取全部任务状态
 def get_all_task_result(request):
     # 读取数据库任务集合

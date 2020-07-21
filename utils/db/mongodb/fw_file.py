@@ -16,6 +16,11 @@ class FwFileDO:
         return CursorResult.one(cursor)
 
     @staticmethod
+    def search_all_com_files():
+        cursor = fw_files_coll.find({'component': 1}, {'_id': 0})
+        return CursorResult.many(cursor)
+
+    @staticmethod
     def search_files_of_pack(pack_id, file_type):
         cursor = fw_files_coll.find({'pack_id': pack_id, 'file_type': file_type}, {'_id': 0})
         return CursorResult.many(cursor)

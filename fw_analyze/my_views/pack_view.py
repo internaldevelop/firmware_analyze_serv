@@ -67,11 +67,6 @@ def pack_info(request):
 # 固件里文件名与组件名匹配，相同则认为是组件
 def check_component(pack_id, task_id):
 
-    # 检查组件关联是否运行，运行中则跳过
-    brun = MyRedis.get('running_check_com_flag')
-    if brun:
-        return
-
     MyRedis.set('running_check_com_flag', True)
 
     # 获取本固件包所有的二进制可执行文件记录
@@ -80,6 +75,9 @@ def check_component(pack_id, task_id):
     # 枚举每个文件，根据文件名检索组件库（make），校验
     total_count = len(fw_files_list)
     for index, file_item in enumerate(fw_files_list):
+        percentage = round(index * 100 / total_count, 1)
+        MyTask.save_exec_info(task_id, percentage)
+
         componentinfo = MakeCOMFileDO.search_component_name(file_item['file_name'])
         if componentinfo is None:
             continue
@@ -106,10 +104,19 @@ def check_component(pack_id, task_id):
 
     MyRedis.set('running_check_com_flag', False)
 
+    # 保存任务完成状态
+    MyTask.save_exec_info(task_id, 100.0)
+
     return
 
 
 def start_check_component_task(pack_id):
+
+    # 检查组件关联是否运行，运行中则跳过
+    isrun = MyRedis.get('running_check_com_flag')
+    if isrun:
+        return
+
     # # 检查组件关联
     # check_component(pack_id, FileType.EXEC_FILE)
     # 修改为任务处理方式进行检查组件关联 关联组件标记，相似度匹配计算，标记漏洞(version/edbid)
@@ -119,6 +126,45 @@ def start_check_component_task(pack_id):
                   'task_desc': '检查组件关联,相似度匹配计算，标记漏洞(version/edbid)'}
     task = MyTask(check_component, (pack_id,), extra_info=extra_info)
     task_id = task.get_task_id()
+
+
+# 查询所有组件文件目录树
+def com_files_tree(request):
+    tree_type = ReqParams.one(request, 'tree_type')
+    # 读取所有组件文件
+    com_list = FwFileDO.search_all_com_files()
+
+    if tree_type is None or len(tree_type) == 0 or tree_type == 'normal':
+        tree_type = 'normal'
+        exec_tree = {}
+    elif tree_type == 'antd':
+        exec_tree = []
+    else:
+        tree_type = 'normal'
+        exec_tree = {}
+
+    # 对每个文件做树的各级节点定位和创建
+    for exec_file in com_list:
+        # 获取文件路径
+        file_path = exec_file['file_path']
+        file_id = exec_file['file_id']
+
+        component = exec_file['component']
+
+        if file_path is None or len(file_path) == 0:
+            continue
+
+        if tree_type == 'normal':
+            MyTree.file_path_insert_into_tree(exec_tree, file_path, file_id)
+        elif tree_type == 'antd':
+            MyTree.file_path_insert_into_antd_tree(exec_tree, file_path, file_id)
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='查询所有组件文件目录树',
+                    desc='获取所有组件文件目录树结构（模式为：%s）' % (tree_type))
+
+    return sys_app_ok_p(exec_tree)
+
 
 
 def pack_exec_files_tree(request):

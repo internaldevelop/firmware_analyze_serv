@@ -1476,7 +1476,7 @@
 							"formdata": [
 								{
 									"key": "url",
-									"value": "http://192.168.43.31/FW_RT_AC86U_300438481352_.zip",
+									"value": "http://192.168.43.31/testSquashfsmini4.zip",
 									"type": "text"
 								}
 							]
@@ -2323,7 +2323,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{pack_id}}&tree_type=normal",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/exec_files_tree?access_token={{access_token}}&pack_id={{pack_id}}&tree_type=antd",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -2343,7 +2343,7 @@
 								},
 								{
 									"key": "tree_type",
-									"value": "normal",
+									"value": "antd",
 									"description": "normal: 为普通树，antd: 为antd树组件的树"
 								}
 							]
@@ -2352,7 +2352,7 @@
 					"response": []
 				},
 				{
-					"name": "7.4 包的组件文件树",
+					"name": "7.4 组件文件树",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2390,6 +2390,46 @@
 									"key": "tree_type",
 									"value": "normal",
 									"description": "normal: 为普通树，antd: 为antd树组件的树"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.5 组件文件列表",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "07a01d13-4458-4b62-8278-4e4e419ba15d",
+								"exec": [
+									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
+									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
+									"//579e1250-3000-4208-a9b2-dcd9d9c3322c",
+									"//5152c5c5-23cd-48c6-9f50-c7d742ebafe6"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/com_files_list?access_token={{access_token}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"pack",
+								"com_files_list"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
 								}
 							]
 						}
@@ -2711,7 +2751,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/component/async_funcs/list_make?pack_id={{pack_id}}&arch=arm&tree_type=normal",
+							"raw": "{{base_url}}/component/async_funcs/list_make?pack_id={{pack_id}}&arch=x86&tree_type=normal",
 							"host": [
 								"{{base_url}}"
 							],
@@ -2727,7 +2767,7 @@
 								},
 								{
 									"key": "arch",
-									"value": "arm",
+									"value": "x86",
 									"description": "x86,arm"
 								},
 								{

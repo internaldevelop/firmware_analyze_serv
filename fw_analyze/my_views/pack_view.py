@@ -137,10 +137,25 @@ def com_files_list(request):
     comlist = []
     for com in com_list:
         print(com)
+        if "version" in com['extra_props']: version = com['extra_props']['version']
+        else: version = ""
+
+        if "name" in com['extra_props']: name = com['extra_props']['name']
+        else: name = ""
+
+        if "edb_id" in com['extra_props']:edb_id = com['extra_props']['edb_id']
+        else: edb_id = ""
+
+        if "edb_id" in com['extra_props']: edb_id = com['extra_props']['edb_id']
+        else: edb_id = ""
+
+        if "inverted" in com['extra_props']: inverted = com['extra_props']['inverted']
+        else: inverted = ""
+
         doc = {'file_id': com['file_id'], 'file_path': com['file_path'], 'component': com['component'], 'create_time': com['create_time'], 'file_name': com['file_name'],
-               'file_type': com['file_type'], 'pack_id': com['pack_id'], 'version': com['extra_props']['version'],
-               'name': com['extra_props']['name'], 'edb_id': com['extra_props']['edb_id'], 'file_type_verified': com['file_type_verified'], 'cfg_analyze': com['cfg_analyze'],
-               'inverted': com['inverted'], 'fw_name': com['pack_docs'][0]['name']}
+               'file_type': com['file_type'], 'pack_id': com['pack_id'], 'version': version,
+               'name': name, 'edb_id': edb_id, 'file_type_verified': com['file_type_verified'], 'cfg_analyze': com['cfg_analyze'],
+               'inverted': inverted, 'fw_name': com['pack_docs'][0]['name']}
         comlist.append(doc)
 
     # 保存操作日志

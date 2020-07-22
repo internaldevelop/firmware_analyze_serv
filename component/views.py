@@ -485,7 +485,7 @@ def test(request):
     extra_info = {'task_type': TaskType.REMOTE_DOWNLOAD,
                   'task_name': 'test组件源码下载',
                   'task_desc': 'test下载组件源码入库存储桶'}
-    task = MyTask(_proc_component_tasks, (value, MyPath.component()), extra_info=extra_info)
+    task = MyTask(_proc_inverted_tasks, (value, MyPath.component()), extra_info=extra_info)
     task_id = task.get_task_id()
 
     # 保存操作日志
@@ -496,13 +496,13 @@ def test(request):
     return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
 
 
-def _proc_component_tasks(value, g_fw_save_path, task_id):
-    print("download task_id", task_id)
-    print(value)
-    MyTask.save_exec_info(task_id, 0, {'download': "组件源码下载后关联漏洞库"})
-    MyTask.save_exec_info(task_id, 100, {'value': value})
-    # 检查本地保存路径 没有则创建
-    SysUtils.check_filepath(g_fw_save_path)
+# def _proc_component_tasks(value, g_fw_save_path, task_id):
+#     print("download task_id", task_id)
+#     print(value)
+#     MyTask.save_exec_info(task_id, 0, {'download': "组件源码下载后关联漏洞库"})
+#     MyTask.save_exec_info(task_id, 100, {'value': value})
+#     # 检查本地保存路径 没有则创建
+#     SysUtils.check_filepath(g_fw_save_path)
 #
 #     # 1 时间消耗总占比30  执行下载操作
 #     total_percentage = 30.0
@@ -532,8 +532,27 @@ def cosine_algorithm(request):
 def inverted(request):
     # 获取参数
     file_id = req_get_param(request, 'file_id')
-    return invertedIndex.inverted(file_id)
 
+    # 启动编译任务
+    extra_info = {'task_type': TaskType.INVERTED,
+                  'task_name': '倒排索引',
+                  'task_desc': '建立倒排索引'}
+    task = MyTask(_proc_inverted_tasks, (file_id,), extra_info=extra_info)
+    task_id = task.get_task_id()
+
+    # 保存操作日志
+    LogRecords.save({'task_id': task_id}, category='compile', action='倒排索引',
+                    desc='建立倒排索引')
+
+    # 返回响应：任务初始化的信息
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+
+def _proc_inverted_tasks(file_id, task_id):
+    MyTask.save_exec_info(task_id, 0)
+    invertedIndex.inverted(file_id)
+    # 保存任务完成状态
+    MyTask.save_exec_info(task_id, 100.0)
 
 # 根据倒排索引查询数据
 def get_inverted_data(request):

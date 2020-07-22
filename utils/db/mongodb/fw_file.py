@@ -17,8 +17,15 @@ class FwFileDO:
 
     @staticmethod
     def search_all_com_files():
-        cursor = fw_files_coll.find({'component': 1}, {'_id': 0})
+        # cursor = fw_files_coll.find({'component': 1}, {'_id': 0})
+        # return CursorResult.many(cursor)
+        cursor = fw_files_coll.aggregate([
+            {"$lookup": {"from": "pack_files", "localField": "pack_id", "foreignField": "pack_id", "as": "pack_docs"}},
+            {"$match": {"component": 1}},
+            # {"$unwind": "$pack_docs"},
+        ])
         return CursorResult.many(cursor)
+
 
     @staticmethod
     def search_files_of_pack(pack_id, file_type):
@@ -92,6 +99,10 @@ class FwFileDO:
     @staticmethod
     def set_cfg_analyzed(file_id, cfg_analyzed=1):
         FwFileDO._save_file_props(file_id, {'cfg_analyze': cfg_analyzed})
+
+    @staticmethod
+    def set_inverted(file_id, inverted=1):
+        FwFileDO._save_file_props(file_id, {'inverted': inverted})
 
     # @staticmethod
     # def _save_file_com_props(file_id, props):

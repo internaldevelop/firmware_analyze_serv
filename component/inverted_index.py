@@ -1,5 +1,6 @@
 import utils.sys.config
 from utils.http.response import sys_app_ok_p, sys_app_ok, sys_app_err
+from utils.db.mongodb.fw_file import FwFileDO
 
 # firmware 集合
 file_inverted_col = utils.sys.config.g_firmware_db_full["file_inverted_index"]
@@ -91,6 +92,9 @@ class InvertedIndex:
 
             if (item_list is None or len(item_list) == 0) and len(index_con) > 0 and len(index_con_str) > 10:
                 file_inverted_col.save(vulner_info)
+
+        # 对组件列表增加建立 inverted 完成标志
+        FwFileDO.set_inverted(file_id)
 
         return sys_app_ok()
 

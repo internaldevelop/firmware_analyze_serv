@@ -66,6 +66,9 @@ urlpatterns = [
     # 查询所有组件文件目录树
     path('pack/com_files_tree', pack_view.com_files_tree, name='query_com_files_tree'),
 
+    # 查询所有组件文件列表
+    path('pack/com_files_list', pack_view.com_files_list, name='query_com_files_list'),
+
     # 提取解析变量
     path('vars/extract', variable_views.analyze_extract_vars, name='query_analyze_extract_vars'),
 

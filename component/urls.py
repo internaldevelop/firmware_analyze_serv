@@ -2,6 +2,11 @@ from django.urls import path
 
 from . import views
 
+# import sys
+# sys.path.append('../../fw_analyze/my_views')
+# # from ./fw_analyze/my_views import pack_view
+# import pack_view
+
 urlpatterns = [
 
     #
@@ -14,8 +19,15 @@ urlpatterns = [
     # 组件编译结果查询
     path('async_funcs/list_make', views.list_make, name='async_com_list_make'),
 
+    # 9.5 组件源码查询_按名称查询
+    path('async_funcs/list_name', views.list_name, name='async_com_list_name'),
+
+
     # 组件手动漏洞关联
     path('async_funcs/vuler_association', views.vuler_association, name='async_com_vuler_association'),
+
+    # # 组件自动漏洞关联
+    # path('async_funcs/auto_vuler_association', pack_view.vuler_association, name='async_com_vuler_association'),
 
     # 组件关联任务进度接口
     path('async_funcs/task_vuler_association', views.task_vuler_association, name='async_com_vuler_association'),

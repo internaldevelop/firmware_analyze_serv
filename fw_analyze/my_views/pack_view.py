@@ -71,6 +71,9 @@ def check_component(pack_id, task_id):
 
     # 获取本固件包所有的二进制可执行文件记录
     fw_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
+    pack_item = PackFileDO.fetch_pack(pack_id)
+    process_file_name = pack_item['name']
+    MyTask.save_exec_info_name(task_id, process_file_name)
 
     # 枚举每个文件，根据文件名检索组件库（make），校验
     total_count = len(fw_files_list)
@@ -92,7 +95,7 @@ def check_component(pack_id, task_id):
         print(SysUtils.get_now_time())
 
         # todo 相似度阈值设定： 0－100
-        if similarity < 50:
+        if similarity < 90:
             print(similarity)
             continue
         # 相似度大于阈值 标记漏洞(version / edbid)
@@ -100,7 +103,7 @@ def check_component(pack_id, task_id):
         version = com_file_info['version']
         name = com_file_info['name']
         edb_id = com_file_info['edb_id']
-        FwFileDO.set_component_extra_props(fw_file_id, {'version': version, 'name': name, 'edb_id': edb_id})
+        FwFileDO.set_component_extra_props(fw_file_id, {'version': version, 'name': name, 'edb_id': edb_id, 'similarity': similarity})
 
     MyRedis.set('running_check_com_flag', False)
 
@@ -110,22 +113,33 @@ def check_component(pack_id, task_id):
     return
 
 
+# 1.3 自动组件文件漏洞关联
+def auto_vuler_association(request):
+    pack_id = ReqParams.one(request, 'pack_id')
+    task_id = start_check_component_task(pack_id)
+    if task_id is None:
+        return sys_app_ok_p("自动组件漏洞关联正在运行中")
+
+    return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+
 def start_check_component_task(pack_id):
 
     # 检查组件关联是否运行，运行中则跳过
     isrun = MyRedis.get('running_check_com_flag')
     if isrun:
-        return
+        return None
 
     # # 检查组件关联
     # check_component(pack_id, FileType.EXEC_FILE)
     # 修改为任务处理方式进行检查组件关联 关联组件标记，相似度匹配计算，标记漏洞(version/edbid)
     # 启动编译任务
     extra_info = {'task_type': TaskType.COMPONENT_CHECK,
-                  'task_name': '检查组件关联',
+                  'task_name': '自动组件文件漏洞关联',
                   'task_desc': '检查组件关联,相似度匹配计算，标记漏洞(version/edbid)'}
     task = MyTask(check_component, (pack_id,), extra_info=extra_info)
     task_id = task.get_task_id()
+    return task_id
 
 
 # 查询所有组件文件列表

@@ -72,6 +72,9 @@ urlpatterns = [
     # 提取解析变量
     path('vars/extract', variable_views.analyze_extract_vars, name='query_analyze_extract_vars'),
 
+    # 组件自动漏洞关联
+    path('com/auto_vuler_association', pack_view.auto_vuler_association, name='async_com_vuler_association'),
+
     # =========================================================================
     # 以下部分均为测试指令
 

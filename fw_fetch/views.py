@@ -285,7 +285,6 @@ def _save_pack_com_db(path_file_name, download_info, edb_id, title, task_id):
     #file_type, contents = check_file_type(path_file_name)
     file_type = FileType.PACK
     file_name = os.path.basename(path_file_name)
-
     name, ver = file_name.split('-')
     version = ver.split('.tar.gz')[0]
 
@@ -322,6 +321,7 @@ def _save_source_code_file_db(path_file_name, pack_com_id, task_id):
             print(os.path.join(root, f))
             path_file_name = os.path.join(root, f)
             #contents = MyFile.read(path_file_name)
+            mode = os.stat(path_file_name).st_mode
 
             # todo file_type
             # file_type, contents = check_file_type(path_file_name)
@@ -336,7 +336,7 @@ def _save_source_code_file_db(path_file_name, pack_com_id, task_id):
             # 读取包文件内容
             contents = MyFile.read(path_file_name)
             # 保存文件记录
-            SourceCodeFileDO.save_file_item(pack_com_id, file_com_id, file_name, file_type, path_file_name, None)
+            SourceCodeFileDO.save_file_item(pack_com_id, file_com_id, file_name, file_type, mode, path_file_name, None)
             # 保存文件内容
             SourceCodeFilesStorage.save(file_com_id, file_name, path_file_name, file_type, contents)
 

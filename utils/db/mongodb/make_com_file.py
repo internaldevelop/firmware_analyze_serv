@@ -30,13 +30,13 @@ class MakeCOMFileDO:
         return CursorResult.many(cursor)
 
     @staticmethod
-    def save_file_item(pack_id, file_id, file_name, file_type, arch, file_path='',  extra_props=None):
+    def save_file_item(pack_id, file_id, file_name, file_type, arch, mode, file_path='',  extra_props=None):
         # 如果文件路径未给定，则使用文件名称代替
         if len(file_path) == 0:
             file_path = file_name
 
         doc = {'pack_id': pack_id, 'file_id': file_id, 'file_name': file_name, 'file_path': file_path,
-               'file_type': file_type, 'create_time': SysUtils.get_now_time(), 'arch': arch}
+               'file_type': file_type, 'create_time': SysUtils.get_now_time(), 'arch': arch, 'mode': mode}
         if extra_props is not None:
             doc['extra_props'] = extra_props
 

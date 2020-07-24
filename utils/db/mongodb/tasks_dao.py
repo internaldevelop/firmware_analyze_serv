@@ -1,6 +1,7 @@
 import utils.sys.config
 
 from utils.db.mongodb.cursor_result import CursorResult
+from utils.task.task_type import TaskType
 
 # 任务集合
 tasks_coll = utils.sys.config.g_firmware_db_full["tasks"]
@@ -34,5 +35,5 @@ class TasksDAO:
 
     @staticmethod
     def all_component():
-        cursor = tasks_coll.find({'task_name': "检查组件关联"}, {'_id': 0})
+        cursor = tasks_coll.find({'task_type': TaskType.COMPONENT_CHECK}, {'_id': 0})
         return CursorResult.many(cursor)

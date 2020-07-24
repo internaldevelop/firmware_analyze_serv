@@ -30,7 +30,7 @@ class SourceCodeFilesStorage:
         return item
 
     @staticmethod
-    def export(file_id, file_name=None, folder=None, override=False):
+    def export(file_id, mode, file_name=None, folder=None, override=False):
         file_path = os.path.join(folder, file_name)
 
         # 不设置覆写时，如果文件已存在，则跳过文件创建和写数据的操作
@@ -62,6 +62,11 @@ class SourceCodeFilesStorage:
         with open(file_path, 'wb') as file:
             file.write(data)
 
+        # v = oct(mode)
+        # print(str(v)[-3:])
+        # 设置文件执行权限
+        SysUtils.chmod(file_path, str(oct(mode))[-3:])
+
         return file_path
 
     @staticmethod
@@ -69,7 +74,7 @@ class SourceCodeFilesStorage:
         file_item = source_code_files_storage.find_one({'filename': file_id})
         if file_item is None:
             return False
-            source_code_files_storage.delete(file_item._id)
+            source_code_files_storage.delete(file_item['file_id'])
         return True
 
     @staticmethod

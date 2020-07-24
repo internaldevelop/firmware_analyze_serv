@@ -248,6 +248,26 @@ def vuler_association(request):
     else:
         return sys_app_ok_p('组件手动漏洞关联失败，文件未找到')
 
+
+# 9.5 组件源码查询_按名称查询
+def list_name(request):
+    component_name = ReqParams.one(request, 'name')
+    com_info = PackCOMFileDO.fetch_name(component_name)
+    """ 获取源码包所有的文件统计信息 """
+    # info_list = []
+    # for pack in com_list:
+    #     # 各个包的所含文件信息
+    #     files_stat = get_sourcecode_files_stat(pack['pack_id'])
+    #     pack_info = dict(pack, **files_stat)
+    #     info_list.append(pack_info)
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='组件源码查询_按名称查询',
+                    desc='组件源码查询_按名称查询')
+
+    return sys_app_ok_p(com_info)
+
+
 # 查询所有组件生成文件信息
 def list_make(request):
     print('list_make')
@@ -360,8 +380,9 @@ def export_files(pack_id):
     for file in files_list:
         print(file['file_path'])
         path, name = os.path.split(file['file_path'])
+        mode = file['mode']
 
-        SourceCodeFilesStorage.export(file['file_id'], name, path)
+        SourceCodeFilesStorage.export(file['file_id'], mode, name, path)
 
     fileinfo = PackCOMFileDO.fetch_pack(pack_id)
     path, name = os.path.split(fileinfo['file_path'])
@@ -423,6 +444,8 @@ def save_make_files(pack_com_id, buildpath, arch):
             path_file_name = os.path.join(root, f)
             file_type = FileType.MAKE_FILE
             file_name = os.path.basename(path_file_name)
+            mode = os.stat(path_file_name).st_mode
+
 
             # 新建或保存文件记录
             # 新的 pack ID
@@ -432,7 +455,7 @@ def save_make_files(pack_com_id, buildpath, arch):
             # 读取包文件内容
             contents = MyFile.read(path_file_name)
             # 保存文件记录
-            MakeCOMFileDO.save_file_item(pack_com_id, file_com_id, file_name, file_type, arch, path_file_name, None)
+            MakeCOMFileDO.save_file_item(pack_com_id, file_com_id, file_name, file_type, arch, mode, path_file_name, None)
             # 保存文件内容
             MakeCOMFilesStorage.save(file_com_id, file_name, path_file_name, file_type, contents)
 

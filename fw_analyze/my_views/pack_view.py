@@ -166,9 +166,12 @@ def com_files_list(request):
         if "inverted" in com['extra_props']: inverted = com['extra_props']['inverted']
         else: inverted = ""
 
+        if "cfg_analyze" in com['extra_props']: cfg_analyze = com['extra_props']['cfg_analyze']
+        else: cfg_analyze = ""
+
         doc = {'file_id': com['file_id'], 'file_path': com['file_path'], 'component': com['component'], 'create_time': com['create_time'], 'file_name': com['file_name'],
                'file_type': com['file_type'], 'pack_id': com['pack_id'], 'version': version,
-               'name': name, 'edb_id': edb_id, 'file_type_verified': com['file_type_verified'], 'cfg_analyze': com['cfg_analyze'],
+               'name': name, 'edb_id': edb_id, 'file_type_verified': com['file_type_verified'], 'cfg_analyze': cfg_analyze,
                'inverted': inverted, 'fw_name': com['pack_docs'][0]['name']}
         comlist.append(doc)
 

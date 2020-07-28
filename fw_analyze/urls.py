@@ -66,6 +66,9 @@ urlpatterns = [
     # 查询所有组件文件目录树
     path('pack/com_files_tree', pack_view.com_files_tree, name='query_com_files_tree'),
 
+    # 9.9 组件源码文件目录树
+    path('pack/com_sourcecode_files_tree', pack_view.com_sourcecode_files_tree, name='query_com_sourcecode_files_tree'),
+
     # 查询所有组件文件列表
     path('pack/com_files_list', pack_view.com_files_list, name='query_com_files_list'),
 

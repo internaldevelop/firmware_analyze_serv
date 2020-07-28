@@ -9,6 +9,7 @@ from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p
 from utils.sys.error_code import Error
 from utils.db.mongodb.make_com_file import MakeCOMFileDO
 from utils.db.mongodb.pack_com_file import PackCOMFileDO
+from utils.db.mongodb.source_code_file import SourceCodeFileDO
 from utils.task.my_task import MyTask
 from utils.task.task_type import TaskType
 from component.assembly import Assembly
@@ -113,7 +114,7 @@ def check_component(pack_id, task_id):
     return
 
 
-# 1.3 自动组件文件漏洞关联
+# 1.3 组件文件漏洞自动关联
 def auto_vuler_association(request):
     pack_id = ReqParams.one(request, 'pack_id')
     task_id = start_check_component_task(pack_id)
@@ -135,8 +136,10 @@ def start_check_component_task(pack_id):
     # 修改为任务处理方式进行检查组件关联 关联组件标记，相似度匹配计算，标记漏洞(version/edbid)
     # 启动编译任务
     extra_info = {'task_type': TaskType.COMPONENT_CHECK,
-                  'task_name': '自动组件文件漏洞关联',
+                  'task_name': '组件文件漏洞自动关联',
                   'task_desc': '检查组件关联,相似度匹配计算，标记漏洞(version/edbid)'}
+
+
     task = MyTask(check_component, (pack_id,), extra_info=extra_info)
     task_id = task.get_task_id()
     return task_id
@@ -163,10 +166,10 @@ def com_files_list(request):
         if "edb_id" in com['extra_props']: edb_id = com['extra_props']['edb_id']
         else: edb_id = ""
 
-        if "inverted" in com['extra_props']: inverted = com['extra_props']['inverted']
+        if "inverted" in com: inverted = com['inverted']
         else: inverted = ""
 
-        if "cfg_analyze" in com['extra_props']: cfg_analyze = com['extra_props']['cfg_analyze']
+        if "cfg_analyze" in com: cfg_analyze = com['cfg_analyze']
         else: cfg_analyze = ""
 
         doc = {'file_id': com['file_id'], 'file_path': com['file_path'], 'component': com['component'], 'create_time': com['create_time'], 'file_name': com['file_name'],
@@ -179,6 +182,41 @@ def com_files_list(request):
     LogRecords.save('', category='statistics', action='查询所有组件文件列表',
                     desc='查询所有组件文件列表')
     return sys_app_ok_p(comlist)
+
+
+# 9.9 组件源码文件目录树
+def com_sourcecode_files_tree(request):
+    pack_id, tree_type = ReqParams.many(request, ['pack_id', 'tree_type'])
+    file_list = SourceCodeFileDO.search_files_of_pack(pack_id)
+
+    if tree_type is None or len(tree_type) == 0 or tree_type == 'normal':
+        tree_type = 'normal'
+        exec_tree = {}
+    elif tree_type == 'antd':
+        exec_tree = []
+    else:
+        tree_type = 'normal'
+        exec_tree = {}
+
+    # 对每个文件做树的各级节点定位和创建
+    for file in file_list:
+        # 获取文件路径
+        file_path = file['file_path']
+        file_id = file['file_id']
+
+        if file_path is None or len(file_path) == 0:
+            continue
+
+        if tree_type == 'normal':
+            MyTree.file_path_insert_into_tree(exec_tree, file_path, file_id)
+        elif tree_type == 'antd':
+            MyTree.file_path_insert_into_antd_tree(exec_tree, file_path, file_id)
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='查询组件源码文件目录树',
+                    desc='获取组件源码文件目录树（模式为：%s）' % (tree_type))
+
+    return sys_app_ok_p(exec_tree)
 
 
 # 查询所有组件文件目录树

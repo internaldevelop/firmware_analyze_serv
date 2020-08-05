@@ -10,6 +10,8 @@ from utils.sys.error_code import Error
 from utils.db.mongodb.make_com_file import MakeCOMFileDO
 from utils.db.mongodb.pack_com_file import PackCOMFileDO
 from utils.db.mongodb.source_code_file import SourceCodeFileDO
+from utils.db.mongodb.fw_files_storage import FwFilesStorage
+from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.task.my_task import MyTask
 from utils.task.task_type import TaskType
 from component.assembly import Assembly
@@ -63,6 +65,33 @@ def pack_info(request):
 
     return sys_app_ok_p(info)
 
+
+def pack_delete(request):
+    pack_id = ReqParams.one(request, 'pack_id')
+
+    # delete fw_files_storage
+    # delete fw_files
+    # delete pack_files_storage
+    # delete pack_files
+
+    file_list = FwFileDO.search_files_of_pack(pack_id)
+    for file in file_list:
+        FwFilesStorage.delete(file['file_id'])
+
+    # if len(file_list) > 0:
+    FwFileDO.delete_many_of_pack(pack_id)
+
+    pack_info = PackFileDO.fetch_pack(pack_id)
+    PackFilesStorage.delete(pack_info['file_id'])
+
+    PackFileDO.delete(pack_id)
+
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='删除固件包',
+                    desc='删除指定固件包（ID=%s）的信息，' % pack_id)
+
+    return sys_app_ok_p([])
 
 # 检查组件关联
 # 固件里文件名与组件名匹配，相同则认为是组件

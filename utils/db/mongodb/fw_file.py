@@ -28,8 +28,11 @@ class FwFileDO:
 
 
     @staticmethod
-    def search_files_of_pack(pack_id, file_type):
-        cursor = fw_files_coll.find({'pack_id': pack_id, 'file_type': file_type}, {'_id': 0})
+    def search_files_of_pack(pack_id, file_type=None):
+        if file_type is None:
+            cursor = fw_files_coll.find({'pack_id': pack_id}, {'_id': 0})
+        else:
+            cursor = fw_files_coll.find({'pack_id': pack_id, 'file_type': file_type}, {'_id': 0})
         return CursorResult.many(cursor)
 
     @staticmethod

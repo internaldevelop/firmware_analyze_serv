@@ -60,6 +60,9 @@ urlpatterns = [
     # 查询指定固件包信息
     path('pack/info', pack_view.pack_info, name='query_pack_info'),
 
+    # 删除指定固件包
+    path('pack/delete', pack_view.pack_delete, name='query_pack_info'),
+
     # 查询指定固件包中所含的执行文件目录树
     path('pack/exec_files_tree', pack_view.pack_exec_files_tree, name='query_pack_exec_files_tree'),
 

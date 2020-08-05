@@ -39,12 +39,12 @@ class FsImage:
         image_file_name = image_file['file_name']
 
         # 解析镜像文件
-        image = self.parse_image_file(image_file, image_file_path)
+        image, fs = self.parse_image_file(image_file, image_file_path)
         # 尝试 SquashFS 解析，并验证
         # image = SquashFS(image_file_path)
         # if image.check_format():
         #     pass
-        return image, image_file_name
+        return image, image_file_name, fs
 
     @staticmethod
     def start_fs_image_extract_task(pack_id):
@@ -61,7 +61,7 @@ class FsImage:
     def fs_image_extract(self, pack_id, task_id):
         self.task_id = task_id
 
-        image, image_file_name = self.open_image()
+        image, image_file_name, fs = self.open_image()
 
         # 任务关联文件名
         MyTask.save_exec_info_name(task_id, image_file_name)
@@ -99,57 +99,38 @@ class FsImage:
         if contents[0:4] == b'\x45\x3d\xcd\x28' or contents[0:4] == b'\x28\xcd\x3d\x45':
             print(contents[0:4], "cramfs")
             image = IMG_CramFS(image_file_path)
+            fs = 'cramfs'
         elif contents[0:2] == b'\x85\x19' or contents[0:2] == b'\x19\x85':
             print(contents[0:4], "jffs2")
+            fs = 'jffs2'
             image = IMG_JFFS2(image_file_path)
         elif contents[0:8] == b'-rom1fs-':
             print("romfs")
+            fs = 'romfs'
             image = IMG_RomFS(image_file_path)
         elif contents[0:4] == b'UBI#':
             print("ubifs")
+            fs = 'ubifs'
             image = IMG_UBI(image_file_path)
         elif contents[0:10] == b'\x03\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
                 contents[0:10] == b'\x01\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
                 contents[0:10] == b'\x00\x00\x00\x03\x00\x00\x00\x01\xff\xff' or \
                 contents[0:10] == b'\x00\x00\x00\x01\x00\x00\x00\x01\xff\xff':
             print("yaffs2")
+            fs = 'yaffs2'
             image = IMG_YAFFS(image_file_path)
         elif contents[0:4] == b'\x8a\x32\xfc\x66':
             print("romfs")
+            fs = 'romfs'
             return FileType.FS_IMAGE, contents
         elif contents[0:4] == b'sqsh' or contents[0:4] == b'hsqs' or \
                 contents[0:4] == b'shsq' or contents[0:4] == b'qshs' or \
                 contents[0:4] == b'tqsh' or contents[0:4] == b'hsqt' or \
                 contents[0:4] == b'sqlz':
             print(contents[0:4], "squashfs")
+            fs = 'squashfs'
             image = SquashFS(image_file_path)
         else:
-            return None
+            return None, None
 
-        return image
-        # # 判断镜像文件类型 squashfs/jffs2/ubi...
-        # if '.jffs2' in image_file['file_name']:
-        #     image = IMG_JFFS2(image_file_path)
-        # elif '.ubi' in image_file['file_name']:
-        #     image = IMG_UBI(image_file_path)
-        # elif '.ubifs' in image_file['file_name']:
-        #     image = IMG_UBI(image_file_path)
-        # elif '.img' in image_file['file_name']:
-        #     image = IMG_RomFS(image_file_path)
-        # elif '.romfs' in image_file['file_name']:
-        #     image = IMG_RomFS(image_file_path)
-        # elif '.yaffs' in image_file['file_name']:
-        #     image = IMG_YAFFS(image_file_path)
-        # elif '.yaffs2' in image_file['file_name']:
-        #     image = IMG_YAFFS(image_file_path)
-        # elif '.squashfs' in image_file['file_name']:
-        #     # 尝试 SquashFS 解析，并验证
-        #     image = SquashFS(image_file_path)
-        # elif '.cramfs' in image_file['file_name']:
-        #     # 尝试 SquashFS 解析，并验证
-        #     image = IMG_CramFS(image_file_path)
-        #
-        # if image:
-        #     return image
-        #
-        # return None
+        return image, fs

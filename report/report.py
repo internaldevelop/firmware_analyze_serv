@@ -17,6 +17,7 @@ from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.gadget.general import SysUtils
 from utils.gadget.strutil import StrUtils
 from utils.http.response import sys_app_ok, sys_app_ok_p, sys_app_err
+from utils.gadget.my_path import MyPath
 
 pack_files_col = utils.sys.config.g_firmware_db_full["pack_files"]
 fw_files_col = utils.sys.config.g_firmware_db_full["fw_files"]
@@ -25,8 +26,9 @@ report_record_col = utils.sys.config.g_firmware_db_full["report_record"]
 component_files_col = utils.sys.config.g_firmware_db_full["component_files"]
 
 # 注册字体
-pdfmetrics.registerFont(TTFont('SimSun', 'simsun.ttc'))
-
+# pdfmetrics.registerFont(TTFont('SimSun', 'simsun.ttc'))
+path_font = MyPath.work_root() + '/report/simsun.ttc'
+pdfmetrics.registerFont(TTFont('SimSun', path_font))
 
 class Graphs:
 

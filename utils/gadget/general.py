@@ -82,6 +82,10 @@ class SysUtils:
         return datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S')
 
     @staticmethod
+    def parse_time_stamp_str():
+        return SysUtils.get_now_time().strftime('%Y%m%d%H%M%S')
+
+    @staticmethod
     def elapsed_time_ms(start_time):
         now_time = SysUtils.get_now_time()
         delta_time = now_time - start_time
@@ -118,7 +122,7 @@ class SysUtils:
         if grid_out is None:
             return None
         dest_dict = {'filename': grid_out.filename, 'aliases': grid_out.aliases[0],
-                     'content_type': grid_out.content_type, 'length': grid_out.length, 'name': grid_out.name}
+                     'content_type': grid_out.content_type, 'length': grid_out.length, 'name': grid_out.name, 'md5': grid_out.md5}
         # dest_dict['content'] = grid_out.read()
         return dest_dict
 

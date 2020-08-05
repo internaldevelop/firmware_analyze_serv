@@ -13,6 +13,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Table, SimpleDocTemplate, Paragraph, Spacer
 
 import utils.sys.config
+from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.gadget.general import SysUtils
 from utils.gadget.strutil import StrUtils
 from utils.http.response import sys_app_ok, sys_app_ok_p, sys_app_err
@@ -21,6 +22,7 @@ pack_files_col = utils.sys.config.g_firmware_db_full["pack_files"]
 fw_files_col = utils.sys.config.g_firmware_db_full["fw_files"]
 file_inverted_col = utils.sys.config.g_firmware_db_full["file_inverted_index"]
 report_record_col = utils.sys.config.g_firmware_db_full["report_record"]
+component_files_col = utils.sys.config.g_firmware_db_full["component_files"]
 
 # 注册字体
 pdfmetrics.registerFont(TTFont('SimSun', 'simsun.ttc'))
@@ -147,19 +149,36 @@ class Graphs:
         firmware_file_num = 0
         fw_file_lists = ''
 
-        if pack_list is not None or len(pack_list) > 0:
+        firmware_md5 = ''
+        firmware_size = ''
+
+        if pack_list is not None and len(pack_list) > 0:
             pack_info = pack_list[0]
             firmware_name = pack_info.get('name')
             pack_id = pack_info.get('pack_id')
+            pack_file_id = pack_info.get('file_id')
 
             result_files = fw_files_col.find({'pack_id': pack_id})
             fw_file_lists = list(result_files)
             if fw_file_lists is not None or len(fw_file_lists) > 0:
                 firmware_file_num = len(fw_file_lists)
 
-        # firmware_md5 = '721563f018a14723880d410778b749e3'
+            item = PackFilesStorage.fetch(pack_file_id)
+
+            firmware_md5 = item.get('md5')
+            length_b = item.get('length')
+            length_kb = length_b / 1024
+            length_mb = length_kb / 1024
+            if length_kb < 1:
+                firmware_size = str('%.2f' % length_b) + ' B'
+            elif length_mb < 1:
+                firmware_size = str('%.2f' % length_kb) + ' KB'
+            else:
+                firmware_size = str('%.2f' % length_mb) + ' MB'
+        else:
+            return sys_app_err('ERROR_INVALID_PARAMETER')
+
         # firmware_inst = 'MIPS'
-        # firmware_size = '5.8M'
         # firmware_decomp_size = '7.2M'
 
         content = list()
@@ -171,15 +190,18 @@ class Graphs:
         content.append(Spacer(300, 20))  # 添加空白，长度300，宽20
 
         content.append(self.draw_text('固件名称:' + firmware_name, '0'))
-        # content.append(self.draw_text('固件 MD5:' + firmware_md5, '0'))
+        if len(firmware_md5) > 0:
+            content.append(self.draw_text('固件 MD5:' + firmware_md5, '0'))
+
+        if len(firmware_size) > 0:
+            content.append(self.draw_text('固件大小:' + firmware_size, '0'))
         # content.append(self.draw_text('指令集架构:' + firmware_inst, '0'))
-        # content.append(self.draw_text('固件大小:' + firmware_size, '0'))
         # content.append(self.draw_text('固件解压包大小:' + firmware_decomp_size, '0'))
         content.append(self.draw_text('固件中共有' + str(firmware_file_num) + '个文件', '0'))
 
         content.append(Spacer(300, 10))    # 添加空白，长度300，宽10
 
-        ct = self.text_type(10, 15, colors.black, None)
+        ct = self.text_type(10, 15, colors.black, 1)
         # 设置自动换行
         ct.wordWrap = 'CJK'
 
@@ -189,7 +211,7 @@ class Graphs:
 
         # 添加表格数据
         file_data = [('固件名称', '固件文件名称', '类型', '文件路径')]
-        if fw_file_lists is not None or len(fw_file_lists) > 0:
+        if fw_file_lists is not None and len(fw_file_lists) > 0:
 
             for file_info in fw_file_lists:
 
@@ -233,24 +255,76 @@ class Graphs:
                     file_name = file_keyword.get('file_name')
                     file_name_text = Paragraph(file_name, ct)
 
-                    for file_inverted_info in file_inverted_list:
-                        index_con = file_inverted_info.get('index_con')
-                        index_con_text = Paragraph(index_con, ct)
-                        position = file_inverted_info.get('position')
-                        appear_total = file_inverted_info.get('appear_total')
+                    len_size = 0
 
-                        row_data = (file_name_text, index_con_text, position, appear_total)
-                        data.append(row_data)
+                    for file_inverted_info in file_inverted_list:
+
+                        if len_size < 30:
+                            index_con = file_inverted_info.get('index_con')
+                            index_con_text = Paragraph(index_con, ct)
+                            position = file_inverted_info.get('position')
+                            appear_total = file_inverted_info.get('appear_total')
+
+                            row_data = (file_name_text, index_con_text, position, appear_total)
+                            data.append(row_data)
+                            len_size += 1
+
 
         col_width = [120, 240, 45, 45]
 
         content.append(self.draw_table(data, col_width))
+
+        if len(data) < 2:
+            self.draw_con(content, '组件未生成倒排索引', self.text_type(11, 20, colors.black, 1))
         # 敏感关键字列表 end
+
+        # 关联的漏洞 start
+        # 添加文档内容标题
+        self.draw_con(content, '3 组件关联的漏洞', self.text_type(18, 30, colors.black, 0))
+
+        # 添加表格数据
+        edb_data = [('固件名称', '固件文件名称', '组件文件名称', '组件版本', '漏洞编号')]
+
+        if fw_file_lists is not None and len(fw_file_lists) > 0:
+            pack_name_text = Paragraph(firmware_name, ct)
+
+            for file_info in fw_file_lists:
+                fw_file_name = file_info.get('file_name')
+                fw_file_name_text = Paragraph(fw_file_name, ct)
+                extra_props = file_info.get('extra_props')
+
+                if extra_props is not None:
+                    extra_props.setdefault('name', '')
+                    extra_props.setdefault('version', '')
+                    extra_props.setdefault('edb_id', '')
+
+                    file_name = extra_props['name']
+                    version = extra_props['version']
+                    edb_id = extra_props['edb_id']
+
+                    if len(file_name) > 0 or len(version) > 0 or len(edb_id) > 0:
+                        file_name_text = Paragraph(file_name, ct)
+                        row_data = (pack_name_text, fw_file_name_text, file_name_text, version, edb_id)
+                        edb_data.append(row_data)
+
+        col_width = [120, 80, 80, 80, 80]
+
+        content.append(self.draw_table(edb_data, col_width))
+
+        if len(edb_data) < 2:
+            self.draw_con(content, '组件未关联漏洞', self.text_type(11, 20, colors.black, 1))
+        # 关联的漏洞 end
 
         content.append(Spacer(300, 20))  # 添加空白，长度300，宽10
         self.draw_con(content, '报告结束', self.text_type(11, 20, colors.black, 1))
 
-        pdf_name = firmware_name + title_name + '.pdf'
+        time_stamp = SysUtils.parse_time_stamp_str()
+        inde = firmware_name.index('.')
+
+        if inde > -1:
+            firmware_name = firmware_name[0: inde]
+
+        pdf_name = time_stamp + firmware_name + title_name + '.pdf'
 
         path = './firmware_analyze_serv_report/'
 

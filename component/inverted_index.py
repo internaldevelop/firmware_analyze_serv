@@ -124,7 +124,7 @@ class InvertedIndex:
         result = file_inverted_col.find({'index_con': {'$regex': index_con}})
         item_list = list(result)
         if item_list is None or len(item_list) == 0:
-            return sys_app_err('ERROR_INVALID_PARAMETER')
+            return sys_app_ok()
 
         file_ids_str = ''
         for filePo in item_list:
@@ -138,7 +138,7 @@ class InvertedIndex:
 
         results = []
         if len(file_ids) > 0:
-            files_result = fw_files_col.find({'file_id': {'$in': file_ids}})
+            files_result = fw_files_col.find({'component': 1, 'file_id': {'$in': file_ids}})
             file_list = list(files_result)
             if file_list is None or len(file_list) == 0:
                 return sys_app_err('ERROR_INVALID_PARAMETER')

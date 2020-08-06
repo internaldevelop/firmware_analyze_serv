@@ -4,6 +4,7 @@ from fw_analyze.service.cfg_analyze_service import CfgAnalyzeService
 from utils.const.file_type import FileType
 from utils.db.mongodb.file_cache_dao import FileCacheDAO
 from utils.db.mongodb.fw_file import FwFileDO
+from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.fs.fs_base import FsBase
 from utils.task.my_task import MyTask
@@ -102,8 +103,10 @@ class PackFiles:
                     # 保存 函数列表到数据库
                     FileCacheDAO.save_functions(file_id, functions)
 
+                    arch = str(angr_proj.proj.arch)
                     # 设置文件已完成 CFG 分析的标记
-                    FwFileDO.set_cfg_analyzed(file_id)
+                    FwFileDO.set_cfg_analyzed(file_id, 1, arch)
+                    PackFileDO.updateArch(pack_id, arch)
 
                 except Exception as e:
                     print(e)

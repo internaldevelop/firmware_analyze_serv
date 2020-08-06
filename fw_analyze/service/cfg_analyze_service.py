@@ -4,6 +4,7 @@ from fw_analyze.progress.cfg_progress import CfgProgress
 from utils.db.mongodb.cfg_dao import CfgAnalyzeResultDAO
 from utils.db.mongodb.file_cache_dao import FileCacheDAO
 from utils.db.mongodb.fw_file import FwFileDO
+from utils.db.mongodb.pack_file import PackFileDO
 from utils.db.mongodb.logs import LogRecords
 from utils.task.my_task import MyTask
 from utils.task.task_type import TaskType
@@ -61,20 +62,21 @@ class CfgAnalyzeService:
                     # 保存 函数列表到数据库
                     FileCacheDAO.save_functions(file_id, functions)
 
+                    print(str(angr_proj.proj.arch))
+                    arch = str(angr_proj.proj.arch)
                     # 设置文件已完成 CFG 分析的标记
-                    FwFileDO.set_cfg_analyzed(file_id)
+                    FwFileDO.set_cfg_analyzed(file_id, 1, arch)
+                    # PackFileDO.updateArch(arch)
 
                     time.sleep(1)
                 except Exception as e:
                     print(e)
 
-
     def analyze_cfg_proc(self, file_id, task_id):
         self.task_id = task_id
 
         # 通过 project 快速解析文件
-        angr_proj = AngrProj(file_id, progress_callback=self.run_percent_cb, task_id=task_id,
-                             cfg_mode='cfg_fast')
+        angr_proj = AngrProj(file_id, progress_callback=self.run_percent_cb, task_id=task_id, cfg_mode='cfg_fast')
 
         # 从 project 中提取函数列表
         functions = FunctionParse.functions_extract(angr_proj.proj)
@@ -82,8 +84,11 @@ class CfgAnalyzeService:
         # 保存 函数列表到数据库
         FileCacheDAO.save_functions(file_id, functions)
 
+        print(str(angr_proj.proj.arch))
+        arch = str(angr_proj.proj.arch)
         # 设置文件已完成 CFG 分析的标记
-        FwFileDO.set_cfg_analyzed(file_id)
+        FwFileDO.set_cfg_analyzed(file_id, 1, arch)
+        # PackFileDO.updateArch(arch)
 
     def run_percent_cb(self, percentage, **kwargs):
         if self.task_id is None:

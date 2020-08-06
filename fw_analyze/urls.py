@@ -60,6 +60,9 @@ urlpatterns = [
     # 查询指定固件包信息
     path('pack/info', pack_view.pack_info, name='query_pack_info'),
 
+    # 编辑指定固件包信息 厂商 型号
+    path('pack/edit', pack_view.pack_edit, name='query_pack_edit'),
+
     # 删除指定固件包
     path('pack/delete', pack_view.pack_delete, name='query_pack_info'),
 

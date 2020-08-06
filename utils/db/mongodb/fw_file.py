@@ -100,8 +100,8 @@ class FwFileDO:
         return rv
 
     @staticmethod
-    def set_cfg_analyzed(file_id, cfg_analyzed=1):
-        FwFileDO._save_file_props(file_id, {'cfg_analyze': cfg_analyzed})
+    def set_cfg_analyzed(file_id, cfg_analyzed=1, arch=None):
+        FwFileDO._save_file_props(file_id, {'cfg_analyze': cfg_analyzed, 'arch': arch})
 
     @staticmethod
     def set_inverted(file_id, inverted=1):

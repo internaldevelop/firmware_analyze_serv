@@ -26,6 +26,25 @@ class PackFileDO:
         pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
 
     @staticmethod
+    def save_manufacturer(pack_id, manufacturer, model):
+        doc = {'pack_id': pack_id, 'manufacturer': manufacturer, 'model': model}
+        # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
+        pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
+
+    @staticmethod
+    def savefs(pack_id, filesystem, arch=None):
+        doc = {'filesystem': filesystem, 'arch': arch}
+        # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
+        pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
+
+    @staticmethod
+    def updateArch(pack_id, arch):
+        doc = {'arch': arch}
+        # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
+        pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
+
+
+    @staticmethod
     def fetch_pack(pack_id):
         cursor = pack_files_coll.find({'pack_id': pack_id}, {'_id': 0})
         return CursorResult.one(cursor)

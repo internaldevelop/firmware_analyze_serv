@@ -152,7 +152,7 @@ class InvertedIndex:
 
             return sys_app_ok_p({'total': len(file_list), 'files': file_list})
 
-        return sys_app_err('ERROR_GENERAL_ERROR')
+        return sys_app_ok()
 
     # str转16进制
     def str_to_hex(s):

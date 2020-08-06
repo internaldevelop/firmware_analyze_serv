@@ -66,7 +66,7 @@ class CfgAnalyzeService:
                     arch = str(angr_proj.proj.arch)
                     # 设置文件已完成 CFG 分析的标记
                     FwFileDO.set_cfg_analyzed(file_id, 1, arch)
-                    PackFileDO.updateArch(arch)
+                    # PackFileDO.updateArch(arch)
 
                     time.sleep(1)
                 except Exception as e:
@@ -88,7 +88,7 @@ class CfgAnalyzeService:
         arch = str(angr_proj.proj.arch)
         # 设置文件已完成 CFG 分析的标记
         FwFileDO.set_cfg_analyzed(file_id, 1, arch)
-        PackFileDO.updateArch(arch)
+        # PackFileDO.updateArch(arch)
 
     def run_percent_cb(self, percentage, **kwargs):
         if self.task_id is None:

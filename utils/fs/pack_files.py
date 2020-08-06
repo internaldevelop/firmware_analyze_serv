@@ -106,7 +106,7 @@ class PackFiles:
                     arch = str(angr_proj.proj.arch)
                     # 设置文件已完成 CFG 分析的标记
                     FwFileDO.set_cfg_analyzed(file_id, 1, arch)
-                    PackFileDO.updateArch(arch)
+                    PackFileDO.updateArch(pack_id, arch)
 
                 except Exception as e:
                     print(e)

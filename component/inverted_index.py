@@ -102,10 +102,10 @@ class InvertedIndex:
     def get_inverted_data(self, index_con, file_id):
         if index_con is not None and len(index_con) > 0:
             index_con = InvertedIndex.str_to_hex(index_con)
-            result = file_inverted_col.find({'index_con': {'$regex': index_con}})
+            result = file_inverted_col.find({'index_con': {'$regex': index_con}}).limit(100)
             item_list = list(result)
         elif file_id is not None and len(file_id) > 0:
-            result = file_inverted_col.find({'file_id': file_id})
+            result = file_inverted_col.find({'file_id': file_id}).limit(100)
             item_list = list(result)
         else:
             return sys_app_err('ERROR_INVALID_PARAMETER')

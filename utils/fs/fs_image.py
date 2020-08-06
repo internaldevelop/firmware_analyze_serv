@@ -1,5 +1,6 @@
 from utils.db.mongodb.fw_file import FwFileDO
 from utils.db.mongodb.fw_files_storage import FwFilesStorage
+from utils.db.mongodb.pack_file import PackFileDO
 from utils.fs.img_romfs import IMG_RomFS
 from utils.fs.img_yaffs import IMG_YAFFS
 from utils.fs.pack_files import PackFiles
@@ -62,6 +63,7 @@ class FsImage:
         self.task_id = task_id
 
         image, image_file_name, fs = self.open_image()
+        PackFileDO.savefs(self.pack_id, fs)
 
         # 任务关联文件名
         MyTask.save_exec_info_name(task_id, image_file_name)
@@ -99,36 +101,36 @@ class FsImage:
         if contents[0:4] == b'\x45\x3d\xcd\x28' or contents[0:4] == b'\x28\xcd\x3d\x45':
             print(contents[0:4], "cramfs")
             image = IMG_CramFS(image_file_path)
-            fs = 'cramfs'
+            fs = 'CRAMFS'
         elif contents[0:2] == b'\x85\x19' or contents[0:2] == b'\x19\x85':
             print(contents[0:4], "jffs2")
-            fs = 'jffs2'
+            fs = 'JFFS2'
             image = IMG_JFFS2(image_file_path)
         elif contents[0:8] == b'-rom1fs-':
             print("romfs")
-            fs = 'romfs'
+            fs = 'RomFS'
+            image = IMG_RomFS(image_file_path)
+        elif contents[0:4] == b'\x8a\x32\xfc\x66':
+            print("romfs")
+            fs = 'RomFS'
             image = IMG_RomFS(image_file_path)
         elif contents[0:4] == b'UBI#':
             print("ubifs")
-            fs = 'ubifs'
+            fs = 'UBIFS'
             image = IMG_UBI(image_file_path)
         elif contents[0:10] == b'\x03\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
                 contents[0:10] == b'\x01\x00\x00\x00\x01\x00\x00\x00\xff\xff' or \
                 contents[0:10] == b'\x00\x00\x00\x03\x00\x00\x00\x01\xff\xff' or \
                 contents[0:10] == b'\x00\x00\x00\x01\x00\x00\x00\x01\xff\xff':
             print("yaffs2")
-            fs = 'yaffs2'
+            fs = 'YAFFS2'
             image = IMG_YAFFS(image_file_path)
-        elif contents[0:4] == b'\x8a\x32\xfc\x66':
-            print("romfs")
-            fs = 'romfs'
-            return FileType.FS_IMAGE, contents
         elif contents[0:4] == b'sqsh' or contents[0:4] == b'hsqs' or \
                 contents[0:4] == b'shsq' or contents[0:4] == b'qshs' or \
                 contents[0:4] == b'tqsh' or contents[0:4] == b'hsqt' or \
                 contents[0:4] == b'sqlz':
             print(contents[0:4], "squashfs")
-            fs = 'squashfs'
+            fs = 'SquashFS'
             image = SquashFS(image_file_path)
         else:
             return None, None

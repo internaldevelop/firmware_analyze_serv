@@ -52,6 +52,19 @@ def all_packs_info(request):
     return sys_app_ok_p(info_list)
 
 
+# 编辑指定固件包信息 厂商 型号
+def pack_edit(request):
+    pack_id, manufacturer, model = ReqParams.many(request, ['pack_id', 'manufacturer', 'model'])
+
+    PackFileDO.save_manufacturer(pack_id, manufacturer, model)
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='编辑指定固件包信息',
+                    desc='编辑指定固件包信息 厂商 型号（ID=%s）的信息' % pack_id)
+
+    return sys_app_ok_p([])
+
+
 def pack_info(request):
     pack_id = ReqParams.one(request, 'pack_id')
 
@@ -92,6 +105,7 @@ def pack_delete(request):
                     desc='删除指定固件包（ID=%s）的信息，' % pack_id)
 
     return sys_app_ok_p([])
+
 
 # 检查组件关联
 # 固件里文件名与组件名匹配，相同则认为是组件

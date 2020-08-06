@@ -54,7 +54,7 @@ def all_packs_info(request):
 
 # 编辑指定固件包信息 厂商 型号
 def pack_edit(request):
-    pack_id, manufacturer, model = ReqParams.many(request, ['pack_id', 'manufacturer', 'model'])
+    pack_id, manufacturer, model = ReqParams.many(request, ['pack_id', 'manufacturer', 'model'], protocol='POST')
 
     PackFileDO.save_manufacturer(pack_id, manufacturer, model)
 

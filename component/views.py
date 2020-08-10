@@ -170,8 +170,12 @@ def compile_x86(file_name, task_id):
     build_path = os.path.join(make_path, 'make_component')
     SysUtils.rm_filepath(build_path)
 
+    if 'httpd' in file_name:
+        cmd = './configure --prefix=' + build_path + ' --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util/'
+    else:
     # 指定生成的目录，方便将新生成文件进行入库操作
-    cmd = './config --prefix=' + build_path
+        cmd = './config --prefix=' + build_path
+
     process, result = runcmd(cmd, make_path, task_id)
 
     # 先清数据，防止再次编译时ERROR

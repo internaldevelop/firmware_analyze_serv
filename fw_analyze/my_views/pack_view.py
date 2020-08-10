@@ -99,7 +99,6 @@ def pack_delete(request):
 
     PackFileDO.delete(pack_id)
 
-
     # 保存操作日志
     LogRecords.save('', category='statistics', action='删除固件包',
                     desc='删除指定固件包（ID=%s）的信息，' % pack_id)

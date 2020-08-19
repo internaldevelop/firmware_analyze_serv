@@ -6,7 +6,7 @@ from utils.fs.img_yaffs import IMG_YAFFS
 from utils.fs.pack_files import PackFiles
 from utils.fs.img_squashfs import SquashFS
 from utils.fs.img_jffs2 import IMG_JFFS2
-from utils.fs.img_ubifs import IMG_UBI
+# from utils.fs.img_ubifs import IMG_UBI
 from utils.fs.img_cramfs import IMG_CramFS
 from utils.gadget.my_file import MyFile
 from utils.gadget.my_path import MyPath

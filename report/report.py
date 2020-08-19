@@ -13,6 +13,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Table, SimpleDocTemplate, Paragraph, Spacer
 
 import utils.sys.config
+from utils.db.mongodb.fw_files_storage import FwFilesStorage
 from utils.db.mongodb.pack_files_storage import PackFilesStorage
 from utils.gadget.general import SysUtils
 from utils.gadget.strutil import StrUtils
@@ -149,6 +150,7 @@ class Graphs:
 
         firmware_name = ''
         firmware_file_num = 0
+        execute_file_num = 0
         fw_file_lists = ''
 
         firmware_md5 = ''
@@ -164,6 +166,12 @@ class Graphs:
             fw_file_lists = list(result_files)
             if fw_file_lists is not None or len(fw_file_lists) > 0:
                 firmware_file_num = len(fw_file_lists)
+
+                for file_info in fw_file_lists:
+                    fw_file_type = file_info.get('file_type')
+
+                    if fw_file_type == 4:
+                        execute_file_num += 1
 
             item = PackFilesStorage.fetch(pack_file_id)
 
@@ -191,6 +199,8 @@ class Graphs:
         self.draw_con(content, '报告生成时间：' + report_time, self.text_type(11, 20, colors.black, 2))
         content.append(Spacer(300, 20))  # 添加空白，长度300，宽20
 
+        self.draw_con(content, '1 固件分析综述', self.text_type(18, 30, colors.black, 0))
+
         content.append(self.draw_text('固件名称:' + firmware_name, '0'))
         if len(firmware_md5) > 0:
             content.append(self.draw_text('固件 MD5:' + firmware_md5, '0'))
@@ -200,6 +210,7 @@ class Graphs:
         # content.append(self.draw_text('指令集架构:' + firmware_inst, '0'))
         # content.append(self.draw_text('固件解压包大小:' + firmware_decomp_size, '0'))
         content.append(self.draw_text('固件中共有' + str(firmware_file_num) + '个文件', '0'))
+        content.append(self.draw_text('固件中共有' + str(execute_file_num) + '个可执行文件', '0'))
 
         content.append(Spacer(300, 10))    # 添加空白，长度300，宽10
 
@@ -207,88 +218,16 @@ class Graphs:
         # 设置自动换行
         ct.wordWrap = 'CJK'
 
-        # 固件文件列表 start
-        # 添加文档内容标题
-        self.draw_con(content, '1 固件文件详情', self.text_type(18, 30, colors.black, 0))
-
-        # 添加表格数据
-        file_data = [('固件名称', '固件文件名称', '类型', '文件路径')]
-        if fw_file_lists is not None and len(fw_file_lists) > 0:
-
-            for file_info in fw_file_lists:
-
-                pack_name_text = Paragraph(firmware_name, ct)
-                file_name = file_info.get('file_name')
-                file_name_text = Paragraph(file_name, ct)
-                file_type = file_info.get('file_type')
-                file_path = file_info.get('file_path')
-                file_path_text = Paragraph(file_path, ct)
-
-                row_data = (pack_name_text, file_name_text, file_type, file_path_text)
-                file_data.append(row_data)
-
-        file_col_width = [110, 110, 70, 160]
-
-        content.append(self.draw_table(file_data, file_col_width))
-        # 固件文件列表 end
-
-        content.append(Spacer(300, 20))  # 添加空白，长度300，宽10
-
-        # 敏感关键字列表 start
-        # 添加文档内容标题
-        self.draw_con(content, '2 敏感关键字', self.text_type(18, 30, colors.black, 0))
-
-        lookup = {"from": "file_inverted_index", "localField": "file_id", "foreignField": "file_id", "as": "file_inverted"}
-
-        match = {'pack_id': pack_id}
-
-        result = fw_files_col.aggregate([{'$lookup': lookup}, {'$match': match}])
-
-        item_list = list(result)
-
-        # 添加表格数据
-        data = [('文件名称', '关键字', '出现位置', '出现次数')]
-        if item_list is not None and len(item_list) > 0:
-
-            for file_keyword in item_list:
-                file_inverted_list = file_keyword.get('file_inverted')
-
-                if file_inverted_list is not None and len(file_inverted_list) > 0:
-                    file_name = file_keyword.get('file_name')
-                    file_name_text = Paragraph(file_name, ct)
-
-                    len_size = 0
-
-                    for file_inverted_info in file_inverted_list:
-
-                        if len_size < 30:
-                            index_con = file_inverted_info.get('index_con')
-                            index_con_text = Paragraph(index_con, ct)
-                            position = file_inverted_info.get('position')
-                            appear_total = file_inverted_info.get('appear_total')
-
-                            row_data = (file_name_text, index_con_text, position, appear_total)
-                            data.append(row_data)
-                            len_size += 1
-
-
-        col_width = [120, 240, 45, 45]
-
-        content.append(self.draw_table(data, col_width))
-
-        if len(data) < 2:
-            self.draw_con(content, '组件未生成倒排索引', self.text_type(11, 20, colors.black, 1))
-        # 敏感关键字列表 end
-
         # 关联的漏洞 start
         # 添加文档内容标题
-        self.draw_con(content, '3 组件关联的漏洞', self.text_type(18, 30, colors.black, 0))
+        self.draw_con(content, '2 组件关联的漏洞', self.text_type(18, 30, colors.black, 0))
 
         # 添加表格数据
-        edb_data = [('固件名称', '固件文件名称', '组件文件名称', '组件版本', '漏洞编号')]
+        edb_data = [('序号', '固件名称', '固件文件名称', '组件文件名称', '相似度', '组件版本', '漏洞编号')]
 
         if fw_file_lists is not None and len(fw_file_lists) > 0:
             pack_name_text = Paragraph(firmware_name, ct)
+            num = 1
 
             for file_info in fw_file_lists:
                 fw_file_name = file_info.get('file_name')
@@ -299,17 +238,20 @@ class Graphs:
                     extra_props.setdefault('name', '')
                     extra_props.setdefault('version', '')
                     extra_props.setdefault('edb_id', '')
+                    extra_props.setdefault('similarity', '')
 
                     file_name = extra_props['name']
                     version = extra_props['version']
                     edb_id = extra_props['edb_id']
+                    similarity = extra_props['similarity']
 
                     if len(file_name) > 0 or len(version) > 0 or len(edb_id) > 0:
                         file_name_text = Paragraph(file_name, ct)
-                        row_data = (pack_name_text, fw_file_name_text, file_name_text, version, edb_id)
+                        row_data = (num, pack_name_text, fw_file_name_text, file_name_text, str(similarity), version, edb_id)
+                        num += 1
                         edb_data.append(row_data)
 
-        col_width = [120, 80, 80, 80, 80]
+        col_width = [30, 100, 70, 70, 40, 60, 90]
 
         content.append(self.draw_table(edb_data, col_width))
 
@@ -318,6 +260,114 @@ class Graphs:
         # 关联的漏洞 end
 
         content.append(Spacer(300, 20))  # 添加空白，长度300，宽10
+
+        # 固件文件列表 start
+        # 添加文档内容标题
+        self.draw_con(content, '3 可执行文件详情', self.text_type(18, 30, colors.black, 0))
+
+        # 添加表格数据
+        file_data = [('序号', '固件文件名称', '大小', 'MD5值', '文件路径')]
+        if fw_file_lists is not None and len(fw_file_lists) > 0:
+
+            num = 1
+
+            for file_info in fw_file_lists:
+
+                file_name = file_info.get('file_name')
+                file_name_text = Paragraph(file_name, ct)
+                # file_type = file_info.get('file_type')
+                file_path = file_info.get('file_path')
+                file_path_text = Paragraph(file_path, ct)
+                fw_file_type = file_info.get('file_type')
+
+                file_id = file_info.get('file_id')
+
+                item = FwFilesStorage.fetch(file_id)
+
+                fw_file_md5 = item.get('md5')
+                fw_file_md5_text = Paragraph(fw_file_md5, ct)
+                length_b = item.get('length')
+                length_kb = length_b / 1024
+                length_mb = length_kb / 1024
+                if length_kb < 1:
+                    fw_file_size = str('%.2f' % length_b) + ' B'
+                elif length_mb < 1:
+                    fw_file_size = str('%.2f' % length_kb) + ' KB'
+                else:
+                    fw_file_size = str('%.2f' % length_mb) + ' MB'
+
+                if fw_file_type == 4:
+                    row_data = (num, file_name_text, fw_file_size, fw_file_md5_text, file_path_text)
+                    num += 1
+                    file_data.append(row_data)
+
+        file_col_width = [30, 100, 50, 120, 160]
+
+        content.append(self.draw_table(file_data, file_col_width))
+        # 固件文件列表 end
+
+        content.append(Spacer(300, 20))  # 添加空白，长度300，宽10
+
+        # 敏感关键字列表 start
+        # 添加文档内容标题
+        self.draw_con(content, '4 特征码', self.text_type(18, 30, colors.black, 0))
+
+        child_num = 1
+        for fw_file_info in fw_file_lists:
+            file_id = fw_file_info.get('file_id')
+            file_name = fw_file_info.get('file_name')
+
+            result = file_inverted_col.find({'file_id': file_id}).sort('appear_total', -1)
+            item_list = list(result)
+            if item_list is not None and len(item_list) > 0:
+
+                # 添加文档内容标题
+                self.draw_con(content, ' (' + str(child_num) + ')' + file_name + '文件特征码', self.text_type(15, 30, colors.black, 0))
+
+                child_num += 1
+
+                # 添加表格数据
+                data = [('序号', '关键字', '出现位置', '出现次数')]
+
+                num = 1
+                for file_inverted_info in item_list:
+
+                    appear_total = file_inverted_info.get('appear_total')
+                    if num < 11 and appear_total > 1:
+                        index_con = file_inverted_info.get('index_con')
+                        if len(index_con) < 10 or len(index_con) > 50:
+                            continue
+                        index_con_text = Paragraph(index_con, ct)
+                        position = file_inverted_info.get('position')
+                        position_str = ''  # 出现位置
+
+                        con_list = position.split(',')
+                        for con_index in range(len(con_list)):
+                            con_info = con_list[con_index]
+
+                            position_hex = hex(int(con_info))
+                            position_str += str(position_hex) + ' '
+
+                            if con_index > 27:
+                                position_str += '... '
+                                break
+
+                        position_text = Paragraph(position_str, ct)
+
+                        row_data = (num, index_con_text, position_text, appear_total)
+                        data.append(row_data)
+                        num += 1
+
+                col_width = [30, 180, 190, 50]
+
+                content.append(self.draw_table(data, col_width))
+
+        if child_num == 1:
+            self.draw_con(content, '组件文件未生成特征码', self.text_type(11, 20, colors.black, 1))
+        # 敏感关键字列表 end
+
+        content.append(Spacer(300, 10))  # 添加空白，长度300，宽10
+
         self.draw_con(content, '报告结束', self.text_type(11, 20, colors.black, 1))
 
         time_stamp = SysUtils.parse_time_stamp_str()
@@ -326,7 +376,7 @@ class Graphs:
         if inde > -1:
             firmware_name = firmware_name[0: inde]
 
-        pdf_name = time_stamp + firmware_name + title_name + '.pdf'
+        pdf_name = firmware_name + title_name + time_stamp + '.pdf'
 
         path = './firmware_analyze_serv_report/'
 

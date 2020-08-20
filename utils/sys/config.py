@@ -75,5 +75,5 @@ g_firmware_filepath = ''
 
 g_cnvd_db = g_cnvd_db_full
 
-# 组件漏洞关联任务标记
-g_check_component_lock = False
+# 相似度阈值设定： 0－100
+g_similarity = 90

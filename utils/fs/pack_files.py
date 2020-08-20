@@ -113,7 +113,8 @@ class PackFiles:
 
         # 保存任务完成状态
         MyTask.save_exec_info(task_id, 100.0)
-
+        # 包分析完成标志
+        PackFileDO.analyze_complet(pack_id, 1)
 
     def run_percent_cb(self, percentage, **kwargs):
         if self.task_id is None:

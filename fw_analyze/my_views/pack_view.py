@@ -54,9 +54,9 @@ def all_packs_info(request):
 
 # 编辑指定固件包信息 厂商 型号
 def pack_edit(request):
-    pack_id, manufacturer, model = ReqParams.many(request, ['pack_id', 'manufacturer', 'model'], protocol='POST')
+    pack_id, manufacturer, model, version = ReqParams.many(request, ['pack_id', 'manufacturer', 'model', 'version'], protocol='POST')
 
-    PackFileDO.save_manufacturer(pack_id, manufacturer, model)
+    PackFileDO.save_manufacturer(pack_id, manufacturer, model, version)
 
     # 保存操作日志
     LogRecords.save('', category='statistics', action='编辑指定固件包信息',
@@ -115,7 +115,7 @@ def check_component(pack_id, task_id):
     # 获取本固件包所有的二进制可执行文件记录
     fw_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
     pack_item = PackFileDO.fetch_pack(pack_id)
-    process_file_name = pack_item['name']
+    process_file_name = pack_item.get('name')     # pack_item['name']
     MyTask.save_exec_info_name(task_id, process_file_name)
 
     # 枚举每个文件，根据文件名检索组件库（make），校验
@@ -137,8 +137,8 @@ def check_component(pack_id, task_id):
         similarity = assembly.calc_cosine_algorithm(fw_file_id, component_file_id)
         print(SysUtils.get_now_time())
 
-        # todo 相似度阈值设定： 0－100
-        if similarity < 90:
+        # 相似度阈值设定： 0－100
+        if similarity < utils.sys.config.g_similarity:
             print(similarity)
             continue
         # 相似度大于阈值 标记漏洞(version / edbid)

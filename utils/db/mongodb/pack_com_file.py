@@ -1,4 +1,5 @@
 import utils.sys.config
+import pymongo
 from utils.db.mongodb.cursor_result import CursorResult
 from utils.gadget.general import SysUtils
 from utils.const.file_source import FileSource
@@ -43,7 +44,8 @@ class PackCOMFileDO:
 
     @staticmethod
     def all_packs():
-        cursor = pack_com_files_coll.find({}, {'_id': 0})
+        # cursor = pack_com_files_coll.find({}, {'_id': 0})
+        cursor = pack_com_files_coll.find({}, {'_id': 0}).sort([("_id", pymongo.DESCENDING)])
         return CursorResult.many(cursor)
 
     @staticmethod

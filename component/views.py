@@ -356,6 +356,22 @@ def list(request):
     return sys_app_ok_p(info_list)
 
 
+# 9.2 查询组件包信息
+def info(request):
+    pack_id = ReqParams.one(request, 'pack_id')
+
+    com_info = PackCOMFileDO.fetch_pack(pack_id)
+    # 读取指定固件包的信息
+    files_stat = get_sourcecode_files_stat(pack_id)
+    pack_info = dict(com_info, **files_stat)
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='查询组件源码包信息',
+                    desc='查询组件源码包的信息，统计其文件数量，查询任务信息')
+
+    return sys_app_ok_p(pack_info)
+
+
 # 组件编译
 def compile(request):
     # 获取编译参数

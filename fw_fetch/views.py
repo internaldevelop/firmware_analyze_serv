@@ -103,6 +103,7 @@ def _proc_component_tasks(com_download_url, components_save_path, task_id):
 
     # 2 时间消耗总占比0 保存到 pack_com_file to mongodb
     pack_com_id, pack_com_file_id = _save_pack_com_db(os.path.join(components_save_path, com_filename), ret_download_info, edb_id, title, task_id)
+    MyTask.save_exec_info_pack_id(task_id, pack_com_id)
 
     # 3 时间消耗总占比0 解压缩源码包，提取文件到mongo
     output_dir, file_name = os.path.split(os.path.join(components_save_path, com_filename))
@@ -163,6 +164,7 @@ def _proc_tasks(fw_download_url, g_fw_save_path, ftp_user, ftp_password, task_id
     # 2 时间消耗总占比0 保存到 pack_file to mongodb
     pack_id, pack_file_id = _save_pack_db(fw_download_url, os.path.join(g_fw_save_path, fw_filename), ret_download_info,
                                           task_id)
+    MyTask.save_exec_info_pack_id(task_id, pack_id)
 
     # 3 时间消耗总占比0 解压缩固件包->系统镜像文件，提取文件到mongo
     img_filename = _proc_uncompress(os.path.join(g_fw_save_path, fw_filename), g_fw_save_path, task_id)

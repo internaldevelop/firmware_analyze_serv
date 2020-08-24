@@ -139,6 +139,17 @@ class MyTask:
             TasksDAO.save(task_info)
 
     @staticmethod
+    def save_exec_info_pack_id(task_id, pack_id=None):
+        # 从缓存或数据库中读取该任务的记录
+        task_info = MyTask.fetch_exec_info(task_id)
+        # 没有该任务信息记录时，返回失败
+        if task_info is None:
+            return False
+        if pack_id is not None:
+            task_info['pack_id'] = pack_id
+            TasksDAO.save(task_info)
+
+    @staticmethod
     def save_exec_info(task_id, percent, result=None, notify=True):
         # 从缓存或数据库中读取该任务的记录
         task_info = MyTask.fetch_exec_info(task_id)

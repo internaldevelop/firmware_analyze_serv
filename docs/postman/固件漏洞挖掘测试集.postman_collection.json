@@ -2354,7 +2354,7 @@
 				{
 					"name": "7.4 固件包删除",
 					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/delete?access_token={{access_token}}&pack_id={{pack_id}}",
@@ -2383,10 +2383,35 @@
 				{
 					"name": "7.5 编译固件包信息",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pack_id",
+									"value": "{{pack_id}}",
+									"type": "text"
+								},
+								{
+									"key": "manufacturer",
+									"value": "BMW",
+									"type": "text"
+								},
+								{
+									"key": "model",
+									"value": "750",
+									"type": "text"
+								},
+								{
+									"key": "version",
+									"value": "1.0.0.1",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/edit?access_token={{access_token}}&pack_id={{pack_id}}&manufacturer=BMW&model=750",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/pack/edit?access_token={{access_token}}",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -2399,18 +2424,6 @@
 								{
 									"key": "access_token",
 									"value": "{{access_token}}"
-								},
-								{
-									"key": "pack_id",
-									"value": "{{pack_id}}"
-								},
-								{
-									"key": "manufacturer",
-									"value": "BMW"
-								},
-								{
-									"key": "model",
-									"value": "750"
 								}
 							]
 						}
@@ -2689,6 +2702,56 @@
 								"component",
 								"async_funcs",
 								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.2 查询组件包信息",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cd4df002-8086-4581-aed8-087ab754107f",
+								"exec": [
+									"pm.test(\"async functions list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(0);",
+									"    ",
+									"    pm.environment.set(\"pack_id\", jsonData.payload[0].pack_id);",
+									"",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/component/info?pack_id={{pack_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"component",
+								"info"
+							],
+							"query": [
+								{
+									"key": "pack_id",
+									"value": "{{pack_id}}"
+								}
 							]
 						}
 					},
@@ -3499,6 +3562,38 @@
 								{
 									"key": "report_id",
 									"value": "14491331-39a7-44e2-bbcf-21169fd1a6f7"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "12. 检测漏洞",
+			"item": [
+				{
+					"name": "12.1 检测漏洞",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/analyze_vuler?file_id=ea2af3af-4a41-434f-8fdb-5ab5083eb4e5",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"analyze_vuler"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "ea2af3af-4a41-434f-8fdb-5ab5083eb4e5",
+									"description": "ea2af3af-4a41-434f-8fdb-5ab5083eb4e5"
 								}
 							]
 						}

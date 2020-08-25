@@ -356,13 +356,29 @@ def list(request):
     return sys_app_ok_p(info_list)
 
 
+# 9.2 查询组件包信息
+def info(request):
+    pack_id = ReqParams.one(request, 'pack_id')
+
+    com_info = PackCOMFileDO.fetch_pack(pack_id)
+    # 读取指定固件包的信息
+    files_stat = get_sourcecode_files_stat(pack_id)
+    pack_info = dict(com_info, **files_stat)
+
+    # 保存操作日志
+    LogRecords.save('', category='statistics', action='查询组件源码包信息',
+                    desc='查询组件源码包的信息，统计其文件数量，查询任务信息')
+
+    return sys_app_ok_p(pack_info)
+
+
 # 组件编译
 def compile(request):
     # 获取编译参数
     arch, pack_id = ReqParams.many(request, ['arch', 'pack_id'])
 
     # 启动编译任务
-    extra_info = {'task_type': TaskType.COMPONENT_COMPILE,
+    extra_info = {'pack_id': pack_id, 'task_type': TaskType.COMPONENT_COMPILE,
                   'task_name': '组件编译',
                   'task_desc': '组件编译及入库操作'}
     task = MyTask(_proc_compile_tasks, (arch, pack_id), extra_info=extra_info)
@@ -473,8 +489,7 @@ def save_make_files(pack_com_id, buildpath, arch):
 # 启动编译任务
 def _proc_compile_tasks(arch, pack_id, task_id):
 
-
-    #1 DB中导出源码文件／目录
+    # 1 DB中导出源码文件／目录
     path, file_name = export_files(pack_id)
     print(path)
     if path is None:

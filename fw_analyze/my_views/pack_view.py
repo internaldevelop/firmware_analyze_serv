@@ -54,9 +54,9 @@ def all_packs_info(request):
 
 # 编辑指定固件包信息 厂商 型号
 def pack_edit(request):
-    pack_id, manufacturer, model = ReqParams.many(request, ['pack_id', 'manufacturer', 'model'], protocol='POST')
+    pack_id, manufacturer, model, version = ReqParams.many(request, ['pack_id', 'manufacturer', 'model', 'version'], protocol='POST')
 
-    PackFileDO.save_manufacturer(pack_id, manufacturer, model)
+    PackFileDO.save_manufacturer(pack_id, manufacturer, model, version)
 
     # 保存操作日志
     LogRecords.save('', category='statistics', action='编辑指定固件包信息',
@@ -115,7 +115,7 @@ def check_component(pack_id, task_id):
     # 获取本固件包所有的二进制可执行文件记录
     fw_files_list = FwFileDO.search_files_of_pack(pack_id, FileType.EXEC_FILE)
     pack_item = PackFileDO.fetch_pack(pack_id)
-    process_file_name = pack_item['name']
+    process_file_name = pack_item.get('name')     # pack_item['name']
     MyTask.save_exec_info_name(task_id, process_file_name)
 
     # 枚举每个文件，根据文件名检索组件库（make），校验
@@ -137,8 +137,8 @@ def check_component(pack_id, task_id):
         similarity = assembly.calc_cosine_algorithm(fw_file_id, component_file_id)
         print(SysUtils.get_now_time())
 
-        # todo 相似度阈值设定： 0－100
-        if similarity < 90:
+        # 相似度阈值设定： 0－100
+        if similarity < utils.sys.config.g_similarity:
             print(similarity)
             continue
         # 相似度大于阈值 标记漏洞(version / edbid)
@@ -189,35 +189,38 @@ def start_check_component_task(pack_id):
 
 # 查询所有组件文件列表
 def com_files_list(request):
-    # tree_type = ReqParams.one(request, 'tree_type')
     # 读取所有组件文件
     com_list = FwFileDO.search_all_com_files()
     print(com_list)
     comlist = []
+
     for com in com_list:
         print(com)
-        if "version" in com['extra_props']: version = com['extra_props']['version']
-        else: version = ""
+        inverted = com.get('inverted')
+        cfg_analyze = com.get('cfg_analyze')
+        file_type_verified = com.get('file_type_verified')
+        extra_props = com.get('extra_props')
 
-        if "name" in com['extra_props']: name = com['extra_props']['name']
-        else: name = ""
+        if extra_props is not None:
+            extra_props.setdefault('name', '')
+            extra_props.setdefault('version', '')
+            extra_props.setdefault('edb_id', '')
+            extra_props.setdefault('similarity', '')
 
-        if "edb_id" in com['extra_props']:edb_id = com['extra_props']['edb_id']
-        else: edb_id = ""
-
-        if "edb_id" in com['extra_props']: edb_id = com['extra_props']['edb_id']
-        else: edb_id = ""
-
-        if "inverted" in com: inverted = com['inverted']
-        else: inverted = ""
-
-        if "cfg_analyze" in com: cfg_analyze = com['cfg_analyze']
-        else: cfg_analyze = ""
+            name = extra_props['name']
+            version = extra_props['version']
+            edb_id = extra_props['edb_id']
+            similarity = extra_props['similarity']
+        else:
+            name = ""
+            version = ""
+            edb_id = ""
+            similarity = ""
 
         doc = {'file_id': com['file_id'], 'file_path': com['file_path'], 'component': com['component'], 'create_time': com['create_time'], 'file_name': com['file_name'],
                'file_type': com['file_type'], 'pack_id': com['pack_id'], 'version': version,
-               'name': name, 'edb_id': edb_id, 'file_type_verified': com['file_type_verified'], 'cfg_analyze': cfg_analyze,
-               'inverted': inverted, 'fw_name': com['pack_docs'][0]['name']}
+               'name': name, 'edb_id': edb_id, 'file_type_verified': file_type_verified, 'cfg_analyze': cfg_analyze,
+               'inverted': inverted, 'similarity': similarity, 'fw_name': com['pack_docs'][0]['name']}
         comlist.append(doc)
 
     # 保存操作日志

@@ -14,6 +14,10 @@ urlpatterns = [
     #
     # 组件源码查询
     path('async_funcs/list', views.list, name='async_com_list'),
+
+    # 9.2 查询组件包信息
+    path('info', views.info, name='com_info'),
+
     # 组件源码编译
     path('async_funcs/compile', views.compile, name='async_com_compile'),
     # 组件编译结果查询
@@ -21,7 +25,6 @@ urlpatterns = [
 
     # 9.5 组件源码查询_按名称查询
     path('async_funcs/list_name', views.list_name, name='async_com_list_name'),
-
 
     # 组件手动漏洞关联
     path('async_funcs/vuler_association', views.vuler_association, name='async_com_vuler_association'),

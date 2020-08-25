@@ -1,4 +1,6 @@
 import utils.sys.config
+import pymongo
+
 from utils.db.mongodb.cursor_result import CursorResult
 from utils.gadget.general import SysUtils
 from utils.const.file_source import FileSource
@@ -26,8 +28,8 @@ class PackFileDO:
         pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
 
     @staticmethod
-    def save_manufacturer(pack_id, manufacturer, model):
-        doc = {'pack_id': pack_id, 'manufacturer': manufacturer, 'model': model}
+    def save_manufacturer(pack_id, manufacturer, model, version):
+        doc = {'pack_id': pack_id, 'manufacturer': manufacturer, 'model': model, 'version': version}
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
         pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
 
@@ -43,6 +45,11 @@ class PackFileDO:
         # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
         pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
 
+    @staticmethod
+    def analyze_complet(pack_id, flag):
+        doc = {'analyze': flag}
+        # 更新一条函数分析结果，如果没有旧记录，则创建一条新记录
+        pack_files_coll.update_one({'pack_id': pack_id}, {'$set': doc}, True)
 
     @staticmethod
     def fetch_pack(pack_id):
@@ -51,7 +58,9 @@ class PackFileDO:
 
     @staticmethod
     def all_packs():
-        cursor = pack_files_coll.find({}, {'_id': 0})
+        # cursor = pack_files_coll.find({}, {'_id': 0})
+        cursor = pack_files_coll.find({}, {'_id': 0}).sort([("_id", pymongo.DESCENDING)])
+
         return CursorResult.many(cursor)
 
     @staticmethod

@@ -9,6 +9,7 @@ from utils.http.request import ReqParams
 from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p, sys_app_err
 from utils.sys.error_code import Error
 from angr_helper.function_parse import FunctionParse
+from angr_helper.fw_vuler_analyze import FwVulerAnalyze
 from angr_helper.angr_proj import AngrProj
 import base64
 
@@ -135,3 +136,12 @@ def control_dependence_graph(request):
                     desc='生成指定函数的控制依赖图，文件ID=%s，函数地址=0x%x' % (file_id, func_addr))
 
     return sys_app_ok_p({'file_id': file_id, 'func_addr': func_addr, 'cdg_graph': graph_data})
+
+
+def analyze_vuler(request):
+    file_id = ReqParams.one(request, 'file_id')
+    # pack_id = ReqParams.one(request, 'pack_id')
+
+    fw_vul_analyze = FwVulerAnalyze(file_id)
+    res = fw_vul_analyze.vuler_analyze()
+    return sys_app_ok_p({'res': res})

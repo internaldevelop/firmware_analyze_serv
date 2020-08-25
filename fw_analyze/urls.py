@@ -84,8 +84,12 @@ urlpatterns = [
     # 组件自动漏洞关联
     path('com/auto_vuler_association', pack_view.auto_vuler_association, name='async_com_vuler_association'),
 
+    # 检测缓冲区溢出漏洞
+    path('task/analyze_vuler', parse_cfg_view.analyze_vuler, name='task_analyze_vul'),
+
     # =========================================================================
     # 以下部分均为测试指令
+
 
     # 启动 cfg 分析任务，并保存分析结果到数据库
     path('task/analyze_cfg_auto', analyze_cfg_view.analyze_cfg_auto, name='task_analyze_cfg'),

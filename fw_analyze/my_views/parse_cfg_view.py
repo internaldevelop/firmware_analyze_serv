@@ -14,6 +14,9 @@ import base64
 
 from utils.task.my_task import MyTask
 
+import utils.sys.config
+func_vulner_col = utils.sys.config.g_firmware_db_full["function_vulner_dict"]
+
 
 def cfg_func_list(request):
     # 从请求中取参数：文件 ID
@@ -80,6 +83,15 @@ def function_info(request):
             # 如指定 props 则附加函数变量信息
             vars_dict = VarsService.extract_vars(file_id, func_addr)
             infos_dict['vars'] = vars_dict
+
+    infos_dict['vulnerabe'] = {'flag': '0', 'desc': '非脆弱性函数'}  # 0:非脆弱性函数 1:脆弱性函数
+    func_name = infos_dict.get('function_name')
+
+    if func_name is not None:
+        vulner_info = func_vulner_col.find_one({'func_name': {'$regex': func_name}})
+
+        if vulner_info is not None:
+            infos_dict['vulnerabe'] = {'flag': '1', 'desc': '脆弱性函数'}  # 0:非脆弱性函数 1:脆弱性函数
 
     # 保存操作日志
     LogRecords.save('', category='query', action='查询函数分析信息',

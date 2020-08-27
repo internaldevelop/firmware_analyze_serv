@@ -378,7 +378,7 @@ def compile(request):
     arch, pack_id = ReqParams.many(request, ['arch', 'pack_id'])
 
     # 启动编译任务
-    extra_info = {'task_type': TaskType.COMPONENT_COMPILE,
+    extra_info = {'pack_id': pack_id, 'task_type': TaskType.COMPONENT_COMPILE,
                   'task_name': '组件编译',
                   'task_desc': '组件编译及入库操作'}
     task = MyTask(_proc_compile_tasks, (arch, pack_id), extra_info=extra_info)
@@ -489,8 +489,7 @@ def save_make_files(pack_com_id, buildpath, arch):
 # 启动编译任务
 def _proc_compile_tasks(arch, pack_id, task_id):
 
-
-    #1 DB中导出源码文件／目录
+    # 1 DB中导出源码文件／目录
     path, file_name = export_files(pack_id)
     print(path)
     if path is None:

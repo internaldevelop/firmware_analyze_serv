@@ -97,14 +97,17 @@ def runcmd(command, work_path=MyPath.component(), task_id=None, env = None):
     # process = output[0].decode('utf-8')
     # result = output[1].decode('utf-8')
     process = output.decode('utf-8')
-    result = output.decode('utf-8')
+    # result = output.decode('utf-8')
 
     websocket_callback(task_id, process)
+    if exit_code != 0:
+        process = 'run %s error , returncode = %d' %(command, exit_code)
+        websocket_callback(task_id, process)
 
     print(process)
 
     # print(result)
-    return process, result
+    return process, exit_code
 
 
 def testcmd(request):
@@ -176,19 +179,25 @@ def compile_x86(file_name, task_id):
     # 指定生成的目录，方便将新生成文件进行入库操作
         cmd = './config --prefix=' + build_path
 
-    process, result = runcmd(cmd, make_path, task_id)
+    process, exit_code = runcmd(cmd, make_path, task_id)
+    if exit_code != 0:
+        return build_path, exit_code
 
     # 先清数据，防止再次编译时ERROR
     cmd = 'make clean'
-    process, result = runcmd(cmd, make_path, task_id)
+    process, exit_code = runcmd(cmd, make_path, task_id)
+    if exit_code != 0:
+        return build_path, exit_code
 
     cmd = 'make'
-    process, result = runcmd(cmd, make_path, task_id)
+    process, exit_code = runcmd(cmd, make_path, task_id)
+    if exit_code != 0:
+        return build_path, exit_code
 
     cmd = 'make install'
-    process, result = runcmd(cmd, make_path, task_id)
+    process, exit_code = runcmd(cmd, make_path, task_id)
 
-    return build_path
+    return build_path, exit_code
 
 
 # 组件编译ARM
@@ -209,14 +218,18 @@ def compile_arm(file_name, task_id):
 
     # 先清数据，防止再次编译时ERROR
     cmd = 'make clean'
-    process, result = runcmd(cmd, make_path, task_id)
+    process, exit_code = runcmd(cmd, make_path, task_id)
+    if exit_code != 0:
+        return build_path, exit_code
     cmd = 'make'
-    process, result = runcmd(cmd, make_path, task_id)
+    process, exit_code = runcmd(cmd, make_path, task_id)
+    if exit_code != 0:
+        return build_path, exit_code
 
     cmd = 'make install'
-    process, result = runcmd(cmd, make_path, task_id)
+    process, exit_code = runcmd(cmd, make_path, task_id)
 
-    return build_path
+    return build_path, exit_code
 
 
 # 组件关联任务进度接口
@@ -506,9 +519,13 @@ def _proc_compile_tasks(arch, pack_id, task_id):
 
     # 2 make
     if arch == 'x86':
-        build_path = compile_x86(file_name, task_id)
+        build_path, exit_code = compile_x86(file_name, task_id)
     elif arch == 'arm':
-        build_path = compile_arm(file_name, task_id)
+        build_path, exit_code = compile_arm(file_name, task_id)
+
+    if exit_code != 0:
+        MyTask.save_exec_info(task_id, 100, {'compile': "组件源码编译操作失败"})
+        return
 
     # 3 save make file to db
     save_make_files(pack_id, build_path, arch)

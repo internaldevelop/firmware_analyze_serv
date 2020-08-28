@@ -5,8 +5,8 @@ import claripy
 
 
 
-proj = angr.Project('C:\\Users\\Administrator\\Desktop\\angr_ana\\tmp\\tmp')
-
+# proj = angr.Project('C:\\Users\\Administrator\\Desktop\\angr_ana\\tmp\\tmp')
+proj = angr.Project('/home/angr/taint_angr/sample/tmp/tmp')
 state = proj.factory.blank_state(addr=0x804853d)
 mem = 0x10000000
 state.memory.store(0x10000004, state.solver.BVV('1122334455667788\x00', 136))

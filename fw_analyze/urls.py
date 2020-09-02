@@ -39,6 +39,9 @@ urlpatterns = [
     # 获取函数列表
     path('cfg/func_list', parse_cfg_view.cfg_func_list, name='parse_cfg_func_list'),
 
+    # 获取脆弱性函数列表
+    path('cfg/vulner_func_list', parse_cfg_view.vulner_func_list, name='parse_cfg_func_list'),
+
     # 获取指定函数的 call-graph
     path('cfg/call_graph_a', parse_cfg_view.call_graph_a, name='parse_cfg_call_graph_a'),
 

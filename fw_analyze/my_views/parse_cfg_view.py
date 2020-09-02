@@ -142,6 +142,50 @@ def analyze_vuler(request):
     file_id = ReqParams.one(request, 'file_id')
     # pack_id = ReqParams.one(request, 'pack_id')
 
-    fw_vul_analyze = FwVulerAnalyze(file_id)
-    res = fw_vul_analyze.vuler_analyze()
-    return sys_app_ok_p({'res': res})
+    # fw_vul_analyze = FwVulerAnalyze(file_id)
+    # res = fw_vul_analyze.vuler_analyze()
+    # return sys_app_ok_p({'res': res})
+
+
+# 获取脆弱性函数列表
+def vulner_func_list(request):
+    # 从请求中取参数：文件 ID
+    file_id = ReqParams.one(request, 'file_id')
+
+    # 查找函数列表分析结果
+    # 查询文件 CFG 分析的标记
+    is_cfg = CfgAnalyzeService.has_cfg_analyze(file_id)
+    if not is_cfg:
+        # 启动分析任务
+        task_id = CfgAnalyzeService.start_cfg_task(file_id)
+        # 保存操作日志
+        LogRecords.save({'task_id': task_id, 'file_id': file_id}, category='analysis', action='分析CFG',
+                        desc='对二进制文件做调用流程图分析')
+
+        # 返回响应：任务初始化的信息
+        return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+    # 启动分析任务
+    functions = FilesService.functions_list(file_id)
+    if len(functions) == 0:
+        return sys_app_err(Error.FW_FILE_NO_CFG_ANALYZE)
+
+    vulnerabe_func_list = []
+
+    vulner_funcs = []
+
+    vulner_list = func_vulner_col.find()
+
+    for vulner_info in vulner_list:
+        vulner_funcs.append(vulner_info.get('func_name'))
+    for func_info in functions:
+        func_name = func_info.get('name')
+        for vulner_func_info in vulner_funcs:
+            if vulner_func_info == func_name:
+                vulnerabe_func_list.append(vulner_func_info)
+
+    # 保存操作日志
+    LogRecords.save('', category='query', action='查询脆弱性函数列表', desc='查询指定固件文件（ID=%s）在代码分析中产生的函数列表' % file_id)
+
+    return sys_app_ok_p({'vulnerabe_num': len(vulnerabe_func_list), 'vulnerabe_func_list': vulnerabe_func_list})
+

@@ -142,9 +142,9 @@ def analyze_vuler(request):
     file_id = ReqParams.one(request, 'file_id')
     # pack_id = ReqParams.one(request, 'pack_id')
 
-    # fw_vul_analyze = FwVulerAnalyze(file_id)
-    # res = fw_vul_analyze.vuler_analyze()
-    # return sys_app_ok_p({'res': res})
+    fw_vul_analyze = FwVulerAnalyze(file_id)
+    res = fw_vul_analyze.vuler_analyze()
+    return sys_app_ok_p({'res': res})
 
 
 # 获取脆弱性函数列表

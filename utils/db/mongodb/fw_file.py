@@ -42,6 +42,12 @@ class FwFileDO:
         rv = fw_files_coll.update_one({'file_id': file_id}, {'$set': doc}, True)
 
     @staticmethod
+    def set_file_detect_overflow(file_id, buffer_overflow=None, integer_overflow=None, cmd_injection_overflow=None):
+        doc = {'file_detect_overflow': 1, "buffer_overflow": buffer_overflow, "integer_overflow": integer_overflow, "cmd_injection_overflow": cmd_injection_overflow}
+        # 更新记录
+        rv = fw_files_coll.update_one({'file_id': file_id}, {'$set': doc}, True)
+
+    @staticmethod
     def get_files_of_pack(pack_id):
         cursor = fw_files_coll.find({'pack_id': pack_id}, {'_id': 0})
         return CursorResult.many(cursor)

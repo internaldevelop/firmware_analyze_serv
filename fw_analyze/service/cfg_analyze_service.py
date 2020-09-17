@@ -114,3 +114,4 @@ class CfgAnalyzeService:
             return False
 
         return True
+

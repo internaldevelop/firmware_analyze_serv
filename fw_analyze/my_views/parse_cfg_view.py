@@ -1,4 +1,5 @@
 from fw_analyze.service.cfg_analyze_service import CfgAnalyzeService
+from fw_analyze.service.overflow_detect_service import OverflowDetectService
 from fw_analyze.service.files_service import FilesService
 from fw_analyze.service.functions_service import FunctionsService
 from fw_analyze.service.vars_service import VarsService
@@ -9,7 +10,8 @@ from utils.http.request import ReqParams
 from utils.http.response import app_err, sys_app_ok_p, sys_app_err_p, sys_app_err
 from utils.sys.error_code import Error
 from angr_helper.function_parse import FunctionParse
-from angr_helper.fw_vuler_analyze import FwVulerAnalyze
+from angr_helper.fw_vulner_analyze import FwVulnerAnalyze
+from angr_helper.overflow_detect import Overflow_Detect
 from angr_helper.angr_proj import AngrProj
 import base64
 
@@ -138,10 +140,83 @@ def control_dependence_graph(request):
     return sys_app_ok_p({'file_id': file_id, 'func_addr': func_addr, 'cdg_graph': graph_data})
 
 
-def analyze_vuler(request):
+def detect_vulner(request):
     file_id = ReqParams.one(request, 'file_id')
     # pack_id = ReqParams.one(request, 'pack_id')
+    # fw_vul_analyze = FwVulnerAnalyze(file_id)
+    # res = fw_vul_analyze.vuler_analyze()
+    # return sys_app_ok_p({'res': res})
 
-    fw_vul_analyze = FwVulerAnalyze(file_id)
-    res = fw_vul_analyze.vuler_analyze()
-    return sys_app_ok_p({'res': res})
+    # 查询文件 detect 分析的标记
+    is_detect = OverflowDetectService.has_detect_overflow(file_id)
+    if not is_detect:
+        # 启动detect任务
+        task_id = OverflowDetectService.start_detect_task(file_id)
+        # 保存操作日志
+        LogRecords.save({'task_id': task_id, 'file_id': file_id}, category='analysis', action='分析OVERFLOW',
+                        desc='对二进制文件做溢出漏洞分析')
+
+        # 返回响应：任务初始化的信息
+        return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+    file_item = FwFileDO.find(file_id)
+    buffer_overflow = file_item.get('buffer_overflow')
+    integer_overflow = file_item.get('integer_overflow')
+    cmd_injection_overflow = file_item.get('cmd_injection_overflow')
+    # return sys_app_ok_p({'缓冲区溢出': buffer_overflow, '整数溢出': integer_overflow, '命令注入溢出': cmd_injection_overflow})
+
+    overflow_list = []
+    overflow_list.append({"name": "缓冲区溢出", "value": buffer_overflow})
+    overflow_list.append({"name": "整数溢出", "value": integer_overflow})
+    overflow_list.append({"name": "命令注入溢出", "value": cmd_injection_overflow})
+
+    return sys_app_ok_p({'overflow': overflow_list})
+
+    # fw_vul_analyze = Overflow_Detect(file_id)
+    # res = fw_vul_analyze.detect()
+    # return sys_app_ok_p({'res': res})
+
+
+
+# 获取脆弱性函数列表
+def vulner_func_list(request):
+    # 从请求中取参数：文件 ID
+    file_id = ReqParams.one(request, 'file_id')
+
+    # 查找函数列表分析结果
+    # 查询文件 CFG 分析的标记
+    is_cfg = CfgAnalyzeService.has_cfg_analyze(file_id)
+    if not is_cfg:
+        # 启动分析任务
+        task_id = CfgAnalyzeService.start_cfg_task(file_id)
+        # 保存操作日志
+        LogRecords.save({'task_id': task_id, 'file_id': file_id}, category='analysis', action='分析CFG',
+                        desc='对二进制文件做调用流程图分析')
+
+        # 返回响应：任务初始化的信息
+        return sys_app_ok_p(MyTask.fetch_exec_info(task_id))
+
+    # 启动分析任务
+    functions = FilesService.functions_list(file_id)
+    if len(functions) == 0:
+        return sys_app_err(Error.FW_FILE_NO_CFG_ANALYZE)
+
+    vulnerabe_func_list = []
+
+    vulner_funcs = []
+
+    vulner_list = func_vulner_col.find()
+
+    for vulner_info in vulner_list:
+        vulner_funcs.append(vulner_info.get('func_name'))
+    for func_info in functions:
+        func_name = func_info.get('name')
+        for vulner_func_info in vulner_funcs:
+            if vulner_func_info == func_name:
+                vulnerabe_func_list.append(vulner_func_info)
+
+    # 保存操作日志
+    LogRecords.save('', category='query', action='查询脆弱性函数列表', desc='查询指定固件文件（ID=%s）在代码分析中产生的函数列表' % file_id)
+
+    return sys_app_ok_p({'vulnerabe_num': len(vulnerabe_func_list), 'vulnerabe_func_list': vulnerabe_func_list})
+

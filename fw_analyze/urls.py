@@ -39,6 +39,9 @@ urlpatterns = [
     # 获取函数列表
     path('cfg/func_list', parse_cfg_view.cfg_func_list, name='parse_cfg_func_list'),
 
+    # 获取脆弱性函数列表
+    path('cfg/vulner_func_list', parse_cfg_view.vulner_func_list, name='parse_cfg_func_list'),
+
     # 获取指定函数的 call-graph
     path('cfg/call_graph_a', parse_cfg_view.call_graph_a, name='parse_cfg_call_graph_a'),
 
@@ -84,8 +87,8 @@ urlpatterns = [
     # 组件自动漏洞关联
     path('com/auto_vuler_association', pack_view.auto_vuler_association, name='async_com_vuler_association'),
 
-    # 检测缓冲区溢出漏洞
-    path('task/analyze_vuler', parse_cfg_view.analyze_vuler, name='task_analyze_vul'),
+    # 检测溢出漏洞
+    path('task/detect_vulner', parse_cfg_view.detect_vulner, name='task_detect_vulner'),
 
     # =========================================================================
     # 以下部分均为测试指令

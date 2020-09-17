@@ -19,6 +19,8 @@ class TaskType:
     COMPONENT_CHECK = 9
     # 倒排索引
     INVERTED = 10
+    # 检测漏洞溢出 缓冲区 整数溢出
+    DETECT_OVERFLOW = 11
 
     # 一般任务
     REGULAR = 99

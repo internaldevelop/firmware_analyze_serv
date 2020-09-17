@@ -44,6 +44,8 @@
     https://blog.csdn.net/li_wen01/article/details/80090624
     文件系统制作：https://blog.csdn.net/lh2016rocky/article/details/70886244
     文件系统制作：https://www.cnblogs.com/pengdonglin137/p/3521456.html
+(6) 脆弱性函数
+    https://blog.csdn.net/chenyijun/article/details/51320962
 
 
 https://github.com/mirror/firmware-mod-kit

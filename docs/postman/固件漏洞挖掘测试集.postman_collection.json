@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0df4b3de-102c-4324-88f6-b16819a61db9",
+		"_postman_id": "fa0a193a-0316-4a3e-984b-8a10377fcf9f",
 		"name": "固件漏洞挖掘测试集",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -38,7 +38,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "1765f7e4-c934-43c8-97f8-4cef63969b08",
+								"id": "f1903b48-42ef-485e-a57d-71174e42bdca",
 								"exec": [
 									""
 								],
@@ -48,7 +48,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a1dab369-e6ec-49b3-a650-317044773039",
+								"id": "434ba83b-6f75-44c1-ac9d-68fd029ee043",
 								"exec": [
 									""
 								],
@@ -91,7 +91,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "cee61bed-b486-4e95-882f-47035a080025",
+								"id": "eba5dd31-e61f-4c39-92ce-c8633543a4e8",
 								"exec": [
 									""
 								],
@@ -101,7 +101,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "66eaf683-e732-44ee-a2e5-c6932ca87436",
+								"id": "48eeddba-d036-49bc-a98e-458bf34939bb",
 								"exec": [
 									""
 								],
@@ -149,7 +149,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "25b62485-1007-4656-a687-a74fb5ec5cec",
+								"id": "1ad1a51a-e93e-45c4-ae47-668457b6b303",
 								"exec": [
 									""
 								],
@@ -159,7 +159,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "652ba491-1d5e-46b6-ba3d-1235abeeb1df",
+								"id": "445e662c-3e85-41d4-91ad-4bed1b34101a",
 								"exec": [
 									""
 								],
@@ -210,7 +210,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d29dee76-73bb-410c-aa68-dffcd79fdb41",
+								"id": "d3035afd-d64e-4e33-b964-e6dab19bb893",
 								"exec": [
 									""
 								],
@@ -220,7 +220,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a00f027f-7870-40d5-8902-90d3b7c704ad",
+								"id": "13f725b4-a19d-43c9-aec3-fce65b04943f",
 								"exec": [
 									""
 								],
@@ -268,7 +268,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "fc2a8179-a1cf-4c99-b606-1eb6c2f9f686",
+								"id": "6a922bff-2e08-4257-aa43-4a88e628764a",
 								"exec": [
 									""
 								],
@@ -278,7 +278,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f806ddb0-8d71-45b3-8d35-8a42b2d01ef7",
+								"id": "9b7ad516-5f57-4074-ac92-21b7d5fde783",
 								"exec": [
 									""
 								],
@@ -329,7 +329,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "3d2afbfd-df8c-4789-b2d9-8955738597b6",
+								"id": "bce1de04-45d5-4c00-9012-4ca308e39552",
 								"exec": [
 									""
 								],
@@ -339,7 +339,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1e2374e2-b892-464b-b44e-8afd9c58e449",
+								"id": "55caa531-7707-424b-9a76-5f9abca4a12a",
 								"exec": [
 									""
 								],
@@ -386,7 +386,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "17aef092-9371-4580-b459-511d89721f57",
+								"id": "d5a6e949-af0f-4296-a4c9-ecede200d399",
 								"exec": [
 									"pm.environment.set(\"file_id\", \"1\");"
 								],
@@ -426,7 +426,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "40d6c83b-6062-4cec-ac3b-32e280226daa",
+								"id": "9f96d95a-4a78-4560-80e6-12843dcc2537",
 								"exec": [
 									""
 								],
@@ -467,7 +467,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "30042271-d1ad-4d35-8ea5-733e18c142e6",
+								"id": "82304619-097a-47e5-bde2-ec30b27e2c22",
 								"exec": [
 									""
 								],
@@ -507,7 +507,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "a5e16918-b9b5-4250-b07a-56fec8b19813",
+						"id": "22c33e8e-7498-4449-bc02-cc6143e30913",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -517,7 +517,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "04a39744-3622-4282-9d33-f6a6910e56f1",
+						"id": "5635ae76-3953-4c44-b093-3d5dc37b4b73",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -539,7 +539,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "446356a6-1615-459d-97bf-2900d122dad9",
+										"id": "5411db1e-f1ae-412e-a728-803762551e05",
 										"exec": [
 											""
 										],
@@ -654,7 +654,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2d467bce-382e-4291-9660-4ff94ed792ef",
+								"id": "b6899fd2-7b2c-4792-8d19-b144890e7236",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -664,7 +664,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "262dfc96-e77a-46a2-a1ab-9aaf29bbda82",
+								"id": "a6a7bfee-141a-4559-b6a4-cfeca56a92e0",
 								"type": "text/javascript",
 								"exec": [
 									""
@@ -684,7 +684,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4a75db26-bc22-410b-8c85-7cc83724b3c6",
+										"id": "6d930e58-7d54-44d9-864e-a8a0f23c65c3",
 										"exec": [
 											""
 										],
@@ -726,7 +726,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "26a2b32b-c971-4020-bf02-5c13f7ff5229",
+										"id": "738b4eb3-47f9-4d01-8bc1-395f002332d0",
 										"exec": [
 											""
 										],
@@ -767,7 +767,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "00bb4bb9-3ac8-4faa-95db-9caa08797ff4",
+										"id": "d46e7a05-df7b-440e-b92d-77c1d9ffa1ca",
 										"exec": [
 											""
 										],
@@ -818,7 +818,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ea92e6a7-eaf9-4cb5-a3e4-f979453b56b7",
+										"id": "f8a90c27-2fa5-4939-9716-598cb36f7c16",
 										"exec": [
 											""
 										],
@@ -871,7 +871,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9f47fa6b-c467-452a-9b4a-682d9e6f590a",
+										"id": "2322557b-b708-4ec5-ab12-040adc5003b7",
 										"exec": [
 											""
 										],
@@ -922,7 +922,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0579f281-d081-4d91-a3eb-c256997e7fa1",
+										"id": "d08f38e5-3d85-43b6-86cd-6160793f9fb4",
 										"exec": [
 											""
 										],
@@ -973,7 +973,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "9abd23af-375b-4953-b030-ee2e8e5053f0",
+										"id": "8514b9c5-e1ab-4c34-ad48-8b0ebd659bd9",
 										"exec": [
 											""
 										],
@@ -1024,7 +1024,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "4f1265ff-d379-459c-9b7e-6056f59ea9d6",
+										"id": "27f01069-b200-433d-b7d1-4ea20d8bd5ff",
 										"exec": [
 											""
 										],
@@ -1082,7 +1082,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "295ae114-3fbf-48b9-b361-32270a2e930a",
+										"id": "4458d48a-a838-477c-a294-d367ca68eb91",
 										"exec": [
 											""
 										],
@@ -1123,7 +1123,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "dea47660-0eb5-4eac-aa91-05328038ccfa",
+										"id": "9347e289-4caa-4a5c-8f9e-83a6dcde85a6",
 										"exec": [
 											"pm.test(\"test\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -1170,7 +1170,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "fb5468c4-09d2-4516-b2de-23feb3a43f3a",
+										"id": "6ea61872-81cf-4ff1-887e-96ac4ec7a8cb",
 										"exec": [
 											"pm.test(\"run XXXXX\", function () {",
 											"    var jsonData = pm.response.json();",
@@ -1224,7 +1224,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "6162ba15-1fb7-47f4-af2d-aee0beab56a3",
+										"id": "5c5339df-0926-43f5-8654-45bb4872eb62",
 										"exec": [
 											""
 										],
@@ -1268,7 +1268,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "207cd0d2-610b-4c12-b27e-468bf67d1509",
+										"id": "45c46dc3-bcd3-48d7-9293-542f2103d2cf",
 										"exec": [
 											""
 										],
@@ -1309,7 +1309,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d860ed54-fba7-4527-9f97-139a732bc3bb",
+										"id": "a1b43d96-dd2c-4a38-8933-c699330608fb",
 										"exec": [
 											""
 										],
@@ -1408,7 +1408,7 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "67eeb43b-0523-4dab-a63d-6cbaf995b53b",
+										"id": "536639a7-7dae-4aa9-aad6-5e7f07f1c969",
 										"exec": [
 											""
 										],
@@ -1454,7 +1454,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a37acfc8-2269-4ee8-a2ce-24d1a0b4b895",
+								"id": "66df5e00-3284-4120-ba64-fd46abfe9c3f",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1537,7 +1537,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f48ec28d-0ff2-4145-93cf-e2a4f48126d6",
+								"id": "18b61a1c-11e8-40e2-8a96-4f18443df699",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1657,7 +1657,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "5d487535-bc01-4565-86ea-d1f617f8087b",
+								"id": "33a94d6d-e621-4e4b-9e96-8aadf827bf56",
 								"exec": [
 									""
 								],
@@ -1667,7 +1667,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1acdaa55-416c-438b-8356-09c5c75947e8",
+								"id": "e8207d7d-275f-4006-b651-1cc901525dbd",
 								"exec": [
 									"pm.test(\"run cfg analyze\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1719,7 +1719,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "6160801c-e017-478c-9439-04308f2da811",
+								"id": "14851d50-c59b-4ea2-9247-fc1c0ba831a0",
 								"exec": [
 									""
 								],
@@ -1729,7 +1729,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "28a8ab39-7d33-400a-82d0-b3b86ddb21c7",
+								"id": "3bb1169d-e04a-4456-979e-f94d9b0eea51",
 								"exec": [
 									"pm.test(\"run cfg analyze\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -1780,7 +1780,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "55ba8ac6-b8cf-4bb3-80e7-da435b8f229b",
+						"id": "4743b70e-cb11-4e09-92b4-7cfbb3130758",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1790,7 +1790,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "694bb043-85d2-424a-bb33-26d4b24c46df",
+						"id": "f46106e7-1277-4903-8659-2b7f8a4cc553",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -1809,7 +1809,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "79e6c993-5c1e-4d15-a9c3-6c22ad7369e1",
+								"id": "70ea87e0-afae-4285-a735-5df79c7f36c4",
 								"exec": [
 									""
 								],
@@ -1819,7 +1819,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2731235c-a720-4ff5-86f2-1d98759d26e4",
+								"id": "7eb0e050-9770-4000-a68f-821500201b3a",
 								"exec": [
 									""
 								],
@@ -1860,7 +1860,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6412801d-2eb7-4958-b520-de8f8dc374f3",
+								"id": "62bb4c30-3651-4aa9-be75-17fc9b482900",
 								"exec": [
 									""
 								],
@@ -1870,7 +1870,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "96a59757-2388-47bf-a6ee-f367e51a9397",
+								"id": "f4e86392-9ef2-4550-8738-8824ec0bf598",
 								"exec": [
 									""
 								],
@@ -1882,7 +1882,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/call_graph_a?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930&simple",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/call_graph_a?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x400551&simple=",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -1902,12 +1902,12 @@
 								},
 								{
 									"key": "func_addr",
-									"value": "0x407930",
+									"value": "0x400551",
 									"description": "1.6.26-libjsound.so 中的一个函数地址0x407930"
 								},
 								{
 									"key": "simple",
-									"value": null,
+									"value": "",
 									"description": "(可选) 1：简单信息模式；0或者空：丰富信息模式"
 								}
 							]
@@ -1921,7 +1921,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "81f9a972-c70a-418b-8f73-457cc982e11c",
+								"id": "7f12c6ad-be01-4976-9ada-bc0abb7794eb",
 								"exec": [
 									""
 								],
@@ -1931,7 +1931,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "af2f6da5-bb1c-40cc-afcd-139d875b6ab0",
+								"id": "f81a6a9a-bbcb-4c1e-be68-ec8a7de82d17",
 								"exec": [
 									""
 								],
@@ -1981,7 +1981,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fabd6cef-d7dc-448e-9722-55e6b7c4b8af",
+								"id": "b304de1c-6291-4cda-a84a-91e1cf03033e",
 								"exec": [
 									""
 								],
@@ -1991,7 +1991,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "36bc18ca-b9cd-4a7d-aeac-2655d6032b1e",
+								"id": "f463cf65-4cb8-421f-aaed-2cbe3a0c9344",
 								"exec": [
 									""
 								],
@@ -2042,7 +2042,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "53a6420a-5adb-4a13-a684-3a7866640d60",
+								"id": "ca963bf6-abac-4a3e-a62d-9c13fb5fc3a5",
 								"exec": [
 									""
 								],
@@ -2052,7 +2052,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "28233436-ec3d-4db8-b40a-5e88159a7e38",
+								"id": "fd3e5231-4d03-453f-95b8-48ca6c8f0b55",
 								"exec": [
 									""
 								],
@@ -2098,7 +2098,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d853df69-ce64-4d5b-bfcc-b90b1af142f1",
+								"id": "f60a2750-3756-474c-bd22-0cc0f8dc03c8",
 								"exec": [
 									""
 								],
@@ -2108,7 +2108,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "167075a3-1e5a-436a-90cf-e05b798e0db7",
+								"id": "ae1da3a6-51d3-4d39-8cc1-5f87e38c3681",
 								"exec": [
 									""
 								],
@@ -2154,7 +2154,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "440e51ba-cc29-4f12-8036-0a266e6fcc36",
+								"id": "1638a741-634a-462e-8514-8386fea95351",
 								"exec": [
 									""
 								],
@@ -2164,7 +2164,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "113282bb-23f9-4950-b6f9-184fec3878e8",
+								"id": "f21081af-ec79-45eb-8cbf-13fe4b61af63",
 								"exec": [
 									""
 								],
@@ -2232,13 +2232,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "6.9 代码污点函数列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/taint_func_list?access_token={{access_token}}&file_id={{file_id}}",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"cfg",
+								"taint_func_list"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{access_token}}"
+								},
+								{
+									"key": "file_id",
+									"value": "{{file_id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "0d61f246-f442-49d0-b746-269f0a2c189f",
+						"id": "da568c42-34aa-43ce-9850-aa4f46316acd",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2248,7 +2277,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b4bcb48b-7dd7-49fd-b7e7-4ccd501e8fb4",
+						"id": "c69bfe7d-a563-48fb-8102-be741f5f9dd3",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2267,7 +2296,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a7671b57-00b6-42c1-8340-34b3021fa8ae",
+								"id": "908b184c-61ff-4290-9efa-e7635852e1a3",
 								"exec": [
 									"pm.test(\"run pack all\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2337,7 +2366,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "8cf8ba8a-02b5-49c6-aa9e-ebb8d98af112",
+								"id": "98a3a5b8-06c6-4426-b7b1-98804bf88ce0",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
 									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
@@ -2643,7 +2672,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "41fd5444-7017-4ab9-9674-a2b9b64267e6",
+								"id": "b2b5c09e-f982-49aa-b093-a32dcf2085bb",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2665,7 +2694,8 @@
 							"formdata": [
 								{
 									"key": "url",
-									"value": "http://172.16.113.56/openssl-1.0.1f.tar.gz",
+									"value": "http://172.16.113.82/openssl-1.0.1a.tar.gz",
+									"description": "http://172.16.113.82/opensslErr-1.0.1a.tar.gz",
 									"type": "text"
 								}
 							]
@@ -2691,7 +2721,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fa87b554-26d3-401d-9ebd-606f615eb8f8",
+								"id": "34b44648-d5b6-4c00-ae6c-d181166a94cd",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2742,7 +2772,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cd4df002-8086-4581-aed8-087ab754107f",
+								"id": "1af8c45a-ec33-4e16-ac28-602cbc063ecc",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2792,7 +2822,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ab0199a6-ff30-432f-b5f0-e6cfe9771ded",
+								"id": "66d1c4a7-8a21-48fe-b143-4330b9dc7da9",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2859,7 +2889,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "999f7f64-7fc4-48a6-baf2-0746c1ca41ee",
+								"id": "8d355cb0-bc84-4ea2-9d93-a5324b449eae",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2931,7 +2961,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d9e592de-2e67-4ca3-9851-af7330745f93",
+								"id": "a01dff7f-370d-4628-94e8-409b505cbe11",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -2988,7 +3018,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6097dc28-3f7f-4b23-994a-0f5f12bf959b",
+								"id": "d9ed3136-d1fd-41c4-b525-e49415a87dd1",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -3043,7 +3073,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d7c4fe09-709d-4ae8-a20e-4ac1fe911932",
+								"id": "db670056-ce9d-4aa7-bc9e-ef28263cb8a6",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -3105,7 +3135,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ad5761ff-9385-4c60-b209-882f8f931bc5",
+								"id": "a60163b1-bd2d-4199-8417-6a8332d27331",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -3156,7 +3186,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b438bb84-6a53-45ef-b010-42d5c3776c37",
+								"id": "77723e9d-0db1-4615-be28-9a8c75e08f98",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
 									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
@@ -3206,7 +3236,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "04c7b5f9-b826-41f1-b8cd-72ccfd8faaed",
+								"id": "04937d0c-0aea-4125-8ef5-df435d4db041",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
 									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
@@ -3251,7 +3281,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "dd658d41-2c39-4c5d-9754-ebb19c32151d",
+								"id": "6fed6882-e37e-4225-998b-0f7a73f25a6c",
 								"exec": [
 									"// pm.environment.set(\"temp_pack_id\", \"2de2153f-a3cd-4ca9-87e2-04a57c394a77\");",
 									"//pm.environment.set(\"temp_pack_id\", \"b57bc462-3215-4ddb-a2b3-ba24dfd30042\");",
@@ -3291,7 +3321,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "17df135b-af71-422f-97d6-0862a4ac848d",
+								"id": "0b5a80d4-f029-433c-8fd5-115ed7d553c0",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -3332,7 +3362,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7e9bfc5d-40f7-4093-9a8b-149f70bc8629",
+								"id": "2a45882c-2a88-4d23-a7fe-97b33acd6bae",
 								"exec": [
 									"pm.test(\"async functions list\", function () {",
 									"    var jsonData = pm.response.json();",
@@ -3372,7 +3402,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "33c19c6b-4676-456f-8d7a-c7a8e443e51b",
+						"id": "92c06241-b65a-4dd5-a4b1-299302a8d2b4",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3382,7 +3412,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d9d41326-132b-4ff5-a185-f9f5cbf1ffb1",
+						"id": "0581fb40-8f99-4123-bd4a-d58140d49901",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3601,33 +3631,198 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "12. 检测漏洞",
+			"name": "12. 检测溢出、污点",
 			"item": [
 				{
-					"name": "12.1 检测漏洞",
+					"name": "12.1 检测漏洞-缓冲区溢出、整数溢出、命令注入溢出",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/task/analyze_vuler?file_id=ea2af3af-4a41-434f-8fdb-5ab5083eb4e5",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/detect_vulner?file_id=58b6e7b7-e991-4fc8-80e1-d866bce50fd3",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
 							"path": [
 								"fw_analyze",
 								"task",
-								"analyze_vuler"
+								"detect_vulner"
 							],
 							"query": [
 								{
 									"key": "file_id",
-									"value": "ea2af3af-4a41-434f-8fdb-5ab5083eb4e5",
-									"description": "ea2af3af-4a41-434f-8fdb-5ab5083eb4e5"
+									"value": "58b6e7b7-e991-4fc8-80e1-d866bce50fd3",
+									"description": "检测缓冲区溢出漏洞、整数溢出 92c7a668-8510-447e-88f1-e88b841a04da"
 								}
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "12.1 检测漏洞 Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/detect_vulner?file_id=58b6e7b7-e991-4fc8-80e1-d866bce50fd3",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"task",
+								"detect_vulner"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "58b6e7b7-e991-4fc8-80e1-d866bce50fd3",
+									"description": "检测缓冲区溢出漏洞、整数溢出 92c7a668-8510-447e-88f1-e88b841a04da"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.2 自定义污点源-增",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/add?func_name=my_func&hazard=很危险&solution",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"taint",
+								"add"
+							],
+							"query": [
+								{
+									"key": "func_name",
+									"value": "my_func",
+									"description": "函数"
+								},
+								{
+									"key": "hazard",
+									"value": "很危险",
+									"description": "严重性"
+								},
+								{
+									"key": "solution",
+									"value": null,
+									"description": "解决方案"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.3 自定义污点源-修改",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/update?func_name=my_func&hazard=很危险&solution=11223344",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"taint",
+								"update"
+							],
+							"query": [
+								{
+									"key": "func_name",
+									"value": "my_func",
+									"description": "函数"
+								},
+								{
+									"key": "hazard",
+									"value": "很危险",
+									"description": "严重性"
+								},
+								{
+									"key": "solution",
+									"value": "11223344",
+									"description": "解决方案"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.4 自定义污点源-删除",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/del?func_name=my_func",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"taint",
+								"del"
+							],
+							"query": [
+								{
+									"key": "func_name",
+									"value": "my_func",
+									"description": "函数"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.5 自定义污点源-函数列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/list",
+							"host": [
+								"{{FW_SERV_URL}}"
+							],
+							"path": [
+								"fw_analyze",
+								"taint",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "79823c1d-f214-42d3-ad40-fa07ded3c7cd",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c5331cb6-34ab-428b-b7d2-2981ddccf7b8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -3637,7 +3832,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "2eeb7f74-fc83-4529-8b55-8a4a538566aa",
+				"id": "c10a6254-87c5-49b5-9c6a-a0f52108e5aa",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -3647,7 +3842,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "07f49a71-9328-4ab8-b4aa-a71bf767dcbe",
+				"id": "f8a70ecf-5f0e-473c-959c-bb95c643254b",
 				"type": "text/javascript",
 				"exec": [
 					""

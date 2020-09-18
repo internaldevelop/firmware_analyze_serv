@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 import json
 from datetime import date, datetime, timedelta
-
+from uuid import UUID
 import os
 import tarfile
 import os.path
@@ -327,3 +327,11 @@ class TimeEncoder(json.JSONEncoder):
             return obj.strftime('%Y-%m-%d')
         else:
             return json.JSONEncoder.default(self, obj)
+
+
+class UUIDEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, UUID):
+            # if the obj is uuid, we simply return the value of uuid
+            return obj.hex
+        return json.JSONEncoder.default(self, obj)

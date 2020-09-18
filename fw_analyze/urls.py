@@ -9,6 +9,7 @@ from .my_views import parse_cfg_view
 from .my_views import task_view
 from .my_views import pack_view
 from .my_views import variable_views
+from .my_views import taint_view
 
 urlpatterns = [
 
@@ -40,7 +41,10 @@ urlpatterns = [
     path('cfg/func_list', parse_cfg_view.cfg_func_list, name='parse_cfg_func_list'),
 
     # 获取脆弱性函数列表
-    path('cfg/vulner_func_list', parse_cfg_view.vulner_func_list, name='parse_cfg_func_list'),
+    path('cfg/vulner_func_list', parse_cfg_view.vulner_func_list, name='parse_vulner_func_list'),
+
+    # 获取污点函数列表
+    path('cfg/taint_func_list', parse_cfg_view.taint_func_list, name='parse_taint_func_list'),
 
     # 获取指定函数的 call-graph
     path('cfg/call_graph_a', parse_cfg_view.call_graph_a, name='parse_cfg_call_graph_a'),
@@ -90,6 +94,17 @@ urlpatterns = [
     # 检测溢出漏洞
     path('task/detect_vulner', parse_cfg_view.detect_vulner, name='task_detect_vulner'),
 
+    # 自定义污点源-函数增加
+    path('taint/add', taint_view.taintadd, name='task_taintadd'),
+
+    # 自定义污点源-函数删除
+    path('taint/del', taint_view.taintdel, name='task_taintdel'),
+
+    # 自定义污点源-函数修改
+    path('taint/update', taint_view.taintmodify, name='task_taintmodify'),
+
+    # 自定义污点源-
+    path('taint/list', taint_view.list, name='task_taintlist'),
     # =========================================================================
     # 以下部分均为测试指令
 

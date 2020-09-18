@@ -1,4 +1,5 @@
 from utils.gadget.general import TimeEncoder
+from utils.gadget.general import UUIDEncoder
 
 from django.http import HttpResponse
 from utils.sys.error_code import Error, get_err
@@ -65,3 +66,16 @@ def sys_app_err_p(err, payload):
 
 def sys_app_err(err):
     return sys_app_resp(err, {})
+
+
+def sys_app_resp_u(err, payload):
+    now_time = datetime.datetime.now()
+    response = sys_get_err(err)
+    response['timeStamp'] = now_time.strftime("%Y-%m-%d %H:%M:%S")
+    response['payload'] = payload
+    # return HttpResponse(json.dumps(response, ensure_ascii=False, indent=4, cls=TimeEncoder))
+    return HttpResponse(json.dumps(response, ensure_ascii=False, indent=4, cls=UUIDEncoder))
+
+
+def sys_app_ok_p_u(payload):
+    return sys_app_resp_u('ERROR_OK', payload)

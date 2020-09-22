@@ -89,6 +89,7 @@ def function_info(request):
             infos_dict['vars'] = vars_dict
 
     infos_dict['vulnerabe'] = {'flag': '0', 'desc': '非脆弱性函数'}  # 0:非脆弱性函数 1:脆弱性函数
+    infos_dict['taint'] = {'flag': '0', 'desc': '非污点函数'}  # 0:非污点函数 1:非污点函数
     func_name = infos_dict.get('function_name')
 
     if func_name is not None:
@@ -97,10 +98,14 @@ def function_info(request):
         if vulner_info is not None:
             infos_dict['vulnerabe'] = {'flag': '1', 'desc': '脆弱性函数'}  # 0:非脆弱性函数 1:脆弱性函数
 
+        taint_info = func_taint_col.find_one({'func_name': {'$regex': func_name}})
+
+        if taint_info is not None:
+            infos_dict['taint'] = {'flag': '1', 'desc': '污点函数'}  #  0:非污点函数 1:非污点函数
+
     # 保存操作日志
     LogRecords.save('', category='query', action='查询函数分析信息',
                     desc='查询代码分析后的函数信息，文件ID=%s，函数地址=0x%x' % (file_id, func_addr))
-
     return sys_app_ok_p(infos_dict)
 
 

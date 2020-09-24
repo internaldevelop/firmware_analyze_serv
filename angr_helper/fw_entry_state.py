@@ -67,14 +67,31 @@ class FwEntryState:
     # bits: 64
     def _get_arch_info(self):
         arch = self.arch
-        return {
-            'arch_name': arch.name,
-            'bits': arch.bits,
-            'linux_name': arch.linux_name,
-            'instruction_endness': arch.instruction_endness,
-            'vex_arch': arch.vex_arch,
-            'vex_endness': arch.vex_endness,
-            'size_of_value': arch.sizeof,
-            'default_symbolic_registers': arch.default_symbolic_registers,
-            # 'default_register_values': arch.default_register_values, # 数值太大了，超过数据库 8 字节整数的限制
-        }
+        try:
+            if hasattr(arch, 'vex_endness'):
+                return {
+                    'arch_name': arch.name,
+                    'bits': arch.bits,
+                    'linux_name': arch.linux_name,
+                    'instruction_endness': arch.instruction_endness,
+                    'vex_arch': arch.vex_arch,
+                    'vex_endness': arch.vex_endness,
+                    'size_of_value': arch.sizeof,
+                    'default_symbolic_registers': arch.default_symbolic_registers,
+                    # 'default_register_values': arch.default_register_values, # 数值太大了，超过数据库 8 字节整数的限制
+                }
+            else:
+                return {
+                    'arch_name': arch.name,
+                    'bits': arch.bits,
+                    'linux_name': arch.linux_name,
+                    'instruction_endness': arch.instruction_endness,
+                    'vex_arch': arch.vex_arch,
+                    'vex_endness': "",  # arch.vex_endness,
+                    'size_of_value': arch.sizeof,
+                    'default_symbolic_registers': arch.default_symbolic_registers,
+                    # 'default_register_values': arch.default_register_values, # 数值太大了，超过数据库 8 字节整数的限制
+                }
+        except NameError:
+            print("_get_arch_info error")
+

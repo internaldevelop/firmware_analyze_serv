@@ -26,7 +26,7 @@ import utils.sys.config
 
 def taintadd(request):
     # 从请求中取参数：文件 ID
-    func_name, hazard, solution = ReqParams.many(request, ['func_name', 'hazard', 'solution'])
+    func_name, hazard, solution = ReqParams.many(request, ['func_name', 'hazard', 'solution'], protocol='POST')
 
     # find func_name in taint_dict
     if TaintdictDO.search_func_name(func_name) is None:
@@ -38,27 +38,30 @@ def taintadd(request):
         # 保存操作日志
         LogRecords.save('', category='statistics', action='自定义污点函数－增加',
                         desc='污点函数（ID=%s）的信息，' % fun_id)
+        return sys_app_ok_p('添加成功')
     else:
         print("already has func_name")
-
-    return sys_app_ok_p([])
+        return sys_app_ok_p(['函数已存在'])
 
 
 def taintdel(request):
     # 从请求中取参数：文件 ID
     func_name = ReqParams.one(request, 'func_name')
-    TaintdictDO.delete(func_name)
+    ret = TaintdictDO.delete(func_name)
 
     # 保存操作日志
     LogRecords.save('', category='statistics', action='自定义污点函数－删除',
                     desc='污点函数（func_name=%s）的信息，' % func_name)
 
-    return sys_app_ok_p([])
+    if ret:
+        return sys_app_ok_p('删除成功')
+    else:
+        return sys_app_ok_p('删除失败')
 
 
 def taintmodify(request):
     # 从请求中取参数：文件 ID
-    func_name, hazard, solution = ReqParams.many(request, ['func_name', 'hazard', 'solution'])
+    func_name, hazard, solution = ReqParams.many(request, ['func_name', 'hazard', 'solution'], protocol='POST')
 
     TaintdictDO.update(func_name, hazard, solution)
     # 保存操作日志

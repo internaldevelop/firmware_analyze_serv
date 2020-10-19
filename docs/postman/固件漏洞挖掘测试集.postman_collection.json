@@ -1943,7 +1943,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_info?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x407930&extra_info=props,vars",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/cfg/func_info?access_token={{access_token}}&file_id={{file_id}}&func_addr=0x400530&extra_info=props,vars",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -1963,7 +1963,7 @@
 								},
 								{
 									"key": "func_addr",
-									"value": "0x407930"
+									"value": "0x400530"
 								},
 								{
 									"key": "extra_info",
@@ -3639,7 +3639,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/task/detect_vulner?file_id=58b6e7b7-e991-4fc8-80e1-d866bce50fd3",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/task/detect_vulner?file_id=775e3a42-6a5a-4e48-b224-22c5e934c616",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -3651,8 +3651,8 @@
 							"query": [
 								{
 									"key": "file_id",
-									"value": "58b6e7b7-e991-4fc8-80e1-d866bce50fd3",
-									"description": "检测缓冲区溢出漏洞、整数溢出 92c7a668-8510-447e-88f1-e88b841a04da"
+									"value": "775e3a42-6a5a-4e48-b224-22c5e934c616",
+									"description": "检测缓冲区溢出漏洞、整数溢出 58b6e7b7-e991-4fc8-80e1-d866bce50fd3"
 								}
 							]
 						}
@@ -3688,10 +3688,33 @@
 				{
 					"name": "12.2 自定义污点源-增",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "func_name",
+									"value": "my_func",
+									"description": "函数",
+									"type": "text"
+								},
+								{
+									"key": "hazard",
+									"value": "很危险",
+									"description": "严重性",
+									"type": "text"
+								},
+								{
+									"key": "solution",
+									"value": "12345678",
+									"description": "解决方案",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/add?func_name=my_func&hazard=很危险&solution",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/add",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -3699,23 +3722,6 @@
 								"fw_analyze",
 								"taint",
 								"add"
-							],
-							"query": [
-								{
-									"key": "func_name",
-									"value": "my_func",
-									"description": "函数"
-								},
-								{
-									"key": "hazard",
-									"value": "很危险",
-									"description": "严重性"
-								},
-								{
-									"key": "solution",
-									"value": null,
-									"description": "解决方案"
-								}
 							]
 						}
 					},
@@ -3724,10 +3730,33 @@
 				{
 					"name": "12.3 自定义污点源-修改",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "func_name",
+									"value": "my_func",
+									"description": "函数",
+									"type": "text"
+								},
+								{
+									"key": "hazard",
+									"value": "很危险",
+									"description": "严重性",
+									"type": "text"
+								},
+								{
+									"key": "solution",
+									"value": "1234",
+									"description": "解决方案",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/update?func_name=my_func&hazard=很危险&solution=11223344",
+							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/update",
 							"host": [
 								"{{FW_SERV_URL}}"
 							],
@@ -3735,23 +3764,6 @@
 								"fw_analyze",
 								"taint",
 								"update"
-							],
-							"query": [
-								{
-									"key": "func_name",
-									"value": "my_func",
-									"description": "函数"
-								},
-								{
-									"key": "hazard",
-									"value": "很危险",
-									"description": "严重性"
-								},
-								{
-									"key": "solution",
-									"value": "11223344",
-									"description": "解决方案"
-								}
 							]
 						}
 					},
@@ -3760,7 +3772,7 @@
 				{
 					"name": "12.4 自定义污点源-删除",
 					"request": {
-						"method": "GET",
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "{{FW_SERV_URL}}/fw_analyze/taint/del?func_name=my_func",

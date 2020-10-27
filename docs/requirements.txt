@@ -37,7 +37,7 @@ colorama==0.4.3
 constantly==15.1.0
 cooldict==1.4
 crypto==1.4.1
-cryptography==2.8
+cryptography==3.2
 cssselect==1.1.0
 debtcollector==1.22.0
 decorator==4.4.1

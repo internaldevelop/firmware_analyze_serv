@@ -144,7 +144,7 @@ pyparsing==2.4.6
 pypng==0.0.20
 PyQRCode==1.2.1
 pyquery==1.4.0
-pysaml2==4.9.0
+pysaml2==6.5.0
 PySide2==5.14.0
 PySMT==0.8.0
 python-dateutil==2.8.0
